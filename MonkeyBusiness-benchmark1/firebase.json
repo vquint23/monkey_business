@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "monkeybusiness",
+    "public": "Firebase",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/benchmark1.html"
+      }
+    ]
+  }
+}

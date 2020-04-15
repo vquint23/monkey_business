@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Monkey Business - Benchmark 1</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/7.14.0/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/7.14.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/7.14.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/7.14.0/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/7.14.0/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+
+    </style>
+  </head>
+  <body style="background-color:rgb(137, 206, 228)">
+    <div id="document-container" style = "padding: 50px; text-align: center; font-family: Arial, Helvetica, sans-serif;">
+      <div id="logo">
+        <img src = "./Logo Transparent.png" width = "500px" height = "250px" >
+      </div>
+      <div id = "document-contents" style = "padding:10px; background-color:white;">
+        <div style="text-align: center;">
+          <div id="message" style="display: inline-block; ">
+           <h1> Game Design Document</h1>
+            <h2>by Jacob Joseph, JJ Salvador, V Quintana </h2>
+          </div>
+        </div>
+        <div id = "intro" style = "text-align: left; background-color:white;">
+          <h1>INTRODUCTION</h1>
+          <p>This document describes a game called "Monkey Business", which is designed to be a simple, 2D platformer. The game will employ sprite-based animation, tiled backgrounds, collision detection, physics, AI, efficient memory management, render threading, and more basic 2D game techniques.
+          </p>
+        </div>
+        <div id="tech" style = "text-align: left;">
+          <h1>TECHNOLOGY</h1>
+          <p>Monkey Business will be developed for the Windows Platform using the Phaser game engine, which is a free software 2D game framework for making HTML5 games for desktop and mobile. It is developed by Photon Storm. Phaser uses both a Canvas and WebGL renderer internally and can automatically swap between them based on browser support. This allows for fast rendering across desktop and mobile.
+          </p>
+        </div>   
+        <div id="backstory" style = "text-align: left;">
+          <h1>BACKSTORY</h1>
+          <p>Sun Wukong has trained to become the greatest warrior in all of China, and no creature of Earth could defeat him.  Unsatisfied with this lack of challenge, he decides to challenge the warrior of Heaven, convinced that they will make him a god if he can defeat their greatest champions.  Sun Wukong is able to reach Heaven, where he seeks council with its ruler, The Jade Emperor, demanding that he bring out Heaven’s champion so that Sun Wukong can defeat them and become a god.  The Jade Emperor refuses and casts Sun Wukong back to Earth.
+          </p>
+        </div>        
+        <div id="objective" style = "text-align: left;">
+          <h1>OBJECTIVE</h1>
+          <p>
+            You play as Sun Wukong, The Monkey King, and you embark on your arrogant quest to conquer the Heavens and prove your worthiness of godhood through three worlds.  The story begins with Sun Wukong getting kicked out of Heaven for demanding they recognize him as a great god.  He lands in the jungle, and he resolves to return to The Heavens in order to prove his worth once more.  However, the Army of the Heavens oppose him and try to stop him from returning.  Sun Wukong sees this as a test and decides that he will defeat the Army of the Heavens while on his journey back.
+          </p>
+          <p>Upon finishing all levels, Sun Wukong goes to the ruler of the Heavens, The Jade Emperor.  The Jade Emperor, not wanting to further antagonize Sun Wukong, bestows him the title of “The Monkey King, Equal of Heaven” and offers him a place among the gods.
+         </p>
+        </div>   
+        <div id="gameplay" style = "text-align: left;">
+          <h1>GAMEPLAY</h1>
+          <p>
+            The game will work like a side scroller, with Sun Wukong able to run left and right, and jump up or down onto platforms and other surfaces such that we may scroll up and down.
+          </p>
+          <p>Levels will be filled with enemies that Sun Wukong can defeat.  Extending the staff to the on-screen location of enemies will deal damage to them, and dealing enough damage to an enemy will kill them, removing them from the screen.  Enemies that attack or make contact with Sun Wukong will deal damage to him.  Enemies that deal enough damage to Sun Wukong will kill him and automatically restart the level for the player.
+          </p>
+          <p>Sun Wukong must use his staff on some levels to interact with the world around him in order to progress.  Examples include pushing buttons with his staff, pulling levers, or collecting items.
+          </p>
+          <p>Upon defeating all enemies, a gate will open that Sun Wukong must enter in order to complete the levels.</p>
+        </div>  
+        <div id="controls" style = "text-align: left;">
+          <h1>CONTROLS</h1>
+          <p>This game will be played using both a keyboard and mouse. Once started, use the following:</p>
+          <ul>
+            <li>A - Move left</li>
+            <li>D - Move Right</li>
+            <li>S - Crouch</li>
+            <li>SPACE - Jump (Hold to hover)</li>
+            <li>Left Mouse Button - Click to extend staff to the mouse pointer location and immediately retract staff.  Hold to maintain the extended staff at the mouse cursor location.</li>
+            <li>Right Mouse Button - Hold to thicken staff into a shield that blocks enemy attacks and projectiles in the direction of the mouse cursor.</li>
+            <li>ESC - This pauses the game and presents a pop-up window to the player asking them to continue when they are ready. If a game is not in progress, ESC does nothing</li>
+          </ul>
+        </div>   
+        <div id="gui" style = "text-align: left;">
+          <h1>GRAPHICAL USER INTERFACE</h1>
+          <p>As far as the GUI is concerned, we consider:</p>
+          <ul>
+            <li>Splash Screen - The splash screen GUI simply presents a game logo and a Start button for the user to press when they are ready to play. Upon pressing it, a brief scripted sequence is played explaining a little about Sun Wukong and the backstory for the game. While playing the message "Press ESC to Skip" should be displayed at the bottom of the screen. If pressed, the main menu loads.</li>
+            <br><br>
+            <div style = "text-align: center;"><img src = "./UI Concept Art/Splash Screen.png" height = "500px" width = "750px"></div>
+            <br><br>
+            <li>Main Menu - This screen lets the user start the game, as well as go to the levels selection screen, the controls screen, and the help screen.</li>
+            <br><br>
+            <div style = "text-align: center;"><img src = "./UI Concept Art/Main Menu.png" height = "500px" width = "750px"></div>
+            <br><br>
+            <li>Levels Selection - This screen presents all the playable levels that the user may select. Levels have to be unlocked, but once they are completed they can be replayed.</li>
+            <br><br>
+            <div style = "text-align: center;"><img src = "./UI Concept Art/Level Select.png" height = "500px" width = "750px"></div>
+            <br><br>
+            <li>Controls Screen - If pressed, the game will display an info screen that includes a description of all game controls needed to play.</li>
+            <br><br>
+            <div style = "text-align: center;"><img src = "./UI Concept Art/Controls.png" height = "500px" width = "750px"></div>
+            <br><br>
+            <li>Help/About Screen - This screen gives an overview of the backstory for the game, explaining any important characters, and also has a brief description of the developers.
+            </li>
+            <br><br>
+            <div style = "text-align: center;"><img src = "./UI Concept Art/HelpAbout.png" height = "500px" width = "750px"></div>
+            <br><br>
+            <li>	In-Game Screen - The game UI has access to the pause button (also accessed with ESC), as well as a button to access the Main Menu. </li>
+            <br><br>
+            <div style = "text-align: center;"><img src = "./UI Concept Art/In-Game Screen.png" height = "500px" width = "750px"></div>
+            <br><br>
+            </ul>
+            *Disclaimer: Current GUI images are conceptual, and use non original artwork; actual game UI will differ and feature original art.
+
+        </div> 
+        <div id="artwork" style = "text-align: left;">
+          <h1>ARTWORK</h1>
+          <p>            
+          All artwork in the game will be original. The following needs to be created:
+          </p>
+          <ul>
+            <li>Sun Wukong - Sun Wukong will be wearing one outfit throughout the entire game, so we only need to focus on making the sprites for different action states:</li>
+            <br>
+            <ul>
+              <li>Idle</li>
+              <li>Running Right</li>
+              <li>Running Left</li>
+              <li>Jumping Right</li>
+              <li>Jumping Left</li>
+              <li>Falling Right</li>
+              <li>Falling Left</li>
+              <li>Attacking</li>
+              <li>Taking Damage</li>
+              <li>Dying</li>
+              <li>Dead</li>
+            </ul>
+            <br>
+            <li>Staff - The staff that Sun Wukong holds will rotate according to the direction of the mouse cursor, meaning that it has to be separately animated from Sun Wukong with its own action states:</li>
+            <br>
+            <ul>
+              <li>Idle</li>
+              <li>Extended</li>
+              <li>Shield</li>
+              <li>Helicopter</li>
+            </ul>
+            <br>
+            <li>Enemy Sprites: Sun Wukong will be fighting many enemies while he attempts to progress through each level, so these enemies will have their own set of sprite states:</li>
+            <br>
+            <ul>
+              <li>Idle</li>
+              <li>Walking Right</li>
+              <li>Walking Left</li>
+              <li>Attacking</li>
+              <li>Taking Damage</li>
+              <li>Dying</li>
+              <li>Death</li>
+            </ul>
+            <br>
+            <li>World Floor & Wall Tiles: Sun Wukong will traverse three different types of worlds: The Jungle, The City, and The Heavens.  Each world will have their own floor and wall tiles that reflect the aesthetic of the world.  The Jungle will have grassy dirt tiles, The City will have clean-cut road tiles, and The Heavens will have bright cloud tiles.</li>
+            <br>
+            <li>World Backgrounds: The backgrounds of each world will reflect the aesthetic of the world, much like the floor and wall tiles.  The Jungle will be filled with leafy trees, The City will be filled with buildings, and The Heavens will have a blue sky with some clouds.</li>
+            <br>
+            <li>Level Compete Gate: The level complete gate of each world will follow the aesthetic of the world.</li>
+            <br>
+            <li>Interactables: Different interactables will be present throughout the worlds and levels.  While each item will work the same way no matter which world they are in, they will still follow the aesthetic of their corresponding world.  The interactables will share similar designs in order to make sure the player knows exactly what the interactable is.</li>
+            <br>
+          </ul>
+         </div>  
+         <div id="sfx" style = "text-align: left;">
+          <h1>SOUND EFFECTS</h1>
+          <p>All sound effects will be original. Sound effects will be created to coincide with each of the following events:</p>
+          <ul>
+            <li>Running</li>
+            <li>Landing on a Platform</li>
+            <li>Jumping Sound</li>
+            <li>Helicopter Sound</li>
+            <li>Shield Sound</li>
+            <li>Shield Stomp Sound</li>
+            <li>Shield Block Sound</li>
+            <li>Extend Sound</li>
+            <li>Extend Hit Sound</li>
+            <li>Enemy Sound Effects</li>
+            <ul>
+              <li>Attack</li>
+              <li>Damage</li>
+              <li>Move</li>
+              <li>Death</li>
+            </ul>
+          <li>Sun Wukong Death</li>
+          <li>Pickups Sound Effects</li>
+          <li>Environmental Sound Effects</li>
+           </ul>
+        </div>  
+        <div id="music" style = "text-align: left;">
+          <h1>MUSIC</h1>
+          <p>All music will be original. A theme will be composed for each of the following stages/events:</p>
+          <ul>
+            <li>Title Screen Theme</li>
+            <li>World Themes:</li>
+            <ul>
+              <li>Jungle</li>
+              <li>Mountain City</li>
+              <li>Sky</li>
+            </ul>
+          <li>Stage Clear</li>
+          <li>Death Jingle</li>
+        </ul>
+        </div>  
+
+      </div>               
+    </div>
+  </body>
+</html>
