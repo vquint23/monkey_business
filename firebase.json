@@ -9,9 +9,13 @@
     ],
     "rewrites": [
       {
-        "source": "**",
+        "source": "benchmark1",
         "destination": "/benchmark1.html"
-      }
+      },
+      {
+        "source": "benchmark2",
+        "destination": "/benchmark2.html"
+      }   
     ]
   }
 }
