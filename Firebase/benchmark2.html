@@ -36,39 +36,46 @@
                 }
             },
             scene: {
+                key: 'main',
                 preload: preload,
                 create: create,
                 update: update
             }
         };
         
+        var map;
         var player;
-        var stars;
-        var bombs;
-        var platforms;
+        var platformsLayer;
         var cursors;
-        var score = 0;
+        var health = 100;
         var gameOver = false;
-        var scoreText;
         
         var game = new Phaser.Game(config);
         
         function preload ()
         {
-            this.load.image('sky', 'assets/sky.png');
+            //Make maps with Tiled, then load here
+            this.load.tilemapTiledJSON('assets/Maps/tempjunglemap.json')
+            this.load.image('bg', 'assets/Backgrounds/temp jungle.png', {width: 800, height: 600});
+            //Terrain things, for now
             this.load.image('ground', 'assets/platform.png');
-            this.load.image('star', 'assets/star.png');
-            this.load.image('bomb', 'assets/bomb.png');
+            //enemies 
+            //items
+            //player
             this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+            //this.load.atlas('player', 'assets/spritesheets/player.png', 'assets/animations/player.json' )
         }
         
         function create ()
         {
+            //Map?
+            map = this.make.tilemap({key: 'map'});
+
             //  A simple background for our game
-            this.add.image(400, 300, 'sky');
+            this.add.image(400, 300, 'bg');
         
             //  The platforms group contains the ground and the 2 ledges we can jump on
-            platforms = this.physics.add.staticGroup();
+            platforms = this.physics.add.staticGroup();     
         
             //  Here we create the ground.
             //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
@@ -86,6 +93,7 @@
             player.setBounce(0.2);
             player.setCollideWorldBounds(true);
         
+            //HEY we would replace this with using the player animations json, heads up
             //  Our player animations, turning, walking left and walking right.
             this.anims.create({
                 key: 'left',
@@ -108,9 +116,16 @@
             });
         
             //  Input Events
-            cursors = this.input.keyboard.createCursorKeys();
+            cursors = this.input.keyboard.addKeys(
+                {up:Phaser.Input.Keyboard.KeyCodes.W,
+                down:Phaser.Input.Keyboard.KeyCodes.S,
+                left:Phaser.Input.Keyboard.KeyCodes.A,
+                right:Phaser.Input.Keyboard.KeyCodes.D,
+                }
+            );
         
-            //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
+            /* Stuff from tutorial: clean if don't need later
+              Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
             stars = this.physics.add.group({
                 key: 'star',
                 repeat: 11,
@@ -124,20 +139,20 @@
         
             });
         
-            bombs = this.physics.add.group();
+            bombs = this.physics.add.group();*/
         
-            //  The score
-            scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+            //  Maybe repurpose for health?
+            heathText = this.add.text(16, 16, 'Health: 100', { fontSize: '32px', fill: '#000' });
         
-            //  Collide the player and the stars with the platforms
+            //  Collide things with the platforms
             this.physics.add.collider(player, platforms);
-            this.physics.add.collider(stars, platforms);
-            this.physics.add.collider(bombs, platforms);
+            //this.physics.add.collider(items, platforms);
+            //this.physics.add.collider(enemies, platforms);
         
             //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-            this.physics.add.overlap(player, stars, collectStar, null, this);
+           // this.physics.add.overlap(player, stars, collectStar, null, this);
         
-            this.physics.add.collider(player, bombs, hitBomb, null, this);
+            //this.physics.add.collider(player, bombs, hitBomb, null, this);
         }
         
         function update ()
@@ -146,13 +161,14 @@
             {
                 return;
             }
-        
+            // Left = A Key
             if (cursors.left.isDown)
             {
                 player.setVelocityX(-160);
         
                 player.anims.play('left', true);
             }
+            // Right = D Key
             else if (cursors.right.isDown)
             {
                 player.setVelocityX(160);
@@ -165,14 +181,14 @@
         
                 player.anims.play('turn');
             }
-        
+            // Jump = Space Key
             if (cursors.up.isDown && player.body.touching.down)
             {
-                player.setVelocityY(-330);
+                player.setVelocityY(-200);
             }
         }
         
-        function collectStar (player, star)
+        /*function collectStar (player, star)
         {
             star.disableBody(true, true);
         
@@ -209,7 +225,7 @@
             player.anims.play('turn');
         
             gameOver = true;
-        }
+        }*/
         
         </script>
      
