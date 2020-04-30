@@ -7,7 +7,7 @@ function mainMenu(address){
 }
 
 function startGame(levelname){
-    if (levelname == 'level1.1'){
+    if (levelname === 'level1.1'){
         window.location = "MonkeyBusiness.html";
     }
     else{
