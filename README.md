@@ -7,6 +7,7 @@ Monkey Business is a 2D Platformer Game created using the Phaser engine. It was 
 
 https://monkeybusiness.firebaseapp.com/benchmark1
 
-### Benchmark 2 (Coming Soon - 4/29/2020)
+### Benchmark 2 
+https://monkeybusiness.firebaseapp.com/benchmark2
 
 ### Final Game (Coming Soon - 5/18/2020)
