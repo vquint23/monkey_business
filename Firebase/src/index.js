@@ -1,0 +1,31 @@
+function splashScreen(){
+    window.location = "../../benchmark2.html"
+}
+
+function mainMenu(address){
+    window.location = address;
+}
+
+function startGame(level){
+    alert(level + " is coming soon!");
+}
+
+function levelSelect(){
+    window.location = "LevelSelect.html"
+}
+
+function controlsMenu(){
+    window.location = "ControlsMenu.html"
+}
+
+function aboutMenu(){
+    window.location = "AboutMenu.html"
+}
+
+function showStaff(staffname){
+    document.getElementById(staffname).style.display ='block';
+}
+
+function hideStaff(staffname){
+    document.getElementById(staffname).style.display ='none';
+}

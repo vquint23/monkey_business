@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Monkey Business - Benchmark 2</title>
+    <title>Monkey Business - About/Help</title>
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/7.14.0/firebase-app.js"></script>
@@ -14,8 +14,8 @@
     <script defer src="/__/firebase/7.14.0/firebase-storage.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
-    <link rel="stylesheet" type="text/css" href="src/style.css">
-    <script src="src/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="../index.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -25,8 +25,14 @@
   <body>
     <div id = 'game-box'>
       <div id = 'game'>
-        <img id = "bg-image" src = "./assets/Images/Splash Screen.png">
-        <div id = "start-text" onclick = "mainMenu('src/scenes/MainMenu.html')">Click Here to Start!</div>
+        <img id = "bg-image" src = "../../assets/Images/About.png">
+        <div id = "bg-text" >Play as Sun Wukong, the Monkey King, on his 
+            <br>quest to conquer the heavens, prove his worth, 
+            <br>and ascend to godhood!</div>
+        <div id = "about-text" >Monkey Business is a 2D Platformer game 
+            <br>created using the Phaser game engine by 
+            <br>Jacob Joseph, V Quintana, and JJ Salvador.</div>
+        <img id = "back-arrow" src = "../../assets/Images/Icons/back arrow.png" onclick = "mainMenu('MainMenu.html')">
       </div>
     </div>
     

@@ -1,0 +1,142 @@
+body {
+    background-color: rgb(137, 210, 235);
+  }
+  
+#game-box{
+    text-align: center;
+}
+
+#game{
+    display: inline-block;
+}
+
+#bg-image{
+    width: 1000px; 
+    height: 800px;
+}
+
+#back-arrow{
+    position: absolute;
+    bottom: 120px;
+    left: 520px;
+    width: 250px;
+    height: 150px;
+}
+
+/*Splash Screen*/
+#start-text{
+    position: absolute;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    bottom: 200px;
+    left: 620px;
+    font-size: 32px;
+
+}
+
+/*Main Menu*/
+#menu-options{
+    position: absolute;
+    text-align: left;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 32px;
+    bottom: 300px;
+    left: 500px;
+}
+
+.menu-options-text:hover{
+    text-decoration: underline;
+}
+
+#list-staff-start{
+    position: absolute;
+    width: 300px;
+    left: 250px;
+    bottom: 180px;
+    display: none;
+}
+
+#list-staff-level{
+    position: absolute;
+    width: 300px;
+    left: 250px;
+    bottom: 110px;
+    display: none;
+}
+
+#list-staff-control{
+    position: absolute;
+    width: 300px;
+    left: 250px;
+    bottom: 40px;
+    display: none;
+}
+
+#list-staff-about{
+    position: absolute;
+    width: 300px;
+    left: 250px;
+    bottom: -35px;
+    display: none;
+}
+
+/*About Menu*/
+
+#bg-text{
+    font-size: 24px;
+    position: absolute;
+    top: 300px;
+    left: 550px;
+}
+
+#about-text{
+    font-size: 24px;
+    position: absolute;
+    top: 480px;
+    left: 550px;
+}
+
+/*Level Select Menu*/
+#level-options{
+    position: absolute;
+    text-align: left;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 32px;
+    bottom: 250px;
+    left: 500px;
+}
+
+.level-options-text:hover{
+    text-decoration: underline;
+}
+#list-staff-jungle{
+    position: absolute;
+    width: 300px;
+    left: 250px;
+    bottom: 275px;
+    display: none;
+}
+#list-staff-mountain{
+    position: absolute;
+    width: 300px;
+    left: 250px;
+    bottom: 145px;
+    display: none;
+}
+#list-staff-sky{
+    position: absolute;
+    width: 300px;
+    left: 250px;
+    bottom: 15px;
+    display: none;
+}
+
+#jungle-level-one{
+    font-size: 24px;
+}
+
+#jungle-level-two,
+#mountain-level-one, #mountain-level-two,
+#sky-level-one, #sky-level-two{
+    font-size: 24px;
+    color: darkgrey;
+}
