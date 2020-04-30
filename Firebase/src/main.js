@@ -1,8 +1,8 @@
 const config = {
     type: Phaser.AUTO,
     parent: 'Firebase',
-    width: 800,
-    height: 600,
+    width: 1100,
+    height: 700,
     physics: {
         default: 'arcade',
         arcade: {

@@ -2,6 +2,20 @@ body {
     background-color: rgb(137, 210, 235);
   }
   
+canvas {
+    position: absolute;
+    display: inline-block;
+    left: 210px;
+    bottom: 50px;
+  }
+
+#logo {
+    position: absolute;
+    height: 100px;
+    left: 640px;;
+    top: 10px;
+    display: inline-block;
+}
 #game-box{
     text-align: center;
 }

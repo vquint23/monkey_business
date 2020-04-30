@@ -6,8 +6,13 @@ function mainMenu(address){
     window.location = address;
 }
 
-function startGame(level){
-    alert(level + " is coming soon!");
+function startGame(levelname){
+    if (levelname == 'level1.1'){
+        window.location = "MonkeyBusiness.html";
+    }
+    else{
+        alert(level + " is coming soon!");
+    }
 }
 
 function levelSelect(){
