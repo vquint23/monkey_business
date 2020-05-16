@@ -95,7 +95,13 @@ function create ()
     });
 
     //  Input Events
-    cursors = this.input.keyboard.createCursorKeys();
+    cursors = this.input.keyboard.addKeys(
+        {up:Phaser.Input.Keyboard.KeyCodes.SPACE,
+        down:Phaser.Input.Keyboard.KeyCodes.S,
+        left:Phaser.Input.Keyboard.KeyCodes.A,
+        right:Phaser.Input.Keyboard.KeyCodes.D,
+        }
+    );
 
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
     stars = this.physics.add.group({
