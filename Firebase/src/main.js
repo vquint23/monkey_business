@@ -99,8 +99,10 @@ function create ()
         down:Phaser.Input.Keyboard.KeyCodes.S,
         left:Phaser.Input.Keyboard.KeyCodes.A,
         right:Phaser.Input.Keyboard.KeyCodes.D,
+        continue:Phaser.Input.Keyboard.KeyCodes.ENTER
         }
     );
+
 
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
     stars = this.physics.add.group({
@@ -121,6 +123,12 @@ function create ()
     //  The score
     scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
+    //Game over text
+    gameOverText = this.add.text(350, 150, 'GAME OVER', {fontSize: '64px', fill: '#623'});
+    gameOverText.setVisible(false);
+    restartText = this.add.text(310, 200, 'PRESS ENTER TO RESTART', {fontSize: '32px', fill: '#420'});
+    restartText.setVisible(false);
+
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(stars, platforms);
@@ -136,9 +144,16 @@ function update ()
 {
     if (gameOver)
     {
-       this.add.text(350, 200, 'GAME OVER', {fontSize: '64px', fill: '#623'});
         player.body.enable = false;
-        
+        gameOverText.setVisible(true);
+        restartText.setVisible(true);
+        if (cursors.continue.isDown){
+            gameOverText.setVisible(false);
+            restartText.setVisible(false);
+            this.scene.restart();
+            player.body.enable = true;
+            gameOver = false;
+        }
     }
 
     if (cursors.left.isDown && !gameOver)
