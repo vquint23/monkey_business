@@ -83,15 +83,14 @@ function create ()
 
     this.anims.create({
         key: 'jump',
-        frames: this.anims.generateFrameNumbers('dude', { frame: 24 }),
+        frames: [ {key: 'dude',  frame: 24 } ],
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'die',
-        frames: this.anims.generateFrameNumbers('dude', { frame: 30 }),
-        frameRate: 10,
-        repeat: -1
+        frames: [ {key: 'dude',  frame: 30 } ],
+        frameRate: 10
     });
 
     //  Input Events
@@ -137,32 +136,33 @@ function update ()
 {
     if (gameOver)
     {
-        return;
+       this.add.text(350, 200, 'GAME OVER', {fontSize: '64px', fill: '#623'});
+        player.body.enable = false;
+        
     }
 
-    if (cursors.left.isDown)
+    if (cursors.left.isDown && !gameOver)
     {
-        player.setVelocityX(-160);
+        player.setVelocityX(-200);
 
         player.anims.play('left', true);
     }
-    else if (cursors.right.isDown)
+    else if (cursors.right.isDown && !gameOver)
     {
-        player.setVelocityX(160);
+        player.setVelocityX(200);
 
         player.anims.play('right', true);
     }
-    else
+    else if (!gameOver)
     {
         player.setVelocityX(0);
 
         player.anims.play('turn');
     }
 
-    if (cursors.up.isDown && player.body.touching.down)
+    if (cursors.up.isDown && player.body.touching.down && !gameOver)
     {
-        player.setVelocityY(-330);
-        player.anims.play('jump');
+        player.setVelocityY(-350);
     }
 }
 
@@ -196,11 +196,7 @@ function collectStar (player, star)
 
 function hitBomb (player, bomb)
 {
-    this.physics.pause();
-
     player.setTint(0xff0000);
-
-    player.anims.play('die');
-
     gameOver = true;
+    player.anims.play('die', true);
 }
