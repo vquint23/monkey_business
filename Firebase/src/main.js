@@ -9,6 +9,10 @@ class main extends Phaser.Scene {
             frameWidth: 64,
             frameHeight: 64
         });
+        this.load.image("cityTiles", "../assets/Images/CityTileSet.png", {
+            frameWidth: 64,
+            frameHeight: 64
+        });
         this.load.spritesheet("Monkey", "../assets/Sprites/SunWukong.png", {
             frameWidth: 64,
             frameHeight: 64
@@ -26,8 +30,8 @@ class main extends Phaser.Scene {
 
     create() {
         // Add text
-        this.add.text(20, 20, "World 1-1");
-        this.scene.start("World1-1");
+        this.add.text(20, 20, "World 2-1");
+        this.scene.start("World2-1");
 
         // Create animations
         this.anims.create({
