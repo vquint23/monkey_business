@@ -15,8 +15,10 @@ window.onload = function() {
             }
         },
         scale: {
-            mode: Phaser.Scale.FIT,
-            autoCenter: Phaser.Scale.CENTER_BOTH
+            parent: "game",
+            top: 100,
+            width: 800, 
+            height: 600,
         },
         autoRound: false
     }
