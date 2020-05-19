@@ -1,5 +1,5 @@
 function splashScreen(){
-    window.location = "../../benchmark2.html"
+    window.location = "../../index.html"
 }
 
 function mainMenu(address){
