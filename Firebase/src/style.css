@@ -82,33 +82,33 @@ canvas {
 
 #list-staff-start{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 180px;
+    width: 150%;
+    left: 130%;
+    bottom: 56%;
     display: none;
 }
 
 #list-staff-level{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 110px;
+    width: 150%;
+    left: 130%;
+    bottom: 33%;
     display: none;
 }
 
 #list-staff-control{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 40px;
+    width: 150%;
+    left: 130%;
+    bottom: 11%;
     display: none;
 }
 
 #list-staff-about{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: -35px;
+    width: 150%;
+    left: 130%;
+    bottom: -12%;
     display: none;
 }
 
@@ -143,23 +143,23 @@ canvas {
 }
 #list-staff-jungle{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 275px;
+    width: 150%;
+    left: 115%;
+    bottom: 64%;
     display: none;
 }
 #list-staff-mountain{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 145px;
+    width: 150%;
+    left: 115%;
+    bottom: 32%;
     display: none;
 }
 #list-staff-sky{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 15px;
+    width: 150%;
+    left: 115%;
+    bottom: 2%;
     display: none;
 }
 
