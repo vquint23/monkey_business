@@ -1,9 +1,10 @@
 window.onload = function() {
 
     var config = {
+        parent: "game-container",
         type: Phaser.AUTO,
-        width: 640,
-        height: 480,
+        width: 1200,
+        height: 700,
         bgColor: 0x000000,
         scene: [main, World11],
         pixelArt: true,
@@ -13,12 +14,6 @@ window.onload = function() {
                 gravity: { y: 700 },
                 debug: false
             }
-        },
-        scale: {
-            parent: "game",
-            top: 100,
-            width: 800, 
-            height: 600,
         },
         autoRound: false
     }
