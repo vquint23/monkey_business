@@ -11,7 +11,7 @@ function startGame(levelname){
         window.location = "MonkeyBusiness.html";
     }
     else{
-        alert(level + " is coming soon!");
+        alert(levelname + " is coming soon!");
     }
 }
 
