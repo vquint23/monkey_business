@@ -7,6 +7,9 @@ class World11 extends Phaser.Scene {
         // Import tile map
         this.load.image('jungle_bg', "../assets/Backgrounds/temp jungle.png");
         this.load.tilemapCSV('jungle', "../assets/TileMaps/jungle_jungle.csv");
+
+        // Import audio
+        this.load.audio("World1Theme", "../audio/world one theme in game mix.ogg");
     }
 
     create() {
@@ -27,10 +30,28 @@ class World11 extends Phaser.Scene {
 
         // Create Staff
         this.staff = this.add.sprite(this.player.x, this.player.y, "Staff");
-        this.staff.setOrigin(0.5, 0.5);
+        this.staff.setOrigin(0, 0);
 
-        // Set collision between player and collidable layer
+        // Create enemies
+        this.scorpion1 = this.physics.add.sprite(500, 300, "Scorpion");
+        this.scorpion1.play("scorpion_idle_left");
+        this.scorpion1.setImmovable(true);
+        this.scorpion1.setInteractive();
+
+        this.enemies = this.physics.add.group();
+        this.enemies.add(this.scorpion1);
+
+        // Set collision between player, enemies, and collidable layer
         this.physics.add.collider(this.player, this.layer);
+        this.physics.add.collider(this.staff, this.layer);
+        this.physics.add.collider(this.enemies, this.layer);
+
+        // Set collision between player and enemies
+        this.physics.add.overlap(this.enemies, this.player, function(enemy, player) {
+            player.disableBody(true, true);
+        });
+
+        this.physics.add.collider(this.player, this.enemies, this.hurtPlayer, null, this);
 
         this.layer.setCollisionByProperty({collides: true});
 
@@ -52,6 +73,18 @@ class World11 extends Phaser.Scene {
         //     console.log("ATTACK");
         // }, this);
 
+        // Add in music
+        //  this.music = this.sound.add("World1Theme");
+
+        //  var musicConfig = {
+        //      mute: false,
+        //      volume: 1,
+        //      loop: true,
+        //      delay:0
+        //  }
+
+        //  this.music.play(musicConfig);
+
         
     }
 
@@ -59,10 +92,6 @@ class World11 extends Phaser.Scene {
         // Reset player velocity back to 0 every frame
         this.player.setVelocityX(0);
         this.staff.setPosition(this.player.x, this.player.y);
-        // console.log("Player x: " + this.player.x);
-        // console.log("Player y: " + this.player.y);
-        // console.log("Staff x: " + this.staff.x);
-        // console.log("Staff y: " + this.staff.y);
 
         // Controls movement of player sprite
         this.movePlayerManager();
@@ -109,10 +138,27 @@ class World11 extends Phaser.Scene {
         //this.staff.disableBody(false, false);
         //Phaser.Math.Angle.Between(this.staff.x, this.staff.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
         if (this.game.input.mousePointer.isDown) {
-            var angle = Phaser.Math.Angle.BetweenPoints(this.player, this.game.input.mousePointer);
+            var angle = Phaser.Math.Angle.Between(this.player.x, 
+                                                  this.player.y,
+                                                  this.game.input.mousePointer.x + this.cameras.main.scrollX,
+                                                  this.game.input.mousePointer.y + this.cameras.main.scrollY);
+            var end = this.staff.x;
 
             this.staff.setAngle(Phaser.Math.RadToDeg(angle));
-            this.staff.setScale(2);
+            this.extend = this.tweens.add({
+                targets: this.staff,
+                scaleX: 8,
+                scaleY: 3,
+                duration: 30,
+                repeat: 0
+            });
+            this.scaleY = 3;
+            // for (var i = 0; i < 8; i++) {
+            //     this.staff.scaleX++;
+            // if ((end >= this.game.input.mousePointer.x + this.cameras.main.scrollX)) {
+            //     this.extend.stop();
+            // }
+            // }
             if ((this.game.input.mousePointer.x + this.cameras.main.scrollX) >= this.player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
                 this.left = false;
                 this.player.play("attack_right", true);
@@ -121,9 +167,21 @@ class World11 extends Phaser.Scene {
                 this.player.play("attack_left", true);
             }
         } else {
-            this.staff.setAngle(0);
-            this.staff.setScale(1);
+            this.tweens.add({
+                targets: this.staff,
+                scaleX: 1,
+                scaleY: 1,
+                angleX: 0,
+                angleY: 0,
+                duration: 30,
+                repeat: 0
+            });
         }
+    }
+
+    hurtPlayer(player, enemy) {
+        this.player.play("hurt_right", true);
+        this.player.setVelocity(-100, 100);
     }
 
     defaultAnim
