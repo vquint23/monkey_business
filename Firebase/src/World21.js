@@ -10,45 +10,68 @@ class World21 extends Phaser.Scene {
     }
 
     create() {
-        this.gotGate = false;
-        this.wintext = this.add.text(350, 150, 'LEVEL COMPLETE', {fontSize: '64px', fill: '#000'});
-        this.wintext.setVisible(false);
+        paused = false;
+        gotGate = false;
+        wintext = this.add.text(350, 150, 'LEVEL COMPLETE', {fontSize: '64px', fill: '#000'});
+        wintext.setVisible(false);
+
         // Used to determine which way player is facing
-        this.left = false;
+        left = false;
+
         // Create tilemap and background
-        this.bg = this.add.tileSprite(0, 0, this.cameras.main.width / 2, this.cameras.main.height, "sky").setOrigin(0, 0);
-        let scaleX = this.cameras.main.width / this.bg.width
-        let scaleY = this.cameras.main.height / this.bg.height
+        bg = this.add.tileSprite(0, 0, this.cameras.main.width / 2, this.cameras.main.height, "sky").setOrigin(0, 0);
+        let scaleX = this.cameras.main.width / bg.width
+        let scaleY = this.cameras.main.height / bg.height
         let scale = Math.max(scaleX, scaleY)
-        this.bg.setScale(scale).setScrollFactor(0)
-        this.map = this.make.tilemap({key: "city1", tileWidth: 64, tileHeight: 64});
-        this.tileset = this.map.addTilesetImage("cityTiles");
-        this.layer = this.map.createStaticLayer(0, this.tileset);
+        bg.setScale(scale).setScrollFactor(0)
+        map = this.make.tilemap({key: "city1", tileWidth: 64, tileHeight: 64});
+        tileset = map.addTilesetImage("cityTiles");
+        layer = map.createStaticLayer(0, tileset);
+
         // Set tile blocks to be collidable
-        this.map.setCollisionBetween(0, 10000, true);
+        map.setCollisionBetween(0, 10000, true);
+
         // Create Player
-        this.player = this.physics.add.sprite(this.game.config.width/2, 0, "Monkey");
-        this.player.body.setSize(45, 60);
-        this.player.body.setOffset(12, 0);
+        player = this.physics.add.sprite(this.game.config.width/2, 0, "Monkey");
+        player.body.setSize(45, 60);
+        player.body.setOffset(12, 0);
+
         // Create Staff
-        this.staff = this.add.sprite(this.player.x, this.player.y, "Staff");
-        this.staff.setOrigin(0, 0);
+        staff = this.add.sprite(player.x, player.y, "Staff");
+        staff.setOrigin(0, 0);
+
+        // Create Enemies
+        direction = -1;
+        scorpionA = this.physics.add.sprite(1728, 1865, "Scorpion");
+        scorpionA.play("scorpion_idle_left");
+
+        scorpionB = this.physics.add.sprite(2432, 2816, "Scorpion");
+        scorpionB.play("scorpion_idle_left");
+
+        scorpions = this.physics.add.group();
+        scorpions.add(scorpionA);
+
         // Create Gate (Tiled Location * 64)
-        this.gate = this.add.sprite(6280, 192, "Gate");
-        // Set collision between player and collidable layer
-        this.physics.add.collider(this.player, this.layer);
-        this.layer.setCollisionByProperty({collides: true});
-        this.physics.add.collider(this.player, this.gate, null, this.gotGate = true);
+        gate = this.add.sprite(6280, 192, "Gate");
+
+        // Set collision between player, enemies, and collidable layer
+        this.physics.add.collider(player, layer);
+        layer.setCollisionByProperty({collides: true});
+        this.physics.add.collider(player, gate, null, gotGate = true);
+        this.physics.add.collider(scorpions, layer);
+
         // Set up camera that follows player
-        this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        this.cameras.main.startFollow(this.player);
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.startFollow(player);
+
         // Map keyboard inputs for movement to ASD and Space 
-        this.cursorKeys = this.input.keyboard.createCursorKeys();
-        this.cursorKeys = this.input.keyboard.addKeys ({
+        cursorKeys = this.input.keyboard.createCursorKeys();
+        cursorKeys = this.input.keyboard.addKeys ({
             up: Phaser.Input.Keyboard.KeyCodes.SPACE,
             down: Phaser.Input.Keyboard.KeyCodes.S,
             left: Phaser.Input.Keyboard.KeyCodes.A,
-            right: Phaser.Input.Keyboard.KeyCodes.D
+            right: Phaser.Input.Keyboard.KeyCodes.D, 
+            pause: Phaser.Input.Keyboard.KeyCodes.ENTER
          });
 
         // this.input.on('pointerup', function (pointer) {
@@ -59,69 +82,34 @@ class World21 extends Phaser.Scene {
 
     update() {
         // Reset player velocity back to 0 every frame
-        this.player.setVelocityX(0);
-        this.staff.setPosition(this.player.x, this.player.y);
+        player.setVelocityX(0);
+        staff.setPosition(player.x, player.y);
         // console.log("Player x: " + this.player.x);
         // console.log("Player y: " + this.player.y);
         // console.log("Staff x: " + this.staff.x);
         // console.log("Staff y: " + this.staff.y);
         // Controls movement of player sprite
         this.movePlayerManager();
+        this.moveScorpionManager();
         // Controls main mechanic
         this.extendStaff();
-        if (this.gotGate == true){
-            this.wintext.setVisible(true);
-            return;
-        }
-    }
+        this.pauseManager();
 
-    movePlayerManager() {
-        // Moves player according to buttons pressed and updates sprite states
-        if (this.cursorKeys.left.isDown) {
-            this.left = true;
-            this.player.setVelocityX(-300);
-            if (this.player.body.onFloor()) {
-                this.player.play("run_left", true);
-            } 
-        } else if (this.cursorKeys.right.isDown) {
-            this.left = false;
-            this.player.setVelocityX(300);
-            if (this.player.body.onFloor()) {
-                this.player.play("run_right", true);
-            }
-        } else {
-            if (this.left) {
-                this.player.play("idle_left", true);
-            } else {
-                this.player.play("idle_right", true);
-            }
-        }
-        if (this.cursorKeys.up.isDown && this.player.body.onFloor())
-        {
-            this.player.setVelocityY(-500);
-        }
-        if (!this.player.body.onFloor()) {
-            if (this.left) {
-                this.player.play("jump_left", true);
-            } else {
-                this.player.play("jump_right", true);
-            }
-        }
     }
 
     extendStaff() {
         //this.staff.disableBody(false, false);
         //Phaser.Math.Angle.Between(this.staff.x, this.staff.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
         if (this.game.input.mousePointer.isDown) {
-            var angle = Phaser.Math.Angle.Between(this.player.x, 
-                                                  this.player.y,
+            var angle = Phaser.Math.Angle.Between(player.x, 
+                                                  player.y,
                                                   this.game.input.mousePointer.x + this.cameras.main.scrollX,
                                                   this.game.input.mousePointer.y + this.cameras.main.scrollY);
-            var end = this.staff.x;
+            var end = staff.x;
 
-            this.staff.setAngle(Phaser.Math.RadToDeg(angle));
+            staff.setAngle(Phaser.Math.RadToDeg(angle));
             this.extend = this.tweens.add({
-                targets: this.staff,
+                targets: staff,
                 scaleX: 8,
                 scaleY: 3,
                 duration: 30,
@@ -134,16 +122,16 @@ class World21 extends Phaser.Scene {
             //     this.extend.stop();
             // }
             // }
-            if ((this.game.input.mousePointer.x + this.cameras.main.scrollX) >= this.player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
-                this.left = false;
-                this.player.play("attack_right", true);
+            if ((this.game.input.mousePointer.x + this.cameras.main.scrollX) >= player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
+                left = false;
+                player.play("attack_right", true);
             } else {
-                this.left = true;
-                this.player.play("attack_left", true);
+                left = true;
+                player.play("attack_left", true);
             }
         } else {
             this.tweens.add({
-                targets: this.staff,
+                targets: staff,
                 scaleX: 1,
                 scaleY: 1,
                 angleX: 0,
@@ -154,8 +142,88 @@ class World21 extends Phaser.Scene {
         }
     }
 
+    movePlayerManager() {
+        // Moves player according to buttons pressed and updates sprite states
+        if (cursorKeys.left.isDown) {
+            left = true;
+            player.setVelocityX(-300);
+            if (player.body.onFloor()) {
+                player.play("run_left", true);
+            } 
+        } else if (cursorKeys.right.isDown) {
+            left = false;
+            player.setVelocityX(300);
+            if (player.body.onFloor()) {
+                player.play("run_right", true);
+            }
+        } else {
+            if (left) {
+                player.play("idle_left", true);
+            } else {
+                player.play("idle_right", true);
+            }
+        }
+        if (cursorKeys.up.isDown && player.body.onFloor())
+        {
+            player.setVelocityY(-500);
+        }
+        if (!player.body.onFloor()) {
+            if (left) {
+                player.play("jump_left", true);
+            } else {
+                player.play("jump_right", true);
+            }
+        }
+    }
+
+    moveScorpionManager(){
+        speed = 50;
+        this.time.addEvent({
+            delay: 500,
+            callback: ()=>{
+                scorpions.setVelocityX(speed);
+                -1 * speed;
+            },
+            loop: true
+        })
+    } 
+
+    pauseManager(){
+        if(cursorKeys.pause.isDown && !paused){
+            //this.scene.pause();
+            //open pause scene
+        }
+        if (cursorKeys.pause.isDown && paused){
+            //close pause scene
+            //this.scene.resume();
+        }
+        this.paused = !paused;
+    }
+
     defaultAnim
 }
+
+var speed;
+var loop;
+var delay;
+var direction;
+var paused;
+var scorpionA;
+var scorpionB;
+var cursorKeys;
+var scorpions;
+var gate;
+var gotGate;
+var wintext;
+var player;
+var bg;
+var map;
+var tileset;
+var layer;
+var staff;
+var left;
+
+
 var config = {
     parent: "game-container",
     type: Phaser.AUTO,
@@ -168,7 +236,7 @@ var config = {
         default: "arcade",
         arcade:{
             gravity: { y: 700 },
-            debug: true
+            debug: false
         }
     },
     autoRound: false

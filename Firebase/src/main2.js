@@ -106,5 +106,25 @@ class main2 extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
+        // Create enemy animations
+        this.anims.create({
+            key: "scorpion_idle_left",
+            frames: this.anims.generateFrameNumbers("Scorpion", {
+                start: 0,
+                end: 3
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "scorpion_idle_right",
+            frames: this.anims.generateFrameNumbers("Scorpion", {
+                start: 4,
+                end: 7
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
     }
 }
