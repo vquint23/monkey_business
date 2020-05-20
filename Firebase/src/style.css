@@ -3,10 +3,6 @@ body {
     height: 100%;
     width: 100%;
   }
-
-#game-body{
-    background-image: "../../assets/Backgrounds/GameWindow.png";
-  }
   
 canvas {
     position: absolute;
@@ -17,40 +13,57 @@ canvas {
 
 #logo {
     position: absolute;
-    height: 100px;
-    left: 640px;;
+    height: 10%;
+    left: 43%;
     top: 10px;
     display: inline-block;
 }
+
 #game-box{
     text-align: center;
+    align-items: center;
 }
 
 #game{
     display: inline-block;
 }
 
+#game-container{
+    position: absolute;
+    left: -4%;
+    top: 97.5%;
+    z-index: -1;
+}
+
 #bg-image{
-    width: 1000px; 
-    height: 800px;
+    height: 100%;
+    width: 90%; 
+}
+
+#bg-image-game{
+    position: absolute;
+    left: 5%;
+    top: 0.5%;
+    height: 90%;
+    width: 90%;
+    z-index: 1;
 }
 
 #back-arrow{
     position: absolute;
-    bottom: 120px;
-    left: 520px;
-    width: 250px;
-    height: 150px;
+    bottom: 11%;
+    left: 32%;
+    width: 20%;
+    height: 20%;
 }
 
 /*Splash Screen*/
 #start-text{
     position: absolute;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    bottom: 200px;
-    left: 620px;
+    bottom: 25%;
+    left: 40%;
     font-size: 32px;
-
 }
 
 /*Main Menu*/
@@ -58,9 +71,9 @@ canvas {
     position: absolute;
     text-align: left;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 32px;
-    bottom: 300px;
-    left: 500px;
+    font-size: xx-large;
+    bottom: 34%;
+    left: 30%;
 }
 
 .menu-options-text:hover{
@@ -69,50 +82,50 @@ canvas {
 
 #list-staff-start{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 180px;
+    width: 150%;
+    left: 130%;
+    bottom: 56%;
     display: none;
 }
 
 #list-staff-level{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 110px;
+    width: 150%;
+    left: 130%;
+    bottom: 33%;
     display: none;
 }
 
 #list-staff-control{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 40px;
+    width: 150%;
+    left: 130%;
+    bottom: 11%;
     display: none;
 }
 
 #list-staff-about{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: -35px;
+    width: 150%;
+    left: 130%;
+    bottom: -12%;
     display: none;
 }
 
 /*About Menu*/
 
 #bg-text{
-    font-size: 24px;
+    font-size: xx-large;
     position: absolute;
-    top: 300px;
-    left: 550px;
+    top: 35%;
+    left: 33%;
 }
 
 #about-text{
-    font-size: 24px;
+    font-size: xx-large;
     position: absolute;
-    top: 480px;
-    left: 550px;
+    top: 55%;
+    left: 33%;
 }
 
 /*Level Select Menu*/
@@ -120,9 +133,9 @@ canvas {
     position: absolute;
     text-align: left;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 32px;
-    bottom: 250px;
-    left: 500px;
+    font-size: xx-large;
+    bottom: 27%;
+    left: 32%;
 }
 
 .level-options-text:hover{
@@ -130,33 +143,33 @@ canvas {
 }
 #list-staff-jungle{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 275px;
+    width: 150%;
+    left: 115%;
+    bottom: 64%;
     display: none;
 }
 #list-staff-mountain{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 145px;
+    width: 150%;
+    left: 115%;
+    bottom: 32%;
     display: none;
 }
 #list-staff-sky{
     position: absolute;
-    width: 300px;
-    left: 250px;
-    bottom: 15px;
+    width: 150%;
+    left: 115%;
+    bottom: 2%;
     display: none;
 }
 
 #jungle-level-one{
-    font-size: 24px;
+    font-size: x-large;
 }
 
 #jungle-level-two,
 #mountain-level-one, #mountain-level-two,
 #sky-level-one, #sky-level-two{
-    font-size: 24px;
+    font-size: x-large;
     color: darkgrey;
 }

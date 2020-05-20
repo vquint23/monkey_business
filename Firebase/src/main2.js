@@ -1,4 +1,4 @@
-class main extends Phaser.Scene {
+class main2 extends Phaser.Scene {
     constructor() {
         super("LoadGame");
     }
@@ -30,8 +30,8 @@ class main extends Phaser.Scene {
 
     create() {
         // Add text
-        this.add.text(20, 20, "World 1-1");
-        this.scene.start("World1-1");
+        this.add.text(20, 20, "World 2-1");
+        this.scene.start("World2-1");
 
         // Create animations
         this.anims.create({
@@ -102,36 +102,6 @@ class main extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("Monkey", {
                 start: 27,
                 end: 27
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "hurt_right",
-            frames: this.anims.generateFrameNumbers("Monkey", {
-                start: 28,
-                end: 28
-            }),
-            duration: 1000,
-            frameRate: 10,
-            repeat: -1
-        });
-
-        // Create enemy animations
-        this.anims.create({
-            key: "scorpion_idle_left",
-            frames: this.anims.generateFrameNumbers("Scorpion", {
-                start: 0,
-                end: 3
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "scorpion_idle_right",
-            frames: this.anims.generateFrameNumbers("Scorpion", {
-                start: 4,
-                end: 7
             }),
             frameRate: 10,
             repeat: -1

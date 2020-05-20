@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Monkey Business - About/Help</title>
+    <title>Monkey Business</title>
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/7.14.0/firebase-app.js"></script>
@@ -16,6 +16,9 @@
     <script defer src="/__/firebase/init.js"></script>
     <link rel="stylesheet" type="text/css" href="../style.css">
     <script src="../index.js"></script>
+    <script src = "../Phaser/phaser.min.js"></script>
+    <script src = "../main.js"></script>
+    <script src = "../World11.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -23,18 +26,11 @@
     </style>
   </head>
   <body>
-    <div id = 'game-box'>
-      <div id = 'game'>
-        <img id = "bg-image" src = "../assets/Images/Images/About.png">
-        <div id = "bg-text" >Play as Sun Wukong, the Monkey King, on his 
-            <br>quest to conquer the heavens, prove his worth, 
-            <br>and ascend to godhood!</div>
-        <div id = "about-text" >Monkey Business is a 2D Platformer game 
-            <br>created using the Phaser game engine by 
-            <br>Jacob Joseph, V Quintana, and JJ Salvador.</div>
-        <img id = "back-arrow" src = "../assets/Images/Images/Icons/back arrow.png" onclick = "mainMenu('MainMenu.html')">
+    <div id = "game-box">
+      <img id = "logo" src = "../assets/Images/Logo.png">
+      <div id = "game-container">
       </div>
+      <img id = "bg-image-game" src = "../assets/Backgrounds/GameWindow.png" style = "padding-top: 60px;">
     </div>
-    
  </body>
 </html>
