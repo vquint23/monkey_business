@@ -5,10 +5,6 @@ class main2 extends Phaser.Scene {
 
     preload() {
         // Load in spritesheets
-        this.load.image("jungleTiles", "../assets/Images/JungleTileSet.png", {
-            frameWidth: 64,
-            frameHeight: 64
-        });
         this.load.image("cityTiles", "../assets/Images/CityTileSet.png", {
             frameWidth: 64,
             frameHeight: 64
@@ -24,6 +20,10 @@ class main2 extends Phaser.Scene {
         this.load.image("Staff", "../assets/Sprites/Staff.png", {
             frameWidth: 32,
             frameHeight: 4
+        });
+        this.load.image("Gate", "../assets/Images/gate.png", {
+            frameWidth: 128,
+            frameHeight: 128
         });
         
     }

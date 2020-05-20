@@ -10,6 +10,9 @@ class World21 extends Phaser.Scene {
     }
 
     create() {
+        this.gotGate = false;
+        this.wintext = this.add.text(350, 150, 'LEVEL COMPLETE', {fontSize: '64px', fill: '#000'});
+        this.wintext.setVisible(false);
         // Used to determine which way player is facing
         this.left = false;
         // Create tilemap and background
@@ -21,20 +24,21 @@ class World21 extends Phaser.Scene {
         this.map = this.make.tilemap({key: "city1", tileWidth: 64, tileHeight: 64});
         this.tileset = this.map.addTilesetImage("cityTiles");
         this.layer = this.map.createStaticLayer(0, this.tileset);
-        // Set tile blocks to be collidable (all Tiled tiles with property collides=true are collidable.)
-        //this.layer.setCollisionByProperty({ collides: true });
         // Set tile blocks to be collidable
-        this.map.setCollisionBetween(0, 1000, true);
+        this.map.setCollisionBetween(0, 10000, true);
         // Create Player
         this.player = this.physics.add.sprite(this.game.config.width/2, 0, "Monkey");
         this.player.body.setSize(45, 60);
         this.player.body.setOffset(12, 0);
         // Create Staff
         this.staff = this.add.sprite(this.player.x, this.player.y, "Staff");
-        this.staff.setOrigin(0.5, 0.5);
+        this.staff.setOrigin(0, 0);
+        // Create Gate (Tiled Location * 64)
+        this.gate = this.add.sprite(6280, 192, "Gate");
         // Set collision between player and collidable layer
         this.physics.add.collider(this.player, this.layer);
         this.layer.setCollisionByProperty({collides: true});
+        this.physics.add.collider(this.player, this.gate, null, this.gotGate = true);
         // Set up camera that follows player
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.startFollow(this.player);
@@ -65,6 +69,10 @@ class World21 extends Phaser.Scene {
         this.movePlayerManager();
         // Controls main mechanic
         this.extendStaff();
+        if (this.gotGate == true){
+            this.wintext.setVisible(true);
+            return;
+        }
     }
 
     movePlayerManager() {
@@ -105,10 +113,27 @@ class World21 extends Phaser.Scene {
         //this.staff.disableBody(false, false);
         //Phaser.Math.Angle.Between(this.staff.x, this.staff.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
         if (this.game.input.mousePointer.isDown) {
-            var angle = Phaser.Math.Angle.BetweenPoints(this.player, this.game.input.mousePointer);
+            var angle = Phaser.Math.Angle.Between(this.player.x, 
+                                                  this.player.y,
+                                                  this.game.input.mousePointer.x + this.cameras.main.scrollX,
+                                                  this.game.input.mousePointer.y + this.cameras.main.scrollY);
+            var end = this.staff.x;
 
             this.staff.setAngle(Phaser.Math.RadToDeg(angle));
-            this.staff.setScale(2);
+            this.extend = this.tweens.add({
+                targets: this.staff,
+                scaleX: 8,
+                scaleY: 3,
+                duration: 30,
+                repeat: 0
+            });
+            this.scaleY = 3;
+            // for (var i = 0; i < 8; i++) {
+            //     this.staff.scaleX++;
+            // if ((end >= this.game.input.mousePointer.x + this.cameras.main.scrollX)) {
+            //     this.extend.stop();
+            // }
+            // }
             if ((this.game.input.mousePointer.x + this.cameras.main.scrollX) >= this.player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
                 this.left = false;
                 this.player.play("attack_right", true);
@@ -117,10 +142,18 @@ class World21 extends Phaser.Scene {
                 this.player.play("attack_left", true);
             }
         } else {
-            this.staff.setAngle(0);
-            this.staff.setScale(1);
+            this.tweens.add({
+                targets: this.staff,
+                scaleX: 1,
+                scaleY: 1,
+                angleX: 0,
+                angleY: 0,
+                duration: 30,
+                repeat: 0
+            });
         }
     }
+
     defaultAnim
 }
 var config = {
@@ -135,7 +168,7 @@ var config = {
         default: "arcade",
         arcade:{
             gravity: { y: 700 },
-            debug: false
+            debug: true
         }
     },
     autoRound: false
