@@ -1,4 +1,4 @@
-class main extends Phaser.Scene {
+class main2 extends Phaser.Scene {
     constructor() {
         super("LoadGame");
     }
@@ -30,8 +30,8 @@ class main extends Phaser.Scene {
 
     create() {
         // Add text
-        this.add.text(20, 20, "World 1-1");
-        this.scene.start("World1-1");
+        this.add.text(20, 20, "World 2-1");
+        this.scene.start("World2-1");
 
         // Create animations
         this.anims.create({

@@ -12,7 +12,6 @@ class World21 extends Phaser.Scene {
     create() {
         // Used to determine which way player is facing
         this.left = false;
-
         // Create tilemap and background
         this.bg = this.add.tileSprite(0, 0, this.cameras.main.width / 2, this.cameras.main.height, "sky").setOrigin(0, 0);
         let scaleX = this.cameras.main.width / this.bg.width
@@ -22,32 +21,23 @@ class World21 extends Phaser.Scene {
         this.map = this.make.tilemap({key: "city1", tileWidth: 64, tileHeight: 64});
         this.tileset = this.map.addTilesetImage("cityTiles");
         this.layer = this.map.createStaticLayer(0, this.tileset);
-
-
         // Set tile blocks to be collidable (all Tiled tiles with property collides=true are collidable.)
         //this.layer.setCollisionByProperty({ collides: true });
-
         // Set tile blocks to be collidable
         this.map.setCollisionBetween(0, 1000, true);
-
         // Create Player
         this.player = this.physics.add.sprite(this.game.config.width/2, 0, "Monkey");
         this.player.body.setSize(45, 60);
         this.player.body.setOffset(12, 0);
-
         // Create Staff
         this.staff = this.add.sprite(this.player.x, this.player.y, "Staff");
         this.staff.setOrigin(0.5, 0.5);
-
         // Set collision between player and collidable layer
         this.physics.add.collider(this.player, this.layer);
-
         this.layer.setCollisionByProperty({collides: true});
-
         // Set up camera that follows player
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.startFollow(this.player);
-
         // Map keyboard inputs for movement to ASD and Space 
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.cursorKeys = this.input.keyboard.addKeys ({
@@ -61,8 +51,6 @@ class World21 extends Phaser.Scene {
         //     this.player.play("attack_right", true);
         //     console.log("ATTACK");
         // }, this);
-
-        
     }
 
     update() {
@@ -73,10 +61,8 @@ class World21 extends Phaser.Scene {
         // console.log("Player y: " + this.player.y);
         // console.log("Staff x: " + this.staff.x);
         // console.log("Staff y: " + this.staff.y);
-
         // Controls movement of player sprite
         this.movePlayerManager();
-
         // Controls main mechanic
         this.extendStaff();
     }
@@ -135,7 +121,23 @@ class World21 extends Phaser.Scene {
             this.staff.setScale(1);
         }
     }
-
     defaultAnim
-
 }
+var config = {
+    parent: "game-container",
+    type: Phaser.AUTO,
+    width: 1200,
+    height: 700,
+    bgColor: 0x000000,
+    scene: [main2, World21],
+    pixelArt: true,
+    physics: {
+        default: "arcade",
+        arcade:{
+            gravity: { y: 700 },
+            debug: true
+        }
+    },
+    autoRound: false
+}
+var game = new Phaser.Game(config);

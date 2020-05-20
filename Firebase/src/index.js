@@ -1,5 +1,5 @@
 function splashScreen(){
-    window.location = "../../index.html"
+    window.location = "../../index.html";
 }
 
 function mainMenu(address){
@@ -8,7 +8,10 @@ function mainMenu(address){
 
 function startGame(levelname){
     if (levelname === 'level1.1'){
-        window.location = "MonkeyBusiness.html";
+        window.location = "Level11.html";
+    }
+    else if (levelname === 'level2.1'){
+        window.location = "Level21.html";
     }
     else{
         alert(levelname + " is coming soon!");
@@ -16,15 +19,15 @@ function startGame(levelname){
 }
 
 function levelSelect(){
-    window.location = "LevelSelect.html"
+    window.location = "LevelSelect.html";
 }
 
 function controlsMenu(){
-    window.location = "ControlsMenu.html"
+    window.location = "ControlsMenu.html";
 }
 
 function aboutMenu(){
-    window.location = "AboutMenu.html"
+    window.location = "AboutMenu.html";
 }
 
 function showStaff(staffname){
