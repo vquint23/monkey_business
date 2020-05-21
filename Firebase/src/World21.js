@@ -17,6 +17,8 @@ class World21 extends Phaser.Scene {
 
         // Used to determine which way player is facing
         left = false;
+        // Used to determine state of the staff
+        extended = false;
 
         // Create tilemap and background
         bg = this.add.tileSprite(0, 0, this.cameras.main.width / 2, this.cameras.main.height, "sky").setOrigin(0, 0);
@@ -37,29 +39,35 @@ class World21 extends Phaser.Scene {
         player.body.setOffset(12, 0);
 
         // Create Staff
-        staff = this.add.sprite(player.x, player.y, "Staff");
+        staff = this.add.sprite(player.x-64, player.y, "Staff");
         staff.setOrigin(0, 0);
 
-        // Create Enemies
-        direction = -1;
-        scorpionA = this.physics.add.sprite(1728, 1865, "Scorpion");
-        scorpionA.play("scorpion_idle_left");
+        // Used as the hitbox of the staff
+        hit = this.physics.add.sprite(player.x - 64, player.y, "Hit");
+        hit.setOrigin(0.5,0.5);
+        hit.setVisible(false);
+        hit.body.setAllowGravity(false);
 
+        // Create Enemies
+        scorpionA = this.physics.add.sprite(1728, 1865, "Scorpion");
         scorpionB = this.physics.add.sprite(2432, 2816, "Scorpion");
-        scorpionB.play("scorpion_idle_left");
 
         scorpions = this.physics.add.group();
         scorpions.add(scorpionA);
+        scorpions.add(scorpionB);
 
         // Create Gate (Tiled Location * 64)
         gate = this.add.sprite(6280, 192, "Gate");
 
         // Set collision between player, enemies, and collidable layer
-        this.physics.add.collider(player, layer);
         layer.setCollisionByProperty({collides: true});
-        this.physics.add.collider(player, gate, null, gotGate = true);
+        this.physics.add.collider(player, layer);
         this.physics.add.collider(scorpions, layer);
-
+        this.physics.add.collider(scorpions, player, this.takeDamage, null);
+        
+        this.physics.add.overlap(hit, scorpions, this.hitEnemy, null, this);
+        this.physics.add.overlap(player, gate, this.levelWin, null); 
+        
         // Set up camera that follows player
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(player);
@@ -74,62 +82,42 @@ class World21 extends Phaser.Scene {
             pause: Phaser.Input.Keyboard.KeyCodes.ENTER
          });
 
-        // this.input.on('pointerup', function (pointer) {
-        //     this.player.play("attack_right", true);
-        //     console.log("ATTACK");
-        // }, this);
-    }
-
-    update() {
-        // Reset player velocity back to 0 every frame
-        player.setVelocityX(0);
-        staff.setPosition(player.x, player.y);
-        // console.log("Player x: " + this.player.x);
-        // console.log("Player y: " + this.player.y);
-        // console.log("Staff x: " + this.staff.x);
-        // console.log("Staff y: " + this.staff.y);
-        // Controls movement of player sprite
-        this.movePlayerManager();
-        this.moveScorpionManager();
-        // Controls main mechanic
-        this.extendStaff();
-        this.pauseManager();
-
-    }
+        }
 
     extendStaff() {
-        //this.staff.disableBody(false, false);
-        //Phaser.Math.Angle.Between(this.staff.x, this.staff.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
+        // Controls staff extension by checking for left click
         if (this.game.input.mousePointer.isDown) {
-            var angle = Phaser.Math.Angle.Between(player.x, 
-                                                  player.y,
-                                                  this.game.input.mousePointer.x + this.cameras.main.scrollX,
-                                                  this.game.input.mousePointer.y + this.cameras.main.scrollY);
-            var end = staff.x;
+            extended = true;
+            var mouseX = this.game.input.mousePointer.x;
+            var mouseY = this.game.input.mousePointer.y;
+            var camX = this.cameras.main.scrollX;
+            var camY = this.cameras.main.scrollY;
 
-            staff.setAngle(Phaser.Math.RadToDeg(angle));
-            this.extend = this.tweens.add({
-                targets: staff,
-                scaleX: 8,
-                scaleY: 3,
-                duration: 30,
-                repeat: 0
-            });
-            this.scaleY = 3;
-            // for (var i = 0; i < 8; i++) {
-            //     this.staff.scaleX++;
-            // if ((end >= this.game.input.mousePointer.x + this.cameras.main.scrollX)) {
-            //     this.extend.stop();
-            // }
-            // }
-            if ((this.game.input.mousePointer.x + this.cameras.main.scrollX) >= player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
+            if ((mouseX+ camX) >= player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
                 left = false;
                 player.play("attack_right", true);
             } else {
                 left = true;
                 player.play("attack_left", true);
             }
-        } else {
+            var angle = Phaser.Math.Angle.Between(player.x, player.y, mouseX + camX, mouseY + camY);
+    
+            staff.setAngle(Phaser.Math.RadToDeg(angle));
+            if ((Phaser.Math.RadToDeg(angle) >= 0) && (Phaser.Math.RadToDeg(angle) <= 180)) {
+                hit.setOffset((mouseX + camX) - player.x, (mouseY + camY) - player.y);
+            }
+            else if ((Phaser.Math.RadToDeg(angle) <= 0) && (Phaser.Math.RadToDeg(angle) >= -180)) {
+                hit.setOffset((mouseX + camX) - player.x, (mouseY + camY) - player.y);
+            }
+            this.tweens.add({
+                targets: staff,
+                scaleX: 8,
+                scaleY: 3,
+                duration: 30,
+                repeat: 0
+            });
+        }
+        else{
             this.tweens.add({
                 targets: staff,
                 scaleX: 1,
@@ -139,7 +127,39 @@ class World21 extends Phaser.Scene {
                 duration: 30,
                 repeat: 0
             });
+            hit.setOffset(0, 0);
+                //this.staff.setActive(false);
         }
+    }
+    
+    hitEnemy(hit, enemy) {
+        enemy.destroy();
+    }
+
+    takeDamage(){
+
+    }
+
+    levelWin(){
+        
+    }
+
+    update() {
+        // Reset player velocity back to 0 every frame
+        player.setVelocityX(0);
+        staff.x = player.x;
+        staff.y = player.y;
+        hit.x = player.x;
+        hit.y = player.y;
+        // Controls movement of player sprite
+        this.movePlayerManager();
+        // Controls scorpion movement
+        this.moveScorpionManager();
+        //Controls pause 
+        this.pauseManager();
+        // Controls Staff Mechanic
+        this.extendStaff();
+
     }
 
     movePlayerManager() {
@@ -177,25 +197,31 @@ class World21 extends Phaser.Scene {
     }
 
     moveScorpionManager(){
-        speed = 50;
-        this.time.addEvent({
-            delay: 500,
-            callback: ()=>{
-                scorpions.setVelocityX(speed);
-                -1 * speed;
-            },
-            loop: true
-        })
+        Phaser.Actions.Call(scorpions.getChildren(), child => {
+            child.body.moves = true;
+            if (player.x < child.x){
+                child.play("scorpion_idle_left", true);
+                child.setVelocityX(-100);
+            }
+            else {
+                child.play("scorpion_idle_right", true);
+                child.setVelocityX(100);
+            }
+            if (child.body.onFloor() && player.y < child.y){
+                child.setVelocityY(-500);
+             }
+        });
+        
     } 
 
     pauseManager(){
         if(cursorKeys.pause.isDown && !paused){
-            //this.scene.pause();
+            //this.scene.sleep();
             //open pause scene
         }
         if (cursorKeys.pause.isDown && paused){
             //close pause scene
-            //this.scene.resume();
+            //this.scene.wake();
         }
         this.paused = !paused;
     }
@@ -206,7 +232,6 @@ class World21 extends Phaser.Scene {
 var speed;
 var loop;
 var delay;
-var direction;
 var paused;
 var scorpionA;
 var scorpionB;
@@ -222,7 +247,8 @@ var tileset;
 var layer;
 var staff;
 var left;
-
+var extended;
+var hit;
 
 var config = {
     parent: "game-container",
@@ -236,7 +262,7 @@ var config = {
         default: "arcade",
         arcade:{
             gravity: { y: 700 },
-            debug: false
+            debug: true
         }
     },
     autoRound: false
