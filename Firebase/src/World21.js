@@ -93,22 +93,37 @@ class World21 extends Phaser.Scene {
             var camX = this.cameras.main.scrollX;
             var camY = this.cameras.main.scrollY;
 
-            if ((mouseX+ camX) >= player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
+            //Determine if left or right attack animation should play
+            if ((mouseX+ camX) >= player.x) { 
                 left = false;
                 player.play("attack_right", true);
             } else {
                 left = true;
                 player.play("attack_left", true);
             }
+            // Change direction of sprite when pointer is clicked while on left or right of it.
             var angle = Phaser.Math.Angle.Between(player.x, player.y, mouseX + camX, mouseY + camY);
-    
             staff.setAngle(Phaser.Math.RadToDeg(angle));
-            if ((Phaser.Math.RadToDeg(angle) >= 0) && (Phaser.Math.RadToDeg(angle) <= 180)) {
-                hit.setOffset((mouseX + camX) - player.x, (mouseY + camY) - player.y);
+
+            var hitOffsetX = (mouseX + camX) - player.x;
+            var hitOffsetY = (mouseY + camY) - player.y;
+            //Change hitbox of staff offset - radius of 250
+
+            if (hitOffsetX < -250){
+                hitOffsetX = -250;
             }
-            else if ((Phaser.Math.RadToDeg(angle) <= 0) && (Phaser.Math.RadToDeg(angle) >= -180)) {
-                hit.setOffset((mouseX + camX) - player.x, (mouseY + camY) - player.y);
+            if (hitOffsetX > 250){
+                hitOffsetX = 250;
             }
+            if (hitOffsetY < -250){
+                hitOffsetY = -250;
+            }
+            if (hitOffsetY > 250){
+                hitOffsetY = 250;
+            }
+            hit.setOffset(hitOffsetX, hitOffsetY);
+
+            //resize staff
             this.tweens.add({
                 targets: staff,
                 scaleX: 8,
@@ -117,6 +132,8 @@ class World21 extends Phaser.Scene {
                 repeat: 0
             });
         }
+
+        // When mouseup, pull back staff
         else{
             this.tweens.add({
                 targets: staff,
@@ -127,8 +144,8 @@ class World21 extends Phaser.Scene {
                 duration: 30,
                 repeat: 0
             });
+            // reset staff hitbox
             hit.setOffset(0, 0);
-                //this.staff.setActive(false);
         }
     }
     
