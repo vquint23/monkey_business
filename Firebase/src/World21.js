@@ -50,11 +50,19 @@ class World21 extends Phaser.Scene {
         var scorpionA = this.physics.add.sprite(1728, 2176, "Scorpion");
         var scorpionB = this.physics.add.sprite(2432, 2816, "Scorpion");
         var scorpionC = this.physics.add.sprite(1241, 1764, "Scorpion");
+        var scorpionD = this.physics.add.sprite(2329, 1190, "Scorpion");
+        var scorpionE = this.physics.add.sprite(3186, 2737, "Scorpion");
+        var scorpionF = this.physics.add.sprite(3931, 2786, "Scorpion");
+        var scorpionG = this.physics.add.sprite(4632, 489, "Scorpion");
 
         scorpions = this.physics.add.group();
         scorpions.add(scorpionA);
         scorpions.add(scorpionB);
         scorpions.add(scorpionC);
+        scorpions.add(scorpionD);
+        scorpions.add(scorpionE);
+        scorpions.add(scorpionF);
+        scorpions.add(scorpionG);
 
         // Create Gate (Tiled Location * 64)
         gate = this.add.sprite(6280, 192, "Gate");
