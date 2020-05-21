@@ -6,7 +6,7 @@ class World11 extends Phaser.Scene {
     preload() {
         // Import tile map
         this.load.image('jungle_bg', "../assets/Backgrounds/temp jungle.png");
-        this.load.tilemapCSV('jungle', "../assets/TileMaps/jungle_jungle.csv");
+        this.load.tilemapCSV('jungle', "../assets/TileMaps/jungle1.csv");
 
         // Import audio
         this.load.audio("World1Theme", "../audio/world one theme in game mix.ogg");
@@ -28,7 +28,7 @@ class World11 extends Phaser.Scene {
         this.map.setCollisionBetween(0,8);
 
         // Create Player
-        this.player = this.physics.add.sprite(this.game.config.width/2, 0, "Monkey");
+        this.player = this.physics.add.sprite(this.game.config.width/3, 1200, "Monkey");
 
         // Create Staff
         this.staff = this.add.sprite(this.player.x - 64, this.player.y, "Staff");
