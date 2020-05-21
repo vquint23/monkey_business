@@ -15,6 +15,8 @@ class World11 extends Phaser.Scene {
     create() {
         // Used to determine which way player is facing
         this.left = false;
+        // Used to determine the state of the staff
+        this.extended = false;
 
         // Create tilemap and background
         this.bg = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "jungle_bg").setOrigin(0, 0);
@@ -29,29 +31,38 @@ class World11 extends Phaser.Scene {
         this.player = this.physics.add.sprite(this.game.config.width/2, 0, "Monkey");
 
         // Create Staff
-        this.staff = this.add.sprite(this.player.x, this.player.y, "Staff");
+        this.staff = this.add.sprite(this.player.x - 64, this.player.y, "Staff");
         this.staff.setOrigin(0, 0);
+
+        // Used as the hitbox of the staff
+        this.hit = this.physics.add.sprite(this.player.x - 64, this.player.y, "Hit");
+        this.hit.setOrigin(0.5,0.5);
+        this.hit.setVisible(false);
+        this.hit.body.setAllowGravity(false);
 
         // Create enemies
         this.scorpion1 = this.physics.add.sprite(500, 300, "Scorpion");
         this.scorpion1.play("scorpion_idle_left");
         this.scorpion1.setImmovable(true);
         this.scorpion1.setInteractive();
+        this.scorpion2 = this.physics.add.sprite(1200, 300, "Scorpion");
+        this.scorpion2.play("scorpion_idle_left");
+        this.scorpion2.setImmovable(true);
+        this.scorpion2.setInteractive();
 
         this.enemies = this.physics.add.group();
         this.enemies.add(this.scorpion1);
+        this.enemies.add(this.scorpion2);
 
         // Set collision between player, enemies, and collidable layer
         this.physics.add.collider(this.player, this.layer);
-        this.physics.add.collider(this.staff, this.layer);
+        this.physics.add.collider(this.hit, this.layer);
         this.physics.add.collider(this.enemies, this.layer);
 
         // Set collision between player and enemies
-        this.physics.add.overlap(this.enemies, this.player, function(enemy, player) {
-            player.disableBody(true, true);
-        });
+        this.physics.add.collider(this.enemies, this.player);
 
-        this.physics.add.collider(this.player, this.enemies, this.hurtPlayer, null, this);
+        this.physics.add.overlap(this.hit, this.enemies, this.hitEnemy, null, this);
 
         this.layer.setCollisionByProperty({collides: true});
 
@@ -68,10 +79,57 @@ class World11 extends Phaser.Scene {
             right: Phaser.Input.Keyboard.KeyCodes.D
          });
 
-        // this.input.on('pointerup', function (pointer) {
-        //     this.player.play("attack_right", true);
-        //     console.log("ATTACK");
-        // }, this);
+        // Controls staff extension by checking for left click
+        this.input.on('pointerdown', function (pointer) {
+            if (this.extended) {
+                this.extended = false;
+            } else {
+                this.extended = true;
+                if ((this.game.input.mousePointer.x + this.cameras.main.scrollX) >= this.player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
+                    this.left = false;
+                    this.player.play("attack_right", true);
+                } else {
+                    this.left = true;
+                    this.player.play("attack_left", true);
+                }
+            }
+            if (this.extended) {
+                //this.staff.setActive(true); 
+                var angle = Phaser.Math.Angle.Between(this.player.x, 
+                                                      this.player.y,
+                                                      this.game.input.mousePointer.x + this.cameras.main.scrollX,
+                                                      this.game.input.mousePointer.y + this.cameras.main.scrollY);
+    
+                this.staff.setAngle(Phaser.Math.RadToDeg(angle));
+                if ((Phaser.Math.RadToDeg(angle) >= 0) && (Phaser.Math.RadToDeg(angle) <= 180)) {
+                    this.hit.setOffset((this.game.input.mousePointer.x + this.cameras.main.scrollX) - this.player.x, (this.game.input.mousePointer.y + this.cameras.main.scrollY) - this.player.y);
+                }
+                else if ((Phaser.Math.RadToDeg(angle) <= 0) && (Phaser.Math.RadToDeg(angle) >= -180)) {
+                    this.hit.setOffset((this.game.input.mousePointer.x + this.cameras.main.scrollX) - this.player.x, (this.game.input.mousePointer.y + this.cameras.main.scrollY) - this.player.y);
+                }
+                this.tweens.add({
+                    targets: this.staff,
+                    scaleX: 8,
+                    scaleY: 3,
+                    duration: 30,
+                    repeat: 0
+                })
+            } else {
+                this.tweens.add({
+                    targets: this.staff,
+                    scaleX: 1,
+                    scaleY: 1,
+                    angleX: 0,
+                    angleY: 0,
+                    duration: 30,
+                    repeat: 0
+                });
+                this.hit.setOffset(0, 0);
+                //this.staff.setActive(false);
+            }
+        }, this);
+        
+    }
 
         // Add in music
         //  this.music = this.sound.add("World1Theme");
@@ -85,19 +143,18 @@ class World11 extends Phaser.Scene {
 
         //  this.music.play(musicConfig);
 
-        
-    }
-
     update() {
         // Reset player velocity back to 0 every frame
         this.player.setVelocityX(0);
-        this.staff.setPosition(this.player.x, this.player.y);
+        this.staff.x = this.player.x;
+        this.staff.y = this.player.y;
+        this.hit.x = this.player.x;
+        this.hit.y = this.player.y;
 
         // Controls movement of player sprite
         this.movePlayerManager();
 
-        // Controls main mechanic
-        this.extendStaff();
+        //this.extendStaff();
     }
 
     movePlayerManager() {
@@ -134,57 +191,59 @@ class World11 extends Phaser.Scene {
         }
     }
 
-    extendStaff() {
-        //this.staff.disableBody(false, false);
-        //Phaser.Math.Angle.Between(this.staff.x, this.staff.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
-        if (this.game.input.mousePointer.isDown) {
-            var angle = Phaser.Math.Angle.Between(this.player.x, 
-                                                  this.player.y,
-                                                  this.game.input.mousePointer.x + this.cameras.main.scrollX,
-                                                  this.game.input.mousePointer.y + this.cameras.main.scrollY);
-            var end = this.staff.x;
+    // extendStaff() {
+    //     //this.staff.disableBody(false, false);
+    //     //Phaser.Math.Angle.Between(this.staff.x, this.staff.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
+    //     if (this.game.input.mousePointer.isDown) {
+    //         var angle = Phaser.Math.Angle.Between(this.player.x, 
+    //                                               this.player.y,
+    //                                               this.game.input.mousePointer.x + this.cameras.main.scrollX,
+    //                                               this.game.input.mousePointer.y + this.cameras.main.scrollY);
+    //         var end = this.staff.x;
 
-            this.staff.setAngle(Phaser.Math.RadToDeg(angle));
-            this.extend = this.tweens.add({
-                targets: this.staff,
-                scaleX: 8,
-                scaleY: 3,
-                duration: 30,
-                repeat: 0
-            });
-            this.scaleY = 3;
-            // for (var i = 0; i < 8; i++) {
-            //     this.staff.scaleX++;
-            // if ((end >= this.game.input.mousePointer.x + this.cameras.main.scrollX)) {
-            //     this.extend.stop();
-            // }
-            // }
-            if ((this.game.input.mousePointer.x + this.cameras.main.scrollX) >= this.player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
-                this.left = false;
-                this.player.play("attack_right", true);
-            } else {
-                this.left = true;
-                this.player.play("attack_left", true);
-            }
-        } else {
-            this.tweens.add({
-                targets: this.staff,
-                scaleX: 1,
-                scaleY: 1,
-                angleX: 0,
-                angleY: 0,
-                duration: 30,
-                repeat: 0
-            });
-        }
+    //         this.staff.setAngle(Phaser.Math.RadToDeg(angle));
+    //         this.extend = this.tweens.add({
+    //             targets: this.staff,
+    //             scaleX: 8,
+    //             scaleY: 3,
+    //             duration: 30,
+    //             repeat: 0
+    //         });
+    //         this.scaleY = 3;
+    //         // for (var i = 0; i < 8; i++) {
+    //         //     this.staff.scaleX++;
+    //         // if ((end >= this.game.input.mousePointer.x + this.cameras.main.scrollX)) {
+    //         //     this.extend.stop();
+    //         // }
+    //         // }
+    //         if ((this.game.input.mousePointer.x + this.cameras.main.scrollX) >= this.player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
+    //             this.left = false;
+    //             this.player.play("attack_right", true);
+    //         } else {
+    //             this.left = true;
+    //             this.player.play("attack_left", true);
+    //         }
+    //     } else {
+    //         this.tweens.add({
+    //             targets: this.staff,
+    //             scaleX: 1,
+    //             scaleY: 1,
+    //             angleX: 0,
+    //             angleY: 0,
+    //             duration: 30,
+    //             repeat: 0
+    //         });
+    //     }
+    // }
+
+    // hurtPlayer(player, enemy) {
+    //     this.player.play("hurt_right", true);
+    //     this.player.setVelocity(-100, 100);
+    // }
+
+    hitEnemy(hit, enemy) {
+        enemy.destroy();
     }
-
-    hurtPlayer(player, enemy) {
-        this.player.play("hurt_right", true);
-        this.player.setVelocity(-100, 100);
-    }
-
-    defaultAnim
 
 }
 var config = {
@@ -199,7 +258,7 @@ var config = {
         default: "arcade",
         arcade:{
             gravity: { y: 700 },
-            debug: false
+            debug: true
         }
     },
     autoRound: false
