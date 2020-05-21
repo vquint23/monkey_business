@@ -17,8 +17,6 @@ class World21 extends Phaser.Scene {
 
         // Used to determine which way player is facing
         left = false;
-        // Used to determine state of the staff
-        extended = false;
 
         // Create tilemap and background
         bg = this.add.tileSprite(0, 0, this.cameras.main.width / 2, this.cameras.main.height, "sky").setOrigin(0, 0);
@@ -49,12 +47,14 @@ class World21 extends Phaser.Scene {
         hit.body.setAllowGravity(false);
 
         // Create Enemies
-        scorpionA = this.physics.add.sprite(1728, 1865, "Scorpion");
-        scorpionB = this.physics.add.sprite(2432, 2816, "Scorpion");
+        var scorpionA = this.physics.add.sprite(1728, 2176, "Scorpion");
+        var scorpionB = this.physics.add.sprite(2432, 2816, "Scorpion");
+        var scorpionC = this.physics.add.sprite(1241, 1764, "Scorpion");
 
         scorpions = this.physics.add.group();
         scorpions.add(scorpionA);
         scorpions.add(scorpionB);
+        scorpions.add(scorpionC);
 
         // Create Gate (Tiled Location * 64)
         gate = this.add.sprite(6280, 192, "Gate");
@@ -87,7 +87,6 @@ class World21 extends Phaser.Scene {
     extendStaff() {
         // Controls staff extension by checking for left click
         if (this.game.input.mousePointer.isDown) {
-            extended = true;
             var mouseX = this.game.input.mousePointer.x;
             var mouseY = this.game.input.mousePointer.y;
             var camX = this.cameras.main.scrollX;
@@ -202,7 +201,7 @@ class World21 extends Phaser.Scene {
         }
         if (cursorKeys.up.isDown && player.body.onFloor())
         {
-            player.setVelocityY(-500);
+            player.setVelocityY(-525);
         }
         if (!player.body.onFloor()) {
             if (left) {
@@ -242,16 +241,9 @@ class World21 extends Phaser.Scene {
         }
         this.paused = !paused;
     }
-
-    defaultAnim
 }
 
-var speed;
-var loop;
-var delay;
 var paused;
-var scorpionA;
-var scorpionB;
 var cursorKeys;
 var scorpions;
 var gate;
@@ -264,7 +256,6 @@ var tileset;
 var layer;
 var staff;
 var left;
-var extended;
 var hit;
 
 var config = {
@@ -279,7 +270,7 @@ var config = {
         default: "arcade",
         arcade:{
             gravity: { y: 700 },
-            debug: true
+            debug: false
         }
     },
     autoRound: false
