@@ -25,6 +25,10 @@ class main extends Phaser.Scene {
             frameWidth: 32,
             frameHeight: 4
         });
+        this.load.image("Hit", "assets/Images/hit.png", {
+            frameWidth: 20,
+            frameHeight: 20
+        });
         
     }
 
