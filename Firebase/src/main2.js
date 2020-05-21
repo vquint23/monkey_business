@@ -25,6 +25,10 @@ class main2 extends Phaser.Scene {
             frameWidth: 128,
             frameHeight: 128
         });
+        this.load.image("Hit", "assets/Images/hit.png", {
+            frameWidth: 20,
+            frameHeight: 20
+        });
         
     }
 
@@ -106,6 +110,17 @@ class main2 extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+        this.anims.create({
+            key: "hurt_right",
+            frames: this.anims.generateFrameNumbers("Monkey", {
+                start: 28,
+                end: 28
+            }),
+            duration: 1000,
+            frameRate: 10,
+            repeat: -1
+        });
+
 
         // Create enemy animations
         this.anims.create({
