@@ -60,8 +60,8 @@ class World21 extends Phaser.Scene {
         gate = this.add.sprite(6280, 192, "Gate");
 
         // Set collision between player, enemies, and collidable layer
-        this.physics.add.collider(player, layer);
         layer.setCollisionByProperty({collides: true});
+        this.physics.add.collider(player, layer);
         this.physics.add.collider(scorpions, layer);
         this.physics.add.collider(scorpions, player, this.takeDamage, null);
         
@@ -88,26 +88,26 @@ class World21 extends Phaser.Scene {
         // Controls staff extension by checking for left click
         if (this.game.input.mousePointer.isDown) {
             extended = true;
-            if ((this.game.input.mousePointer.x + this.cameras.main.scrollX) >= player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
+            var mouseX = this.game.input.mousePointer.x;
+            var mouseY = this.game.input.mousePointer.y;
+            var camX = this.cameras.main.scrollX;
+            var camY = this.cameras.main.scrollY;
+
+            if ((mouseX+ camX) >= player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
                 left = false;
                 player.play("attack_right", true);
             } else {
                 left = true;
                 player.play("attack_left", true);
             }
-            //this.staff.setActive(true); 
-            var angle = Phaser.Math.Angle.Between(player.x, player.y,
-                                                      this.game.input.mousePointer.x + this.cameras.main.scrollX,
-                                                      this.game.input.mousePointer.y + this.cameras.main.scrollY);
+            var angle = Phaser.Math.Angle.Between(player.x, player.y, mouseX + camX, mouseY + camY);
     
             staff.setAngle(Phaser.Math.RadToDeg(angle));
             if ((Phaser.Math.RadToDeg(angle) >= 0) && (Phaser.Math.RadToDeg(angle) <= 180)) {
-                    hit.setOffset((this.game.input.mousePointer.x + this.cameras.main.scrollX) - 
-                    player.x, (this.game.input.mousePointer.y + this.cameras.main.scrollY) - player.y);
+                hit.setOffset((mouseX + camX) - player.x, (mouseY + camY) - player.y);
             }
             else if ((Phaser.Math.RadToDeg(angle) <= 0) && (Phaser.Math.RadToDeg(angle) >= -180)) {
-                hit.setOffset((this.game.input.mousePointer.x + this.cameras.main.scrollX) - 
-                player.x, (this.game.input.mousePointer.y + this.cameras.main.scrollY) - player.y);
+                hit.setOffset((mouseX + camX) - player.x, (mouseY + camY) - player.y);
             }
             this.tweens.add({
                 targets: staff,
