@@ -191,51 +191,6 @@ class World11 extends Phaser.Scene {
         }
     }
 
-    // extendStaff() {
-    //     //this.staff.disableBody(false, false);
-    //     //Phaser.Math.Angle.Between(this.staff.x, this.staff.y, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
-    //     if (this.game.input.mousePointer.isDown) {
-    //         var angle = Phaser.Math.Angle.Between(this.player.x, 
-    //                                               this.player.y,
-    //                                               this.game.input.mousePointer.x + this.cameras.main.scrollX,
-    //                                               this.game.input.mousePointer.y + this.cameras.main.scrollY);
-    //         var end = this.staff.x;
-
-    //         this.staff.setAngle(Phaser.Math.RadToDeg(angle));
-    //         this.extend = this.tweens.add({
-    //             targets: this.staff,
-    //             scaleX: 8,
-    //             scaleY: 3,
-    //             duration: 30,
-    //             repeat: 0
-    //         });
-    //         this.scaleY = 3;
-    //         // for (var i = 0; i < 8; i++) {
-    //         //     this.staff.scaleX++;
-    //         // if ((end >= this.game.input.mousePointer.x + this.cameras.main.scrollX)) {
-    //         //     this.extend.stop();
-    //         // }
-    //         // }
-    //         if ((this.game.input.mousePointer.x + this.cameras.main.scrollX) >= this.player.x) { // Change direction of sprite when pointer is clicked while on left or right of it.
-    //             this.left = false;
-    //             this.player.play("attack_right", true);
-    //         } else {
-    //             this.left = true;
-    //             this.player.play("attack_left", true);
-    //         }
-    //     } else {
-    //         this.tweens.add({
-    //             targets: this.staff,
-    //             scaleX: 1,
-    //             scaleY: 1,
-    //             angleX: 0,
-    //             angleY: 0,
-    //             duration: 30,
-    //             repeat: 0
-    //         });
-    //     }
-    // }
-
     // hurtPlayer(player, enemy) {
     //     this.player.play("hurt_right", true);
     //     this.player.setVelocity(-100, 100);
