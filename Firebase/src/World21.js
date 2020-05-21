@@ -41,15 +41,13 @@ class World21 extends Phaser.Scene {
         staff.setOrigin(0, 0);
 
         // Create Enemies
-        direction = -1;
         scorpionA = this.physics.add.sprite(1728, 1865, "Scorpion");
-        scorpionA.play("scorpion_idle_left");
-
         scorpionB = this.physics.add.sprite(2432, 2816, "Scorpion");
-        scorpionB.play("scorpion_idle_left");
 
         scorpions = this.physics.add.group();
         scorpions.add(scorpionA);
+        scorpions.add(scorpionB);
+
 
         // Create Gate (Tiled Location * 64)
         gate = this.add.sprite(6280, 192, "Gate");
@@ -90,9 +88,11 @@ class World21 extends Phaser.Scene {
         // console.log("Staff y: " + this.staff.y);
         // Controls movement of player sprite
         this.movePlayerManager();
+        // Controls scorpion movement
         this.moveScorpionManager();
         // Controls main mechanic
         this.extendStaff();
+        //Controls pause 
         this.pauseManager();
 
     }
@@ -177,15 +177,21 @@ class World21 extends Phaser.Scene {
     }
 
     moveScorpionManager(){
-        speed = 50;
-        this.time.addEvent({
-            delay: 500,
-            callback: ()=>{
-                scorpions.setVelocityX(speed);
-                -1 * speed;
-            },
-            loop: true
-        })
+        Phaser.Actions.Call(scorpions.getChildren(), child => {
+            child.body.moves = true;
+            if (player.x < child.x){
+                child.play("scorpion_idle_left", true);
+                child.setVelocityX(-100);
+            }
+            else {
+                child.play("scorpion_idle_right", true);
+                child.setVelocityX(100);
+            }
+            if (child.body.onFloor() && player.y < child.y){
+                child.setVelocityY(-500);
+             }
+        });
+        
     } 
 
     pauseManager(){
@@ -206,7 +212,6 @@ class World21 extends Phaser.Scene {
 var speed;
 var loop;
 var delay;
-var direction;
 var paused;
 var scorpionA;
 var scorpionB;
