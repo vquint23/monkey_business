@@ -28,7 +28,8 @@ class World11 extends Phaser.Scene {
         this.map.setCollisionBetween(0,8);
 
         // Create Player
-        this.player = this.physics.add.sprite(this.game.config.width/3, 1200, "Monkey");
+        this.player = this.physics.add.sprite(this.game.config.width/5, 1700, "Monkey");
+        this.player.setInteractive();
 
         // Create Staff
         this.staff = this.add.sprite(this.player.x - 64, this.player.y, "Staff");
@@ -41,23 +42,47 @@ class World11 extends Phaser.Scene {
         this.hit.body.setAllowGravity(false);
 
         // Create enemies
-        this.scorpion1 = this.physics.add.sprite(500, 300, "Scorpion");
-        this.scorpion1.play("scorpion_idle_left");
+        this.scorpion1 = this.physics.add.sprite(1500, 1500, "Scorpion");
         this.scorpion1.setImmovable(true);
         this.scorpion1.setInteractive();
-        this.scorpion2 = this.physics.add.sprite(1200, 300, "Scorpion");
-        this.scorpion2.play("scorpion_idle_left");
+        this.scorpion2 = this.physics.add.sprite(2000, 1500, "Scorpion");
         this.scorpion2.setImmovable(true);
         this.scorpion2.setInteractive();
+        this.scorpion3 = this.physics.add.sprite(3500, 1500, "Scorpion");
+        this.scorpion3.setImmovable(true);
+        this.scorpion3.setInteractive();
+        this.scorpion4 = this.physics.add.sprite(4500, 1500, "Scorpion");
+        this.scorpion4.setImmovable(true);
+        this.scorpion4.setInteractive();
+        this.scorpion5 = this.physics.add.sprite(4500, 3000, "Scorpion");
+        this.scorpion5.setImmovable(true);
+        this.scorpion5.setInteractive();
+        this.scorpion6 = this.physics.add.sprite(4500, 3000, "Scorpion");
+        this.scorpion6.setImmovable(true);
+        this.scorpion6.setInteractive();
+        this.scorpion7 = this.physics.add.sprite(4500, 3000, "Scorpion");
+        this.scorpion7.setImmovable(true);
+        this.scorpion7.setInteractive();
+        this.scorpion8 = this.physics.add.sprite(4500, 3000, "Scorpion");
+        this.scorpion8.setImmovable(true);
+        this.scorpion8.setInteractive();
+
 
         this.enemies = this.physics.add.group();
         this.enemies.add(this.scorpion1);
         this.enemies.add(this.scorpion2);
+        this.enemies.add(this.scorpion3);
+        this.enemies.add(this.scorpion4);
+        this.enemies.add(this.scorpion5);
+        this.enemies.add(this.scorpion6);
+        this.enemies.add(this.scorpion7);
+        this.enemies.add(this.scorpion8);
 
         // Set collision between player, enemies, and collidable layer
         this.physics.add.collider(this.player, this.layer);
         this.physics.add.collider(this.hit, this.layer);
         this.physics.add.collider(this.enemies, this.layer);
+        this.physics.add.collider(this.enemies, this.enemies);
 
         // Set collision between player and enemies
         this.physics.add.collider(this.enemies, this.player);
@@ -154,7 +179,8 @@ class World11 extends Phaser.Scene {
         // Controls movement of player sprite
         this.movePlayerManager();
 
-        //this.extendStaff();
+        // Controls movement of scorpions
+        this.moveScorpionManager();
     }
 
     movePlayerManager() {
@@ -191,10 +217,22 @@ class World11 extends Phaser.Scene {
         }
     }
 
-    // hurtPlayer(player, enemy) {
-    //     this.player.play("hurt_right", true);
-    //     this.player.setVelocity(-100, 100);
-    // }
+    moveScorpionManager(){
+        Phaser.Actions.Call(this.enemies.getChildren(), child => {
+            child.body.moves = true;
+            if (this.player.x < child.x){
+                child.play("scorpion_idle_left", true);
+                child.setVelocityX(-100);
+            }
+            else {
+                child.play("scorpion_idle_right", true);
+                child.setVelocityX(100);
+            }
+            if (child.body.onFloor() && this.player.y < child.y){
+                child.setVelocityY(-500);
+             }
+        });   
+    } 
 
     hitEnemy(hit, enemy) {
         enemy.destroy();
