@@ -201,7 +201,7 @@ class World21 extends Phaser.Scene {
         }
         if (cursorKeys.up.isDown && player.body.onFloor())
         {
-            player.setVelocityY(-500);
+            player.setVelocityY(-525);
         }
         if (!player.body.onFloor()) {
             if (left) {
