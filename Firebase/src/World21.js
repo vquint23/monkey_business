@@ -9,25 +9,25 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
         let gamePlaying = this.scene.get("World2-1");
 
         // Map keyboard inputs for HUD interaction 
-        cursorKeys = this.input.keyboard.createCursorKeys();
-        cursorKeys = this.input.keyboard.addKeys ({
+        hudKeys = this.input.keyboard.createCursorKeys();
+        hudKeys = this.input.keyboard.addKeys ({
             continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
          });
         //Win Stuff                                                                                                     //@todo change colors of text
-        wintext = this.add.text(gameHeight/2, gameWidth/2, 'LEVEL COMPLETE!', 
+        wintext = this.add.text(gameWidth/2, gameHeight/2, 'LEVEL COMPLETE!',  //fix location
         {fontSize: '64px', fill: '#000'});
         wintext.setVisible(false);
         //Lose Stuff
-        gameOverText = this.add.text(gameHeight/10, gameWidth/2, 'GAME OVER', 
+        gameOverText = this.add.text(gameWidth/2, gameHeight/2, 'GAME OVER', //fix location
         {fontSize: '64px', fill: '#623'});
         gameOverText.setVisible(false);
         // Restart 
         restartText = this.add.text(gameHeight/2, gameWidth/2, 'PRESS ENTER TO RESTART', 
-        {fontSize: '32px', fill: '#420'});
+        {fontSize: '32px', fill: '#000'});
         restartText.setVisible(false);
         //Continue 
         continueText = this.add.text(gameHeight/2, gameWidth/2, 'PRESS ENTER TO CONTINUE', 
-        {fontSize: '32px', fill: '#420'});
+        {fontSize: '32px', fill: '#000'});
         continueText.setVisible(false);
 
         //Healthbar Stuff
@@ -63,7 +63,7 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
         if (cursorKeys.continue.isDown){
             gameOverText.setVisible(false);
             restartText.setVisible(false);
-            scene.restart();
+            this.scene.restart("World2-1");
             player.body.enable = true;
             gameOver = false;
         }
@@ -149,13 +149,13 @@ class World21 extends Phaser.Scene {
         staff = this.add.sprite(player.x-64, player.y, "Staff");
         staff.setOrigin(0, 0);
         
-
         // Used as the hitbox of the staff
         hit = this.physics.add.sprite(player.x - 64, player.y, "Hit");
         hit.setOrigin(0.5,0.5);
         hit.setVisible(false);
         hit.body.setAllowGravity(false);
         hit.body.setSize(5, 5);
+        hit.body.setEnable(false);
 
         // Create Enemies
         var scorpionA = this.physics.add.sprite(1728, 2176, "Scorpion");
@@ -228,6 +228,7 @@ class World21 extends Phaser.Scene {
             var mouseY = this.game.input.mousePointer.y;
             var camX = this.cameras.main.scrollX;
             var camY = this.cameras.main.scrollY;
+            hit.body.setEnable(true);
 
             //Determine if left or right attack animation should play
             if ((mouseX+ camX) >= player.x) { 
@@ -282,6 +283,7 @@ class World21 extends Phaser.Scene {
             });
             // reset staff hitbox
             hit.setOffset(0, 0);
+            hit.body.setEnable(false);
         }
     }
     
@@ -446,7 +448,7 @@ var config = {
     autoRound: false
 }
 var game = new Phaser.Game(config);
-var paused, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys, paused,
+var paused, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys, hudKeys, paused,
 player, bg, map, tileset, layer, staff, left, hit, gameOver, healthbar, gameOverText, restartText,
 continueText, invincible;
 var health = 100;
