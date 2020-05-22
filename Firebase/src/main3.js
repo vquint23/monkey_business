@@ -131,8 +131,7 @@ class main3 extends Phaser.Scene {
             repeat: -1
         });
 
-
-        // Create enemy animations
+        // Create scorpion animations
         this.anims.create({
             key: "scorpion_idle_left",
             frames: this.anims.generateFrameNumbers("Scorpion", {
@@ -149,6 +148,66 @@ class main3 extends Phaser.Scene {
                 end: 7
             }),
             frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "scorpion_dead_left",
+            frames: this.anims.generateFrameNumbers("Scorpion", {
+                start: 18,
+                end: 18
+            }),
+            frameRate: 10,
+            duration: 1000,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "scorpion_dead_right",
+            frames: this.anims.generateFrameNumbers("Scorpion", {
+                start: 19,
+                end: 19
+            }),
+            frameRate: 10,
+            duration: 1000,
+            repeat: -1
+        });
+
+        // Create dragonfly animations
+        this.anims.create({
+            key: "dragonfly_left",
+            frames: this.anims.generateFrameNumbers("Dragonfly", {
+                start: 0,
+                end: 1
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "dragonfly_right",
+            frames: this.anims.generateFrameNumbers("Dragonfly", {
+                start: 2,
+                end: 3
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "dragonfly_dead_left",
+            frames: this.anims.generateFrameNumbers("Dragonfly", {
+                start: 4,
+                end: 4
+            }),
+            frameRate: 10,
+            duration: 1000,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "dragonfly_dead_right",
+            frames: this.anims.generateFrameNumbers("Dragonfly", {
+                start: 5,
+                end: 5
+            }),
+            frameRate: 10,
+            duration: 1000,
             repeat: -1
         });
     }

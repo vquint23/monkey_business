@@ -15,11 +15,6 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         pauseBG.setOrigin(.5, .5);
         pauseBG.setScale(.45);
         pauseBG.setVisible(false);
-        // Map keyboard inputs for HUD interaction 
-        hudKeys = this.input.keyboard.createCursorKeys();
-        hudKeys = this.input.keyboard.addKeys ({
-            continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
-         });
         //Win Stuff                                                                                                     
         wintext = this.add.text(gameWidth/2, gameHeight/3, 'LEVEL COMPLETE!',
         {fontSize: '64px', fill: '#fff'});
@@ -60,8 +55,8 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
     winDisplay(){
         wintext.setVisible(true);
         continueText.setVisible(true);
-        if (hudKeys.continue.isDown){
-            window.location = "Level22.html";
+        if (cursorKeys.continue.isDown){
+            window.location = "Level32.html";
         }
     }
 
@@ -291,10 +286,15 @@ class World31 extends Phaser.Scene {
     }
     
     hitEnemy(hit, enemy) {
+        scorpions.remove(enemy);
         let destroy = this.sound.add("enemyDamage");
         destroy.play({volume: 1.5});
-        enemy.play("die_right");
-        enemy.destroy();
+        if (left){
+            enemy.play("scorpion_dead_left");
+        }
+        else{
+            enemy.play("scorpion_dead_right");
+        }
     }
 
     //@todo: prevent infinite damage (turn on invincible for 1 second?)
@@ -320,7 +320,7 @@ class World31 extends Phaser.Scene {
 
     levelWin(){
         player.setVisible(false);
-        player.body.moves = false;
+        //player.body.moves = false;
         staff.setVisible(false);
         this.events.emit('levelWin'); 
     }
