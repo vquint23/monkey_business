@@ -14,20 +14,22 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
             continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
          });
         //Win Stuff                                                                                                     //@todo change colors of text
-        wintext = this.add.text(gameWidth/2, gameHeight/2, 'LEVEL COMPLETE!',  //fix location
-        {fontSize: '64px', fill: '#000'});
+        wintext = this.add.text(gameWidth/2, gameHeight/3, 'LEVEL COMPLETE!',  //fix location
+        {fontSize: '64px', fill: '#fff'});
+        wintext.setOrigin(.5, .5);
         wintext.setVisible(false);
         //Lose Stuff
-        gameOverText = this.add.text(gameWidth/2, gameHeight/2, 'GAME OVER', //fix location
-        {fontSize: '64px', fill: '#623'});
+        gameOverText = this.add.text(gameWidth/2, gameHeight/3, 'GAME OVER', //fix location
+        {fontSize: '64px', fill: '#c70707'});
+        gameOverText.setOrigin(.5, .5);
         gameOverText.setVisible(false);
         // Restart 
         restartText = this.add.text(gameHeight/2, gameWidth/2, 'PRESS ENTER TO RESTART', 
-        {fontSize: '32px', fill: '#000'});
+        {fontSize: '32px', fill: '#fff'});
         restartText.setVisible(false);
         //Continue 
         continueText = this.add.text(gameHeight/2, gameWidth/2, 'PRESS ENTER TO CONTINUE', 
-        {fontSize: '32px', fill: '#000'});
+        {fontSize: '32px', fill: '#fff'});
         continueText.setVisible(false);
 
         //Healthbar Stuff
@@ -46,7 +48,7 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
     winDisplay(){
         wintext.setVisible(true);
         continueText.setVisible(true);
-        if (cursorKeys.continue.isDown){
+        if (hudKeys.continue.isDown){
             window.location = "Level31.html";
         }
     }
@@ -154,7 +156,7 @@ class World21 extends Phaser.Scene {
         hit.setOrigin(0.5,0.5);
         hit.setVisible(false);
         hit.body.setAllowGravity(false);
-        hit.body.setSize(5, 5);
+        hit.body.setSize(10, 10);
         hit.body.setEnable(false);
 
         // Create Enemies
