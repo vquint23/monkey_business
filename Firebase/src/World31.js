@@ -332,7 +332,7 @@ class World31 extends Phaser.Scene {
 
     update() {
         //Check for out of bounds ("fall damage")
-        if (player.y > 4775){
+        if (player.y > 4550){
             health = 0;
         }
         if(!this.musicPlayed) {

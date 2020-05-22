@@ -1,3 +1,122 @@
+class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add to controls menu?
+    constructor(){
+        super({key: "GameHUD", active: true});
+    }
+    preload(){
+        this.load.image("healthbar", "../assets/Images/health.png");
+        this.load.image("healthbase", "../assets/Images/healthbase.png");
+        this.load.image("pausemenu", "../assets/Images/pausemenu.png");
+    }
+    create(){
+        let gamePlaying = this.scene.get("World3-1");
+
+        //Pause Stuff
+        pauseBG = this.add.image(game.config.width/2, game.config.height/2, "pausemenu");
+        pauseBG.setOrigin(.5, .5);
+        pauseBG.setScale(.45);
+        pauseBG.setVisible(false);
+        // Map keyboard inputs for HUD interaction 
+        hudKeys = this.input.keyboard.createCursorKeys();
+        hudKeys = this.input.keyboard.addKeys ({
+            continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
+         });
+        //Win Stuff                                                                                                     
+        wintext = this.add.text(gameWidth/2, gameHeight/3, 'LEVEL COMPLETE!',
+        {fontSize: '64px', fill: '#fff'});
+        wintext.setOrigin(.5, .5);
+        wintext.setVisible(false);
+        //Lose Stuff
+        gameOverText = this.add.text(gameWidth/2, gameHeight/3, 'GAME OVER', 
+        {fontSize: '64px', fill: '#c70707'});
+        gameOverText.setOrigin(.5, .5);
+        gameOverText.setVisible(false);
+        this.deathEventHappened = false;
+        // Restart 
+        restartText = this.add.text(gameHeight/2, gameWidth/2, 'PRESS ENTER TO RESTART', 
+        {fontSize: '32px', fill: '#fff'});
+        restartText.setVisible(false);
+        //Continue 
+        continueText = this.add.text(gameHeight/2, gameWidth/2, 'PRESS ENTER TO CONTINUE', 
+        {fontSize: '32px', fill: '#fff'});
+        continueText.setVisible(false);
+        //Healthbar Stuff
+        var healthbarX = gameWidth/1.22;        //this is specific cuz i tested it 40 times
+        var healthbarY = gameWidth/21;
+        healthbase = this.add.image(healthbarX, healthbarY, "healthbase");
+        healthbase.setOrigin(.5,.5);
+        healthbase.setScale(.3);
+        healthbar = this.add.image(healthbarX, healthbarY, "healthbar");
+        healthbar.setOrigin(.5,.5);
+        healthbar.setScale(.3);
+        //Listeners for events (health change, win, lose)
+        gamePlaying.events.on('levelWin', this.winDisplay, this);
+        gamePlaying.events.on('takeDmg', this.redrawHealth, this);
+        gamePlaying.events.on('gameOver', this.loseDisplay, this);
+        gamePlaying.events.on('pause', this.pauseMenu, this);
+        gamePlaying.events.on('unpause', this.unpauseGame, this);
+        
+    }
+
+    winDisplay(){
+        wintext.setVisible(true);
+        continueText.setVisible(true);
+        if (hudKeys.continue.isDown){
+            window.location = "Level22.html";
+        }
+    }
+
+    redrawHealth(){
+        // if taken 20 damage, healthbar is at 80% width, etc.
+        if (health <= 0){
+            healthbar.destroy();
+        }
+        healthbar.setScale((.3 *health/100), .3);
+    }
+
+    loseDisplay(){
+        if(!this.deathEventHappened) {
+            gameOverText.setVisible(true);
+            restartText.setVisible(true);
+            this.sound.stopAll();
+            let damage = this.sound.add("monkeyDamage");
+            damage.play();
+            // Add in game over music (but only play it once)
+            let deathMusic = this.sound.add("GameOverTheme");
+            let musicConfig = {
+                mute: false,
+                volume: 0.5,
+                loop: false,
+                delay: 0
+            };
+            deathMusic.play(musicConfig);
+            this.deathEventHappened = true;
+        }
+
+        if (cursorKeys.continue.isDown){
+            gameOverText.setVisible(false);
+            restartText.setVisible(false);
+            this.scene.stop("World3-1");
+            this.scene.start("World3-1");
+            this.sound.stopAll();
+            let button = this.sound.add("buttonForward");
+            button.play();
+            gameOver = false;
+            health = 100;
+        }
+    }
+
+    pauseMenu(){
+        let button = this.sound.add("buttonForward");
+        button.play();
+        pauseBG.setVisible(true);       
+        paused = true; 
+    }
+    unpauseGame(){
+        pauseBG.setVisible(false);            
+        let button = this.sound.add("buttonForward");
+        button.play();
+    }
+}
 class World32 extends Phaser.Scene {
     constructor() {
         super("World3-1");
@@ -7,14 +126,16 @@ class World32 extends Phaser.Scene {
         // Import tile map
         this.load.image('sky', "../assets/Backgrounds/Sky Background.png");
         this.load.tilemapCSV('world32', "../assets/TileMaps/world32.csv");
+        this.musicPlayed = false;
     }
 
     create() {
-        paused = false;
+        this.sound.stopAll();
+        gameOver = false;
         gotGate = false;
-        wintext = this.add.text(350, 150, 'LEVEL COMPLETE', {fontSize: '64px', fill: '#000'});
-        wintext.setVisible(false);
-
+        invincible = false;
+        paused = false;
+        
         // Used to determine which way player is facing
         left = false;
 
@@ -42,7 +163,7 @@ class World32 extends Phaser.Scene {
         // Create Staff
         staff = this.add.sprite(player.x-64, player.y, "Staff");
         staff.setOrigin(0, 0);
-
+        
         // Used as the hitbox of the staff
         hit = this.physics.add.sprite(player.x - 64, player.y, "Hit");
         hit.setOrigin(0.5,0.5);
@@ -74,10 +195,11 @@ class World32 extends Phaser.Scene {
         layer.setCollisionByProperty({collides: true});
         this.physics.add.collider(player, layer);
         this.physics.add.collider(scorpions, layer);
-        this.physics.add.collider(scorpions, player, this.takeDamage, null);
-        
+        this.physics.add.collider(gate, layer);
+
+        this.physics.add.collider(scorpions, player, this.takeDamage, null, this);
         this.physics.add.overlap(hit, scorpions, this.hitEnemy, null, this);
-        this.physics.add.overlap(player, gate, this.levelWin, null); 
+        this.physics.add.overlap(player, gate, this.levelWin, null, this); 
         
         // Set up camera that follows player
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -90,20 +212,16 @@ class World32 extends Phaser.Scene {
             down: Phaser.Input.Keyboard.KeyCodes.S,
             left: Phaser.Input.Keyboard.KeyCodes.A,
             right: Phaser.Input.Keyboard.KeyCodes.D, 
-            pause: Phaser.Input.Keyboard.KeyCodes.ENTER
+            continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
+            pause: Phaser.Input.Keyboard.KeyCodes.Q,
+            levelSelect: Phaser.Input.Keyboard.KeyCodes.L,
+            mainMenu: Phaser.Input.Keyboard.KeyCodes.X,
+            unpause: Phaser.Input.Keyboard.KeyCodes.ESC,
+            //debug/testing:
+            invincibility: Phaser.Input.Keyboard.KeyCodes.I
          });
-
-        // Add in music
-        let music = this.sound.add("World3Theme");
-
-        let musicConfig = {
-            mute: false,
-            volume: 0.5,
-            loop: true,
-            delay: 0
-        };
-
-        music.play(musicConfig);
+       
+        this.scene.launch('GameHUD');
     }
 
     extendStaff() {
@@ -113,6 +231,7 @@ class World32 extends Phaser.Scene {
             var mouseY = this.game.input.mousePointer.y;
             var camX = this.cameras.main.scrollX;
             var camY = this.cameras.main.scrollY;
+            hit.body.setEnable(true);
 
             //Determine if left or right attack animation should play
             if ((mouseX+ camX) >= player.x) { 
@@ -167,25 +286,72 @@ class World32 extends Phaser.Scene {
             });
             // reset staff hitbox
             hit.setOffset(0, 0);
+            hit.body.setEnable(false);
         }
     }
     
     hitEnemy(hit, enemy) {
-        enemy.destroy();
-
         let destroy = this.sound.add("enemyDamage");
         destroy.play({volume: 1.5});
+        enemy.play("die_right");
+        enemy.destroy();
     }
 
-    takeDamage(){
-
+    //@todo: prevent infinite damage (turn on invincible for 1 second?)
+    takeDamage(player, enemy){
+        if(!invincible){
+            health-=15;
+            console.log("Current Health: " + health);
+            let damage = this.sound.add("monkeyDamage");
+            damage.play();
+            if(left){
+                player.setVelocityX(-100);
+                player.setVelocityY(-100);
+                //player.play("hurt_left, true")
+            }
+            else{
+                player.setVelocityX(100);
+                player.setVelocityY(-100);
+                player.play("hurt_right");
+            }           
+            this.events.emit('takeDmg');
+        }
     }
 
     levelWin(){
-        
+        player.setVisible(false);
+        player.body.moves = false;
+        staff.setVisible(false);
+        this.events.emit('levelWin'); 
+    }
+
+    gameOver(){
+        player.body.enable = false;
+        this.events.emit('gameOver');
     }
 
     update() {
+        //Check for out of bounds ("fall damage")
+        if (player.y > 6200){
+            health = 0;
+        }
+        if(!this.musicPlayed) {
+            // Add in music
+            // I had to move it here since it would play over itself when the stage restarted
+            let music = this.sound.add("World3Theme");
+            let musicConfig = {
+                mute: false,
+                volume: 0.5,
+               loop: true,
+               delay: 0
+            };
+            music.play(musicConfig);
+            this.musicPlayed = true;
+        }
+        if (gameOver){
+            this.sound.remove(music);
+            this.gameOver();
+        }
         // Reset player velocity back to 0 every frame
         player.setVelocityX(0);
         staff.x = player.x;
@@ -200,9 +366,24 @@ class World32 extends Phaser.Scene {
         this.pauseManager();
         // Controls Staff Mechanic
         this.extendStaff();
-
+        // Controls Health
+        this.healthManager();
+        //testing
+        this.invincibilityManager();
     }
 
+    healthManager(){
+        if (health <= 0){
+            gameOver = true;
+        }
+    }
+    //for testing/ debugging
+    invincibilityManager(){
+        if(cursorKeys.invincibility.isDown){
+            console.log("Invincibility was activated.");
+            invincible = true;
+        }
+    }
     movePlayerManager() {
         // Moves player according to buttons pressed and updates sprite states
         if (cursorKeys.left.isDown) {
@@ -257,48 +438,51 @@ class World32 extends Phaser.Scene {
     moveScorpionManager(){
         Phaser.Actions.Call(scorpions.getChildren(), child => {
             child.body.moves = true;
-            if (player.x < child.x){
-                child.play("scorpion_idle_left", true);
-                child.setVelocityX(-100);
+            if (gameOver){
+                child.setVelocityX(0);
+                child.setVelocityY(0);
             }
-            else {
-                child.play("scorpion_idle_right", true);
-                child.setVelocityX(100);
+            if(!paused){
+                if (player.x < child.x){
+                    child.play("scorpion_idle_left", true);
+                    child.setVelocityX(-100);
+                }
+                else {
+                    child.play("scorpion_idle_right", true);
+                    child.setVelocityX(100);
+                }
+                if (child.body.onFloor() && player.y < child.y){
+                    child.setVelocityY(-500);
+                 }
             }
-            if (child.body.onFloor() && player.y < child.y){
-                child.setVelocityY(-500);
-             }
+            
         });
         
     } 
 
     pauseManager(){
-        if(cursorKeys.pause.isDown && !paused){
-            //this.scene.sleep();
-            //open pause scene
+        if(cursorKeys.pause.isDown){
+            this.events.emit('pause');
+            paused = true;
+            player.body.moves = false;
         }
-        if (cursorKeys.pause.isDown && paused){
-            //close pause scene
-            //this.scene.wake();
+        if(cursorKeys.unpause.isDown){
+            paused = false;
+            player.body.moves = true;
+            this.events.emit('unpause');
         }
-        this.paused = !paused;
+        if (cursorKeys.levelSelect.isDown) {
+            let button = this.sound.add("buttonForward");
+            button.play();
+            window.location = "LevelSelect.html";
+        }
+        if (cursorKeys.mainMenu.isDown) {
+            let button = this.sound.add("buttonForward");
+            button.play();
+            window.location = "MainMenu.html";
+        }
     }
 }
-
-var paused;
-var cursorKeys;
-var scorpions;
-var gate;
-var gotGate;
-var wintext;
-var player;
-var bg;
-var map;
-var tileset;
-var layer;
-var staff;
-var left;
-var hit;
 
 var config = {
     parent: "game-container",
@@ -306,7 +490,7 @@ var config = {
     width: 1200,
     height: 700,
     bgColor: 0x000000,
-    scene: [main3, World32],
+    scene: [main3, World32, GameHUD],
     pixelArt: true,
     physics: {
         default: "arcade",
@@ -318,3 +502,9 @@ var config = {
     autoRound: false
 }
 var game = new Phaser.Game(config);
+var beenPaused, pauseBG, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys, hudKeys, paused, music,
+player, bg, map, tileset, layer, staff, left, hit, gameOver, healthbar, healthbase, gameOverText, restartText,
+continueText, invincible;
+var health = 100;
+var gameWidth = game.config.width;
+var gameHeight = game.config.height;
