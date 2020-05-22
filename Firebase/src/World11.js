@@ -3,12 +3,12 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         super({key: "GameHUD", active: true});
     }
     preload(){
-        this.load.image("healthbar", "../assets/Images/health.png");
+        this.load.image("healthbar", "../assets/Images/healthbar.png");
         this.load.image("healthbase", "../assets/Images/healthbase.png");
         this.load.image("pausemenu", "../assets/Images/pausemenu.png");
     }
     create(){
-        let gamePlaying = this.scene.get("World2-1");
+        let gamePlaying = this.scene.get("World1-1");
 
         //Pause Stuff
         pauseBG = this.add.image(game.config.width/2, game.config.height/2, "pausemenu");
@@ -185,13 +185,13 @@ class World11 extends Phaser.Scene {
         hit.body.setEnable(false);
 
         // Create Enemies
-        var scorpionA = this.physics.add.sprite(1728, 2176, "Scorpion");
-        var scorpionB = this.physics.add.sprite(2432, 2816, "Scorpion");
-        var scorpionC = this.physics.add.sprite(1241, 1764, "Scorpion");
-        var scorpionD = this.physics.add.sprite(2329, 1190, "Scorpion");
-        var scorpionE = this.physics.add.sprite(3186, 2737, "Scorpion");
-        var scorpionF = this.physics.add.sprite(3931, 2786, "Scorpion");
-        var scorpionG = this.physics.add.sprite(4632, 489, "Scorpion");
+        var scorpionA = this.physics.add.sprite(1472, 1472, "Scorpion");
+        var scorpionB = this.physics.add.sprite(2240, 1600, "Scorpion");
+        var scorpionC = this.physics.add.sprite(3200, 1600, "Scorpion");
+        var scorpionD = this.physics.add.sprite(3648, 1536, "Scorpion");
+        var scorpionE = this.physics.add.sprite(4288, 1664, "Scorpion");
+        var scorpionF = this.physics.add.sprite(6016, 1792, "Scorpion");
+        var scorpionG = this.physics.add.sprite(9920, 1024, "Scorpion");
 
         scorpions = this.physics.add.group();
         scorpions.add(scorpionA);
@@ -203,12 +203,13 @@ class World11 extends Phaser.Scene {
         scorpions.add(scorpionG);
 
         // Create Gate (Tiled Location * 64)
-        gate = this.physics.add.sprite(9472, 576, "Gate");
+        gate = this.physics.add.sprite(9520, 576, "Gate");
 
         // Set collision between player, enemies, and collidable layer
         layer.setCollisionByProperty({collides: true});
         this.physics.add.collider(player, layer);
         this.physics.add.collider(scorpions, layer);
+        this.physics.add.collider(scorpions, scorpions);
         this.physics.add.collider(gate, layer);
 
         this.physics.add.collider(scorpions, player, this.takeDamage, null, this);
@@ -333,7 +334,12 @@ class World11 extends Phaser.Scene {
     }
 
     levelWin(){
-        this.events.emit('levelWin'); 
+        this.events.emit('levelWin');
+        victory = true;
+        if (victory && cursorKeys.continue.isDown) {
+            victory = false;
+            window.location = "Level12.html";
+        } 
     }
 
     gameOver(){
@@ -462,7 +468,33 @@ class World11 extends Phaser.Scene {
              }
         });
         
-    } 
+    }
+
+    moveDragonflyManager(){
+        Phaser.Actions.Call(this.dragonflies.getChildren(), child => {
+            child.body.moves = true;
+            if (this.player.x < child.x){
+                child.play("dragonfly_left", true);
+                if ((child.x - this.player.x) <= 100 && (child.y - this.player.y) <= 100) {
+                    child.setVelocityX(200);
+                    child.setVelocityY(-200);
+                } else {
+                    child.setVelocityX(0);
+                    child.setVelocityY(0);
+                }
+            }
+            else {
+                child.play("dragonfly_right", true);
+                if ((this.player.x - child.x) <= 100 && (this.player.y - child.y) <= 100) {
+                    child.setVelocityX(-200);
+                    child.setVelocityY(-200);
+                } else {
+                    child.setVelocityX(0);
+                    child.setVelocityY(0);
+                }
+            }
+        });   
+    }
 
     pauseManager(){
         if(cursorKeys.pause.isDown){
@@ -502,7 +534,7 @@ var config = {
 var game = new Phaser.Game(config);
 var beenPaused, pauseBG, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys, hudKeys, paused, music,
 player, bg, map, tileset, layer, staff, left, hit, gameOver, healthbar, healthbase, gameOverText, restartText,
-continueText, invincible;
+continueText, invincible, victory;
 var health = 100;
 var gameWidth = game.config.width;
 var gameHeight = game.config.height;
