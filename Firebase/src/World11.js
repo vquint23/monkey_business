@@ -306,10 +306,15 @@ class World11 extends Phaser.Scene {
     }
     
     hitEnemy(hit, enemy) {
+        scorpions.remove(enemy);
         let destroy = this.sound.add("enemyDamage");
         destroy.play({volume: 1.5});
-        enemy.play("die_right");
-        enemy.destroy();
+        if (left){
+            enemy.play("scorpion_dead_left");
+        }
+        else{
+            enemy.play("scorpion_dead_right");
+        }
     }
 
     //@todo: prevent infinite damage (turn on invincible for 1 second?)

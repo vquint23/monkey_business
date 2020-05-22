@@ -242,9 +242,9 @@ class World12 extends Phaser.Scene {
         this.physics.add.collider(gate, layer);
 
         this.physics.add.collider(scorpions, player, this.takeDamage, null, this);
-        this.physics.add.overlap(hit, scorpions, this.hitEnemy, null, this);
+        this.physics.add.overlap(hit, scorpions, this.hitScorpion, null, this);
         this.physics.add.collider(dragonflies, player, this.takeDamage, null, this);
-        this.physics.add.overlap(hit, dragonflies, this.hitEnemy, null, this);
+        this.physics.add.overlap(hit, dragonflies, this.hitDragonfly, null, this);
         this.physics.add.overlap(player, gate, this.levelWin, null, this); 
         
         // Set up camera that follows player
@@ -336,11 +336,28 @@ class World12 extends Phaser.Scene {
         }
     }
     
-    hitEnemy(hit, enemy) {
+    hitScorpion(hit, enemy) {
+        scorpions.remove(enemy);
         let destroy = this.sound.add("enemyDamage");
         destroy.play({volume: 1.5});
-        enemy.play("die_right");
-        enemy.destroy();
+        if (left){
+            enemy.play("scorpion_dead_left");
+        }
+        else{
+            enemy.play("scorpion_dead_right");
+        }
+    }
+    hitDragonfly(hit, enemy) {
+        dragonflies.remove(enemy);
+        enemy.body.allowGravity = true;
+        let destroy = this.sound.add("enemyDamage");
+        destroy.play({volume: 1.5});
+        if (left){
+            enemy.play("dragonfly_dead_left");
+        }
+        else{
+            enemy.play("dragonfly_dead_right");
+        }
     }
 
     //@todo: prevent infinite damage (turn on invincible for 1 second?)
