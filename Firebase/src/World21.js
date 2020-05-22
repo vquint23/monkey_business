@@ -18,11 +18,12 @@ class PauseMenu extends Phaser.Scene {                  //todo: make pause menu 
     preload(){
         //Pause image
         this.load.image("pausemenu", "../assets/Images/pausemenu.png");
-        
-           }
+    }
     create(){
-        //this.add.image("pausemenu").setOrigin(0,0); why not?
-        this.add.text(600,100, 'Paused', {fontSize: '32px', fill: '#000'});
+        var pauseBG = this.add.image(game.config.width/2, game.config.height/2, "pausemenu");
+        pauseBG.setOrigin(.5, .5);
+        pauseBG.setScale(.45);
+        //this.add.text(600,100, 'Paused', {fontSize: '32px', fill: '#000'});
          // Map keyboard inputs for menu 
         pauseKeys = this.input.keyboard.createCursorKeys();
         pauseKeys = this.input.keyboard.addKeys ({
