@@ -305,9 +305,10 @@ class World21 extends Phaser.Scene {
     }
     
     hitEnemy(hit, enemy) {
-        enemy.destroy();
         let destroy = this.sound.add("enemyDamage");
         destroy.play({volume: 1.5});
+        enemy.play("die_right");
+        enemy.destroy();
     }
 
     //@todo: prevent infinite damage (turn on invincible for 1 second?)
