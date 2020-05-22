@@ -91,7 +91,7 @@ class World11 extends Phaser.Scene {
         this.physics.add.collider(this.gate, this.layer);
         this.physics.add.overlap(this.gate, this.player, function(gate, player) {
             window.location = "Level21.html";
-        })
+        });
 
         // Set collision between player and enemies
         // this.physics.add.collider(this.enemies, this.player, function(enemy, player) {
