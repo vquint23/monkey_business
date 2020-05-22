@@ -453,17 +453,20 @@ class World22 extends Phaser.Scene {
                 child.setVelocityX(0);
                 child.setVelocityY(0);
             }
-            else if (player.x < child.x){
-                child.play("scorpion_idle_left", true);
-                child.setVelocityX(-100);
+            if(!paused){
+                if (player.x < child.x){
+                    child.play("scorpion_idle_left", true);
+                    child.setVelocityX(-100);
+                }
+                else {
+                    child.play("scorpion_idle_right", true);
+                    child.setVelocityX(100);
+                }
+                if (child.body.onFloor() && player.y < child.y){
+                    child.setVelocityY(-500);
+                 }
             }
-            else {
-                child.play("scorpion_idle_right", true);
-                child.setVelocityX(100);
-            }
-            if (child.body.onFloor() && player.y < child.y){
-                child.setVelocityY(-500);
-             }
+            
         });
         
     } 
@@ -471,15 +474,11 @@ class World22 extends Phaser.Scene {
     pauseManager(){
         if(cursorKeys.pause.isDown){
             this.events.emit('pause');
-            Phaser.Actions.Call(scorpions.getChildren(), child => {
-                child.body.moves= false;
-            });
+            paused = true;
             player.body.moves = false;
         }
         if(cursorKeys.unpause.isDown){
-            Phaser.Actions.Call(scorpions.getChildren(), child => {
-                child.body.moves= true;
-            });
+            paused = false;
             player.body.moves = true;
             this.events.emit('unpause');
         }
