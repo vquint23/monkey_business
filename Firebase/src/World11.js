@@ -10,6 +10,9 @@ class World11 extends Phaser.Scene {
 
         // Import audio
         this.load.audio("World1Theme", "../audio/music/world1.ogg");
+        this.load.audio("monkeyJump", "../audio/monkey_jump.ogg");
+        this.load.audio("monkeyRunning", "../audio/monkey_running.ogg");
+        this.load.audio("enemyDamage", "../audio/enemy_damage.ogg");
     }
 
     create() {
@@ -207,12 +210,18 @@ class World11 extends Phaser.Scene {
             this.player.setVelocityX(-300);
             if (this.player.body.onFloor()) {
                 this.player.play("run_left", true);
+
+                let run = this.sound.add("monkeyRunning");
+                run.play();
             } 
         } else if (this.cursorKeys.right.isDown) {
             this.left = false;
             this.player.setVelocityX(300);
             if (this.player.body.onFloor()) {
                 this.player.play("run_right", true);
+
+                let run = this.sound.add("monkeyRunning");
+                run.play();
             }
         } else {
             if (this.left) {
@@ -223,6 +232,9 @@ class World11 extends Phaser.Scene {
         }
         if (this.cursorKeys.up.isDown && this.player.body.onFloor())
         {
+            let jump = this.sound.add("monkeyJump");
+            jump.play();
+
             this.player.setVelocityY(-500);
         }
         if (!this.player.body.onFloor()) {
@@ -253,6 +265,9 @@ class World11 extends Phaser.Scene {
 
     hitEnemy(hit, enemy) {
         enemy.destroy();
+
+        let destroy = this.sound.add("enemyDamage");
+        destroy.play();
     }
 
 }
