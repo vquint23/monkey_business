@@ -333,6 +333,9 @@ class World21 extends Phaser.Scene {
     }
 
     levelWin(){
+        player.setVisible(false);
+        player.body.moves = false;
+        staff.setVisible(false);
         this.events.emit('levelWin'); 
     }
 
