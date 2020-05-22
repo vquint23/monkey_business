@@ -165,7 +165,7 @@ class World22 extends Phaser.Scene {
         map.setCollisionBetween(0, 10000, true);
 
         // Create Player
-        player = this.physics.add.sprite(this.game.config.width/2, 0, "Monkey");
+        player = this.physics.add.sprite(164, 4702, "Monkey");
         player.body.setSize(45, 60);
         player.body.setOffset(12, 0);
 
