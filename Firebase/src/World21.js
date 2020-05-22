@@ -38,9 +38,9 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
         healthbar.setScale(.3);
        
         //Listeners for events (health change, win, lose)
-        gamePlaying.events.on('levelWin', this.winDisplay);
-        gamePlaying.events.on('takeDmg', this.redrawHealth);
-        gamePlaying.events.on('gameOver', this.loseDisplay);
+        gamePlaying.events.on('levelWin', this.winDisplay, this);
+        gamePlaying.events.on('takeDmg', this.redrawHealth, this);
+        gamePlaying.events.on('gameOver', this.loseDisplay, this);
     }
 
     winDisplay(){
@@ -63,9 +63,9 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
         if (cursorKeys.continue.isDown){
             gameOverText.setVisible(false);
             restartText.setVisible(false);
-            this.scene.restart("World2-1");
-            player.body.enable = true;
+            this.scene.launch("World2-1");
             gameOver = false;
+            health = 100;
         }
     }
 
@@ -294,14 +294,21 @@ class World21 extends Phaser.Scene {
         destroy.play({volume: 1.5});
     }
 
-    //@todo: prevent infinite damage (turn on invincible for 1 second)
+    //@todo: prevent infinite damage (turn on invincible for 1 second?)
     takeDamage(player, enemy){
         if(!invincible){
             health-=15;
             console.log("Current Health: " + health);
             //let hurt = this.sound.add("damage");
             //hurt.play({volume: 1.5});
-            player.play("hurt_right");
+            if(left){
+                player.setVelocityX(-100);
+                //player.play("hurt_left, true")
+            }
+            else{
+                player.setVelocityX(100);
+                player.play("hurt_right");
+            }           
             this.events.emit('takeDmg');
         }
     }
