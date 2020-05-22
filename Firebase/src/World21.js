@@ -1,3 +1,50 @@
+class GameHUD extends Phaser.Scene {
+    constructor(){
+        super("GameHUD");
+    }
+    preload(){
+
+    }
+    create(){
+        
+    }
+
+}
+
+class PauseMenu extends Phaser.Scene {
+    constructor() {
+        super("PauseMenu");
+    }
+    preload(){
+        //Pause image
+        this.load.image("pausemenu", "../assets/Images/pausemenu.png");
+        
+           }
+    create(){
+        //this.add.image("pausemenu").setOrigin(0,0); why not?
+        this.add.text(600,100, 'Paused', {fontSize: '32px', fill: '#000'});
+         // Map keyboard inputs for menu 
+        pauseKeys = this.input.keyboard.createCursorKeys();
+        pauseKeys = this.input.keyboard.addKeys ({
+             pause: Phaser.Input.Keyboard.KeyCodes.ESC,
+             levelSelect: Phaser.Input.Keyboard.KeyCodes.L,
+             mainMenu: Phaser.Input.Keyboard.KeyCodes.X,
+          });
+    }
+    update(){
+        if (pauseKeys.pause.isDown) {
+            this.scene.resume("World2-1");
+            this.scene.stop();
+        }
+        if (pauseKeys.levelSelect.isDown) {
+            window.location = "LevelSelect.html";
+        }
+        if (pauseKeys.mainMenu.isDown) {
+            window.location = "MainMenu.html";
+        }
+    }
+}
+
 class World21 extends Phaser.Scene {
     constructor() {
         super("World2-1");
@@ -99,7 +146,10 @@ class World21 extends Phaser.Scene {
             down: Phaser.Input.Keyboard.KeyCodes.S,
             left: Phaser.Input.Keyboard.KeyCodes.A,
             right: Phaser.Input.Keyboard.KeyCodes.D, 
-            continue: Phaser.Input.Keyboard.KeyCodes.ENTER
+            continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
+            pause: Phaser.Input.Keyboard.KeyCodes.ESC,
+            levelSelect: Phaser.Input.Keyboard.KeyCodes.L,
+            mainMenu: Phaser.Input.Keyboard.KeyCodes.X,
          });
 
         }
@@ -224,7 +274,7 @@ class World21 extends Phaser.Scene {
             gameOver = true;
         }
         else{
-            this.add.text(healthText);
+            
         }
     }
 
@@ -288,7 +338,7 @@ class World21 extends Phaser.Scene {
     }
 }
 
-var paused, cursorKeys, scorpions, gate, gotGate, wintext, 
+var paused, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys,
 player, bg, map, tileset, layer, staff, left, hit, gameOver, healthText, gameOverText, restartText;
 var health = 100;
 
@@ -298,7 +348,7 @@ var config = {
     width: 1200,
     height: 700,
     bgColor: 0x000000,
-    scene: [main2, World21],
+    scene: [main2, World21, PauseMenu],
     pixelArt: true,
     physics: {
         default: "arcade",
