@@ -24,6 +24,9 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         {fontSize: '64px', fill: '#c70707'});
         gameOverText.setOrigin(.5, .5);
         gameOverText.setVisible(false);
+
+        this.deathEventHappened = false;
+
         // Restart 
         restartText = this.add.text(gameHeight/2, gameWidth/2, 'PRESS ENTER TO RESTART', 
         {fontSize: '32px', fill: '#fff'});
@@ -67,13 +70,33 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
     }
 
     loseDisplay(){
-        gameOverText.setVisible(true);
-        restartText.setVisible(true);
+        if(!this.deathEventHappened) {
+            gameOverText.setVisible(true);
+            restartText.setVisible(true);
+            this.sound.stopAll();
+
+            let damage = this.sound.add("monkeyDamage");
+            damage.play();
+
+            // Add in game over music
+            let deathMusic = this.sound.add("GameOverTheme");
+
+            let musicConfig = {
+                mute: false,
+                volume: 0.5,
+                loop: false,
+                delay: 0
+            };
+
+            deathMusic.play(musicConfig);
+            this.deathEventHappened = true;
+        }
+
         if (cursorKeys.continue.isDown){
             gameOverText.setVisible(false);
             restartText.setVisible(false);
-            this.scene.launch("World2-1");
-            music.stop();
+            this.scene.stop("World2-1");
+            this.scene.start("World2-1");
             gameOver = false;
             health = 100;
         }
@@ -124,6 +147,7 @@ class World21 extends Phaser.Scene {
         // Import tile map
         this.load.image('sky', "../assets/Backgrounds/Sky Background.png");
         this.load.tilemapCSV('city1', "../assets/TileMaps/city1.csv");
+        this.musicPlayed = false;
     }
 
     create() {
@@ -217,17 +241,7 @@ class World21 extends Phaser.Scene {
             invincibility: Phaser.Input.Keyboard.KeyCodes.I
          });
 
-        // Add in music
-        music = this.sound.add("World2Theme");
-
-        let musicConfig = {
-            mute: false,
-            volume: 0.5,
-            loop: true,
-            delay: 0
-        };
-
-        music.play(musicConfig);
+        
         this.scene.launch('GameHUD');
     }
 
@@ -309,8 +323,10 @@ class World21 extends Phaser.Scene {
         if(!invincible){
             health-=15;
             console.log("Current Health: " + health);
-            //let hurt = this.sound.add("damage");
-            //hurt.play({volume: 1.5});
+
+            let damage = this.sound.add("monkeyDamage");
+            damage.play();
+            
             if(left){
                 player.setVelocityX(-100);
                 //player.play("hurt_left, true")
@@ -333,7 +349,23 @@ class World21 extends Phaser.Scene {
     }
 
     update() {
+        if(!this.musicPlayed) {
+            // Add in music
+            let music = this.sound.add("World2Theme");
+
+            let musicConfig = {
+                mute: false,
+                volume: 0.5,
+               loop: true,
+               delay: 0
+            };
+
+            music.play(musicConfig);
+            this.musicPlayed = true;
+        }
+        
         if (gameOver){
+            this.sound.remove(music);
             this.gameOver();
         }
         // Reset player velocity back to 0 every frame

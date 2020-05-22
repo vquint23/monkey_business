@@ -6,8 +6,10 @@ class main2 extends Phaser.Scene {
     preload() {
         // Import audio
         this.load.audio("World2Theme", "../audio/music/world2.ogg");
+        this.load.audio("GameOverTheme", "../audio/music/death.ogg");
         this.load.audio("monkeyJump", "../audio/monkey_jump.ogg");
         this.load.audio("monkeyRunning", "../audio/monkey_running.ogg");
+        this.load.audio("monkeyDamage", "../audio/monkey_damage.ogg");
         this.load.audio("enemyDamage", "../audio/enemy_damage.ogg");
 
         // Load in spritesheets
