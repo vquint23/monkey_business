@@ -7,8 +7,14 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
     }
     create(){
         let gamePlaying = this.scene.get("World2-1");
-        //Win Stuff
-        wintext = this.add.text(gameWidth/2, gameHeight/2, 'LEVEL COMPLETE!', 
+
+        // Map keyboard inputs for HUD interaction 
+        cursorKeys = this.input.keyboard.createCursorKeys();
+        cursorKeys = this.input.keyboard.addKeys ({
+            continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
+         });
+        //Win Stuff                                                                                                     //@todo change colors of text
+        wintext = this.add.text(gameHeight/2, gameWidth/2, 'LEVEL COMPLETE!', 
         {fontSize: '64px', fill: '#000'});
         wintext.setVisible(false);
         //Lose Stuff
@@ -44,7 +50,6 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
             window.location = "Level31.html";
         }
     }
-
 
     //@todo : rescaling not working properly
     redrawHealth(){
@@ -181,7 +186,7 @@ class World21 extends Phaser.Scene {
 
         this.physics.add.overlap(scorpions, player, this.takeDamage, null, this);
         this.physics.add.overlap(hit, scorpions, this.hitEnemy, null, this);
-        this.physics.add.overlap(player, gate, this.levelWin, this); 
+        this.physics.add.overlap(player, gate, this.levelWin, null, this); 
         
         // Set up camera that follows player
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
