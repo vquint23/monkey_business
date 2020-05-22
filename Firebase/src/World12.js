@@ -187,11 +187,24 @@ class World12 extends Phaser.Scene {
         // Create Enemies
         var scorpionA = this.physics.add.sprite(1472, 1472, "Scorpion");
         var scorpionB = this.physics.add.sprite(2240, 1600, "Scorpion");
-        var scorpionC = this.physics.add.sprite(3200, 1600, "Scorpion");
-        var scorpionD = this.physics.add.sprite(3648, 1536, "Scorpion");
-        var scorpionE = this.physics.add.sprite(4288, 1664, "Scorpion");
-        var scorpionF = this.physics.add.sprite(6016, 1792, "Scorpion");
-        var scorpionG = this.physics.add.sprite(9920, 1024, "Scorpion");
+        var scorpionC = this.physics.add.sprite(1536, 3904, "Scorpion");
+        var scorpionD = this.physics.add.sprite(832, 3456, "Scorpion");
+        var scorpionE = this.physics.add.sprite(1344, 3456, "Scorpion");
+        var scorpionF = this.physics.add.sprite(2368, 2944, "Scorpion");
+        var scorpionG = this.physics.add.sprite(960, 448, "Scorpion");
+        var scorpionH = this.physics.add.sprite(1024, 448, "Scorpion");
+        var scorpionI = this.physics.add.sprite(1344, 448, "Scorpion");
+        var scorpionJ = this.physics.add.sprite(2368, 1152, "Scorpion");
+        var scorpionK = this.physics.add.sprite(2368, 768, "Scorpion");
+        var scorpionL = this.physics.add.sprite(2368, 384, "Scorpion");
+
+        var dragonflyA = this.physics.add.sprite(832, 3904, "Dragonfly");
+        var dragonflyB = this.physics.add.sprite(2048, 3648, "Dragonfly");
+        var dragonflyC = this.physics.add.sprite(896, 3328, "Dragonfly");
+        var dragonflyD = this.physics.add.sprite(896, 2048, "Dragonfly");
+        var dragonflyE = this.physics.add.sprite(2368, 320, "Dragonfly");
+        var dragonflyF = this.physics.add.sprite(2112, 2880, "Dragonfly");
+        var dragonflyG = this.physics.add.sprite(1664, 1920, "Dragonfly");
 
         scorpions = this.physics.add.group();
         scorpions.add(scorpionA);
@@ -201,6 +214,20 @@ class World12 extends Phaser.Scene {
         scorpions.add(scorpionE);
         scorpions.add(scorpionF);
         scorpions.add(scorpionG);
+        scorpions.add(scorpionH);
+        scorpions.add(scorpionI);
+        scorpions.add(scorpionJ);
+        scorpions.add(scorpionK);
+        scorpions.add(scorpionL);
+
+        dragonflies = this.physics.add.group();
+        dragonflies.add(dragonflyA);
+        dragonflies.add(dragonflyB);
+        dragonflies.add(dragonflyC);
+        dragonflies.add(dragonflyD);
+        dragonflies.add(dragonflyE);
+        dragonflies.add(dragonflyF);
+        dragonflies.add(dragonflyG);
 
         // Create Gate (Tiled Location * 64)
         gate = this.physics.add.sprite(3120, 192, "Gate");
@@ -209,11 +236,15 @@ class World12 extends Phaser.Scene {
         layer.setCollisionByProperty({collides: true});
         this.physics.add.collider(player, layer);
         this.physics.add.collider(scorpions, layer);
+        this.physics.add.collider(dragonflies, layer);
         this.physics.add.collider(scorpions, scorpions);
+        this.physics.add.collider(dragonflies, dragonflies);
         this.physics.add.collider(gate, layer);
 
         this.physics.add.collider(scorpions, player, this.takeDamage, null, this);
         this.physics.add.overlap(hit, scorpions, this.hitEnemy, null, this);
+        this.physics.add.collider(dragonflies, player, this.takeDamage, null, this);
+        this.physics.add.overlap(hit, dragonflies, this.hitEnemy, null, this);
         this.physics.add.overlap(player, gate, this.levelWin, null, this); 
         
         // Set up camera that follows player
@@ -375,6 +406,8 @@ class World12 extends Phaser.Scene {
         this.movePlayerManager();
         // Controls scorpion movement
         this.moveScorpionManager();
+        // Controls dragonfly movement
+        this.moveDragonflyManager();
         //Controls pause 
         this.pauseManager();
         // Controls Staff Mechanic
@@ -451,17 +484,18 @@ class World12 extends Phaser.Scene {
     moveScorpionManager(){
         Phaser.Actions.Call(scorpions.getChildren(), child => {
             child.body.moves = true;
+            child.setInteractive();
             if (gameOver){
                 child.setVelocityX(0);
                 child.setVelocityY(0);
             }
             else if (player.x < child.x){
                 child.play("scorpion_idle_left", true);
-                child.setVelocityX(-100);
+                child.setVelocityX(-250);
             }
             else {
                 child.play("scorpion_idle_right", true);
-                child.setVelocityX(100);
+                child.setVelocityX(250);
             }
             if (child.body.onFloor() && player.y < child.y){
                 child.setVelocityY(-500);
@@ -471,11 +505,13 @@ class World12 extends Phaser.Scene {
     }
 
     moveDragonflyManager(){
-        Phaser.Actions.Call(this.dragonflies.getChildren(), child => {
+        Phaser.Actions.Call(dragonflies.getChildren(), child => {
             child.body.moves = true;
-            if (this.player.x < child.x){
+            child.body.allowGravity = false;
+            child.setInteractive();
+            if (player.x < child.x){
                 child.play("dragonfly_left", true);
-                if ((child.x - this.player.x) <= 200 && (child.y - this.player.y) <= 200) {
+                if ((child.x - player.x) <= 200 && (child.y - player.y) <= 200) {
                     child.setVelocityX(200);
                     child.setVelocityY(-200);
                 } else {
@@ -485,7 +521,7 @@ class World12 extends Phaser.Scene {
             }
             else {
                 child.play("dragonfly_right", true);
-                if ((this.player.x - child.x) <= 200 && (this.player.y - child.y) <= 200) {
+                if ((player.x - child.x) <= 200 && (player.y - child.y) <= 200) {
                     child.setVelocityX(-200);
                     child.setVelocityY(-200);
                 } else {
@@ -499,17 +535,23 @@ class World12 extends Phaser.Scene {
     pauseManager(){
         if(cursorKeys.pause.isDown){
             this.events.emit('pause');
-            Phaser.Actions.Call(scorpions.getChildren(), child => {
-                child.body.moves= false;
-            });
+            paused = true;
             player.body.moves = false;
         }
         if(cursorKeys.unpause.isDown){
-            Phaser.Actions.Call(scorpions.getChildren(), child => {
-                child.body.moves= true;
-            });
+            paused = false;
             player.body.moves = true;
             this.events.emit('unpause');
+        }
+        if (cursorKeys.levelSelect.isDown) {
+            let button = this.sound.add("buttonForward");
+            button.play();
+            window.location = "LevelSelect.html";
+        }
+        if (cursorKeys.mainMenu.isDown) {
+            let button = this.sound.add("buttonForward");
+            button.play();
+            window.location = "MainMenu.html";
         }
     }
 }
@@ -532,7 +574,7 @@ var config = {
     autoRound: false
 }
 var game = new Phaser.Game(config);
-var beenPaused, pauseBG, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys, hudKeys, paused, music,
+var beenPaused, pauseBG, cursorKeys, scorpions, dragonflies, gate, gotGate, wintext, pauseKeys, hudKeys, paused, music,
 player, bg, map, tileset, layer, staff, left, hit, gameOver, healthbar, healthbase, gameOverText, restartText,
 continueText, invincible, victory;
 var health = 100;

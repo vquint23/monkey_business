@@ -499,17 +499,23 @@ class World11 extends Phaser.Scene {
     pauseManager(){
         if(cursorKeys.pause.isDown){
             this.events.emit('pause');
-            Phaser.Actions.Call(scorpions.getChildren(), child => {
-                child.body.moves= false;
-            });
+            paused = true;
             player.body.moves = false;
         }
         if(cursorKeys.unpause.isDown){
-            Phaser.Actions.Call(scorpions.getChildren(), child => {
-                child.body.moves= true;
-            });
+            paused = false;
             player.body.moves = true;
             this.events.emit('unpause');
+        }
+        if (cursorKeys.levelSelect.isDown) {
+            let button = this.sound.add("buttonForward");
+            button.play();
+            window.location = "LevelSelect.html";
+        }
+        if (cursorKeys.mainMenu.isDown) {
+            let button = this.sound.add("buttonForward");
+            button.play();
+            window.location = "MainMenu.html";
         }
     }
 }
