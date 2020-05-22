@@ -199,7 +199,7 @@ class World22 extends Phaser.Scene {
         scorpions.add(scorpionE);
     
         // Create Gate (Tiled Location * 64)
-        gate = this.physics.add.sprite(3102, 210, "Gate");
+        gate = this.physics.add.sprite(3102, 196, "Gate");
 
         // Set collision between player, enemies, and collidable layer
         layer.setCollisionByProperty({collides: true});
