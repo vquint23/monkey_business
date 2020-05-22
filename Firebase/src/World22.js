@@ -8,7 +8,7 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         this.load.image("pausemenu", "../assets/Images/pausemenu.png");
     }
     create(){
-        let gamePlaying = this.scene.get("World2-2");
+        let gamePlaying = this.scene.get("World2-1");
 
         //Pause Stuff
         pauseBG = this.add.image(game.config.width/2, game.config.height/2, "pausemenu");
@@ -97,8 +97,8 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         if (cursorKeys.continue.isDown){
             gameOverText.setVisible(false);
             restartText.setVisible(false);
-            this.scene.stop("World2-2");
-            this.scene.start("World2-2");
+            this.scene.stop("World2-1");
+            this.scene.start("World2-1");
             this.sound.stopAll();
             let button = this.sound.add("buttonForward");
             button.play();
@@ -131,7 +131,7 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
 }
 class World22 extends Phaser.Scene {
     constructor() {
-        super("World2-2");
+        super("World2-1");
     }
 
     preload() {
