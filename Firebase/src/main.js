@@ -27,6 +27,10 @@ class main extends Phaser.Scene {
             frameWidth: 64,
             frameHeight: 64
         });
+        this.load.spritesheet("Dragonfly", "../assets/Sprites/Dragonfly.png", {
+            frameWidth: 64,
+            frameHeight: 32
+        });
         this.load.image("Staff", "../assets/Sprites/Staff.png", {
             frameWidth: 32,
             frameHeight: 4
@@ -131,7 +135,7 @@ class main extends Phaser.Scene {
             repeat: -1
         });
 
-        // Create enemy animations
+        // Create scorpion animations
         this.anims.create({
             key: "scorpion_idle_left",
             frames: this.anims.generateFrameNumbers("Scorpion", {
@@ -146,6 +150,26 @@ class main extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("Scorpion", {
                 start: 4,
                 end: 7
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        // Create dragonfly animations
+        this.anims.create({
+            key: "dragonfly_left",
+            frames: this.anims.generateFrameNumbers("Dragonfly", {
+                start: 0,
+                end: 1
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "dragonfly_right",
+            frames: this.anims.generateFrameNumbers("Dragonfly", {
+                start: 2,
+                end: 3
             }),
             frameRate: 10,
             repeat: -1

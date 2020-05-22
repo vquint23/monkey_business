@@ -51,32 +51,22 @@ class World11 extends Phaser.Scene {
         this.scorpion3 = this.physics.add.sprite(3500, 1500, "Scorpion");
         this.scorpion3.setImmovable(true);
         this.scorpion3.setInteractive();
-        this.scorpion4 = this.physics.add.sprite(4500, 1500, "Scorpion");
-        this.scorpion4.setImmovable(true);
-        this.scorpion4.setInteractive();
-        this.scorpion5 = this.physics.add.sprite(4500, 3000, "Scorpion");
-        this.scorpion5.setImmovable(true);
-        this.scorpion5.setInteractive();
-        this.scorpion6 = this.physics.add.sprite(4500, 3000, "Scorpion");
-        this.scorpion6.setImmovable(true);
-        this.scorpion6.setInteractive();
-        this.scorpion7 = this.physics.add.sprite(4500, 3000, "Scorpion");
-        this.scorpion7.setImmovable(true);
-        this.scorpion7.setInteractive();
-        this.scorpion8 = this.physics.add.sprite(4500, 3000, "Scorpion");
-        this.scorpion8.setImmovable(true);
-        this.scorpion8.setInteractive();
+        // this.scorpion4 = this.physics.add.sprite(4500, 1500, "Scorpion");
+        // this.scorpion4.setImmovable(true);
+        // this.scorpion4.setInteractive();
+        this.dragonfly1 = this.physics.add.sprite(500, 1500, "Dragonfly");
+        this.dragonfly1.setImmovable(true);
+        this.dragonfly1.body.setAllowGravity(false);
+        this.dragonfly1.setInteractive();
 
 
-        this.enemies = this.physics.add.group();
-        this.enemies.add(this.scorpion1);
-        this.enemies.add(this.scorpion2);
-        this.enemies.add(this.scorpion3);
-        this.enemies.add(this.scorpion4);
-        this.enemies.add(this.scorpion5);
-        this.enemies.add(this.scorpion6);
-        this.enemies.add(this.scorpion7);
-        this.enemies.add(this.scorpion8);
+        this.scorpions = this.physics.add.group();
+        this.dragonflies = this.physics.add.group();
+        this.scorpions.add(this.scorpion1);
+        this.scorpions.add(this.scorpion2);
+        this.scorpions.add(this.scorpion3);
+        //this.scorpions.add(this.scorpion4);
+        this.dragonflies.add(this.dragonfly1);
 
         // Add win gate
         this.gate = this.physics.add.sprite(9472, 512, "Gate");
@@ -86,8 +76,10 @@ class World11 extends Phaser.Scene {
         // this.physics.add.overlap(this.hit, this.map, function(player, layer) {
         //     console.log("Pogo");
         // });
-        this.physics.add.collider(this.enemies, this.layer);
-        this.physics.add.collider(this.enemies, this.enemies);
+        this.physics.add.collider(this.scorpions, this.layer);
+        this.physics.add.collider(this.dragonflies, this.layer);
+        this.physics.add.collider(this.scorpions, this.scorpions);
+        this.physics.add.collider(this.dragonflies, this.dragonflies);
         this.physics.add.collider(this.gate, this.layer);
         this.physics.add.overlap(this.gate, this.player, function(gate, player) {
             window.location = "Level21.html";
@@ -98,7 +90,8 @@ class World11 extends Phaser.Scene {
         //     if (this.player.)
         // });
 
-        this.physics.add.overlap(this.hit, this.enemies, this.hitEnemy, null, this);
+        this.physics.add.overlap(this.hit, this.scorpions, this.hitEnemy, null, this);
+        this.physics.add.overlap(this.hit, this.dragonflies, this.hitEnemy, null, this);
 
         this.layer.setCollisionByProperty({collides: true});
 
@@ -198,6 +191,7 @@ class World11 extends Phaser.Scene {
 
         // Controls movement of scorpions
         this.moveScorpionManager();
+        this.moveDragonflyManager();
     }
 
     movePlayerManager() {
@@ -252,7 +246,7 @@ class World11 extends Phaser.Scene {
     }
 
     moveScorpionManager(){
-        Phaser.Actions.Call(this.enemies.getChildren(), child => {
+        Phaser.Actions.Call(this.scorpions.getChildren(), child => {
             child.body.moves = true;
             if (this.player.x < child.x){
                 child.play("scorpion_idle_left", true);
@@ -266,7 +260,34 @@ class World11 extends Phaser.Scene {
                 child.setVelocityY(-500);
              }
         });   
-    } 
+    }
+    
+    moveDragonflyManager(){
+        var drangle = 0;
+        Phaser.Actions.Call(this.dragonflies.getChildren(), child => {
+            child.body.moves = true;
+            if (this.player.x < child.x){
+                child.play("dragonfly_left", true);
+                if ((child.x - this.player.x) <= 100 && (child.y - this.player.y) <= 100) {
+                    child.setVelocityX(200);
+                    child.setVelocityY(-200);
+                } else {
+                    child.setVelocityX(0);
+                    child.setVelocityY(0);
+                }
+            }
+            else {
+                child.play("dragonfly_right", true);
+                if ((this.player.x - child.x) <= 100 && (this.player.y - child.y) <= 100) {
+                    child.setVelocityX(-200);
+                    child.setVelocityY(-200);
+                } else {
+                    child.setVelocityX(0);
+                    child.setVelocityY(0);
+                }
+            }
+        });   
+    }
 
     hitEnemy(hit, enemy) {
         enemy.destroy();
