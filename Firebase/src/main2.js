@@ -155,8 +155,25 @@ class main2 extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-
-        //die left
-        //die right
+        this.anims.create({
+            key: "scorpion_dead_left",
+            frames: this.anims.generateFrameNumbers("Scorpion", {
+                start: 18,
+                end: 18
+            }),
+            frameRate: 10,
+            duration: 1000,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "scorpion_dead_right",
+            frames: this.anims.generateFrameNumbers("Scorpion", {
+                start: 19,
+                end: 19
+            }),
+            frameRate: 10,
+            duration: 1000,
+            repeat: -1
+        });
     }
 }
