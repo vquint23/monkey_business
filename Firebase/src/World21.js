@@ -1,9 +1,10 @@
-class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to pause button
+class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add to controls menu?
     constructor(){
         super({key: "GameHUD", active: true});
     }
     preload(){
         this.load.image("healthbar", "../assets/Images/health.png");
+        this.load.image("healthbase", "../assets/Images/healthbase.png");
     }
     create(){
         let gamePlaying = this.scene.get("World2-1");
@@ -13,13 +14,13 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
         hudKeys = this.input.keyboard.addKeys ({
             continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
          });
-        //Win Stuff                                                                                                     //@todo change colors of text
-        wintext = this.add.text(gameWidth/2, gameHeight/3, 'LEVEL COMPLETE!',  //fix location
+        //Win Stuff                                                                                                     
+        wintext = this.add.text(gameWidth/2, gameHeight/3, 'LEVEL COMPLETE!',
         {fontSize: '64px', fill: '#fff'});
         wintext.setOrigin(.5, .5);
         wintext.setVisible(false);
         //Lose Stuff
-        gameOverText = this.add.text(gameWidth/2, gameHeight/3, 'GAME OVER', //fix location
+        gameOverText = this.add.text(gameWidth/2, gameHeight/3, 'GAME OVER', 
         {fontSize: '64px', fill: '#c70707'});
         gameOverText.setOrigin(.5, .5);
         gameOverText.setVisible(false);
@@ -35,9 +36,13 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
         //Healthbar Stuff
         var healthbarX = gameWidth/1.22;        //this is specific cuz i tested it 40 times
         var healthbarY = gameWidth/21;
+        healthbase = this.add.image(healthbarX, healthbarY, "healthbase");
+        healthbase.setOrigin(.5,.5);
+        healthbase.setScale(.3);
         healthbar = this.add.image(healthbarX, healthbarY, "healthbar");
         healthbar.setOrigin(.5,.5);
         healthbar.setScale(.3);
+
        
         //Listeners for events (health change, win, lose)
         gamePlaying.events.on('levelWin', this.winDisplay, this);
@@ -461,7 +466,7 @@ var config = {
 }
 var game = new Phaser.Game(config);
 var paused, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys, hudKeys, paused, music,
-player, bg, map, tileset, layer, staff, left, hit, gameOver, healthbar, gameOverText, restartText,
+player, bg, map, tileset, layer, staff, left, hit, gameOver, healthbar, healthbase, gameOverText, restartText,
 continueText, invincible;
 var health = 100;
 var gameWidth = game.config.width;
