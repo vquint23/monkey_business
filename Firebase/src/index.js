@@ -13,6 +13,9 @@ function startGame(levelname){
     else if (levelname === 'level2.1'){
         window.location = "Level21.html";
     }
+    else if (levelname === 'level3.1'){
+        window.location = "Level31.html";
+    }
     else{
         alert(levelname + " is coming soon!");
     }

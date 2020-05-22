@@ -13,9 +13,21 @@ class World21 extends Phaser.Scene {
     }
 
     create() {
+        gameOver = false;
         paused = false;
         gotGate = false;
-        wintext = this.add.text(350, 150, 'LEVEL COMPLETE', {fontSize: '64px', fill: '#000'});
+
+        // Various Text  
+        healthText = this.add.text(400, 400, 'Health: 100', {fontSize: '32px', fill: '#000'});
+        healthText.setVisible(true);  
+        //Game over
+        gameOverText = this.add.text(350, 150, 'GAME OVER', {fontSize: '64px', fill: '#623'});
+        gameOverText.setVisible(false);
+        // Restart 
+        restartText = this.add.text(310, 200, 'PRESS ENTER TO RESTART', {fontSize: '32px', fill: '#420'});
+        restartText.setVisible(false);
+        // Win
+        var wintext = this.add.text(350, 150, 'LEVEL COMPLETE!', {fontSize: '64px', fill: '#000'});
         wintext.setVisible(false);
 
         // Used to determine which way player is facing
@@ -90,7 +102,7 @@ class World21 extends Phaser.Scene {
             down: Phaser.Input.Keyboard.KeyCodes.S,
             left: Phaser.Input.Keyboard.KeyCodes.A,
             right: Phaser.Input.Keyboard.KeyCodes.D, 
-            pause: Phaser.Input.Keyboard.KeyCodes.ENTER
+            continue: Phaser.Input.Keyboard.KeyCodes.ENTER
          });
 
         // Add in music
@@ -179,10 +191,30 @@ class World21 extends Phaser.Scene {
     }
 
     levelWin(){
-        
+        player.body.enable = false;
+        wintext.setVisible(true);       //@todo: Win HUD
+        if (cursorKeys.continue.isDown){
+            window.location = "Level21.html";
+        }
+    }
+
+    gameOver(){
+        player.body.enable = false;
+        gameOverText.setVisible(true);      //@todo: Game Over HUD
+        restartText.setVisible(true);
+        if (cursorKeys.continue.isDown){
+            gameOverText.setVisible(false);
+            restartText.setVisible(false);
+            this.scene.restart();
+            player.body.enable = true;
+            gameOver = false;
+        }
     }
 
     update() {
+        if (gameOver){
+            this.gameOver();
+        }
         // Reset player velocity back to 0 every frame
         player.setVelocityX(0);
         staff.x = player.x;
@@ -197,7 +229,17 @@ class World21 extends Phaser.Scene {
         this.pauseManager();
         // Controls Staff Mechanic
         this.extendStaff();
+        // Controls Health
+        this.healthManager();
+    }
 
+    healthManager(){
+        if (health == 0){
+            gameOver = true;
+        }
+        else{
+            this.add.text(healthText);
+        }
     }
 
     movePlayerManager() {
@@ -253,32 +295,16 @@ class World21 extends Phaser.Scene {
     } 
 
     pauseManager(){
-        if(cursorKeys.pause.isDown && !paused){
-            //this.scene.sleep();
-            //open pause scene
+        if(cursorKeys.pause.isDown){
+            this.scene.pause();
+            this.scene.launch('PauseMenu');
         }
-        if (cursorKeys.pause.isDown && paused){
-            //close pause scene
-            //this.scene.wake();
-        }
-        this.paused = !paused;
     }
 }
 
-var paused;
-var cursorKeys;
-var scorpions;
-var gate;
-var gotGate;
-var wintext;
-var player;
-var bg;
-var map;
-var tileset;
-var layer;
-var staff;
-var left;
-var hit;
+var paused, cursorKeys, scorpions, gate, gotGate, wintext, 
+player, bg, map, tileset, layer, staff, left, hit, gameOver, healthText, gameOverText, restartText;
+var health = 100;
 
 var config = {
     parent: "game-container",
