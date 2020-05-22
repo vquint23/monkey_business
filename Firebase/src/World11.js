@@ -9,7 +9,7 @@ class World11 extends Phaser.Scene {
         this.load.tilemapCSV('jungle', "../assets/TileMaps/jungle1.csv");
 
         // Import audio
-        this.load.audio("World1Theme", "../audio/world one theme in game mix.ogg");
+        this.load.audio("World1Theme", "../audio/music/world1.ogg");
     }
 
     create() {
@@ -172,19 +172,18 @@ class World11 extends Phaser.Scene {
             }
         }, this);
         
-    }
-
         // Add in music
-        //  this.music = this.sound.add("World1Theme");
+        let music = this.sound.add("World1Theme");
 
-        //  var musicConfig = {
-        //      mute: false,
-        //      volume: 1,
-        //      loop: true,
-        //      delay:0
-        //  }
+        let musicConfig = {
+            mute: false,
+            volume: 1,
+            loop: true,
+            delay: 0
+        };
 
-        //  this.music.play(musicConfig);
+        music.play(musicConfig);
+    }  
 
     update() {
         // Reset player velocity back to 0 every frame

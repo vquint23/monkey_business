@@ -54,6 +54,9 @@ class World21 extends Phaser.Scene {
         // Import tile map
         this.load.image('sky', "../assets/Backgrounds/Sky Background.png");
         this.load.tilemapCSV('city1', "../assets/TileMaps/city1.csv");
+
+        // Import audio
+        this.load.audio("World2Theme", "../audio/music/world2.ogg");
     }
 
     create() {
@@ -152,7 +155,18 @@ class World21 extends Phaser.Scene {
             mainMenu: Phaser.Input.Keyboard.KeyCodes.X,
          });
 
-        }
+        // Add in music
+        let music = this.sound.add("World2Theme");
+
+        let musicConfig = {
+            mute: false,
+            volume: 1,
+            loop: true,
+            delay: 0
+        };
+
+        music.play(musicConfig);
+    }
 
     extendStaff() {
         // Controls staff extension by checking for left click
