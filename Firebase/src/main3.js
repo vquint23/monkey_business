@@ -4,6 +4,12 @@ class main3 extends Phaser.Scene {
     }
 
     preload() {
+        // Import audio
+        this.load.audio("World3Theme", "../audio/music/world3.ogg");
+        this.load.audio("monkeyJump", "../audio/monkey_jump.ogg");
+        this.load.audio("monkeyRunning", "../audio/monkey_running.ogg");
+        this.load.audio("enemyDamage", "../audio/enemy_damage.ogg");
+
         // Load in spritesheets
         this.load.image("world3tiles", "../assets/Images/CloudTileSet.png", {
             frameWidth: 64,

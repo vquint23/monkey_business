@@ -7,12 +7,6 @@ class World11 extends Phaser.Scene {
         // Import tile map
         this.load.image('jungle_bg', "../assets/Backgrounds/temp jungle.png");
         this.load.tilemapCSV('jungle', "../assets/TileMaps/jungle1.csv");
-
-        // Import audio
-        this.load.audio("World1Theme", "../audio/music/world1.ogg");
-        this.load.audio("monkeyJump", "../audio/monkey_jump.ogg");
-        this.load.audio("monkeyRunning", "../audio/monkey_running.ogg");
-        this.load.audio("enemyDamage", "../audio/enemy_damage.ogg");
     }
 
     create() {
@@ -183,7 +177,7 @@ class World11 extends Phaser.Scene {
 
         let musicConfig = {
             mute: false,
-            volume: 0.6,
+            volume: 0.4,
             loop: true,
             delay: 0
         };
@@ -217,7 +211,7 @@ class World11 extends Phaser.Scene {
 
                 if(this.runEffectTimer === 0) {
                     let run = this.sound.add("monkeyRunning");
-                    run.play();
+                    run.play({volume: 3});
                     this.runEffectTimer = 12;
                 }
             } 
@@ -230,7 +224,7 @@ class World11 extends Phaser.Scene {
 
                 if(this.runEffectTimer === 0) {
                     let run = this.sound.add("monkeyRunning");
-                    run.play();
+                    run.play({volume: 3});
                     this.runEffectTimer = 12;
                 }
             }
@@ -244,9 +238,9 @@ class World11 extends Phaser.Scene {
         if (this.cursorKeys.up.isDown && this.player.body.onFloor())
         {
             let jump = this.sound.add("monkeyJump");
-            jump.play();
+            jump.play({volume: 1.5});
 
-            this.player.setVelocityY(-500);
+            this.player.setVelocityY(-525);
         }
         if (!this.player.body.onFloor()) {
             if (this.left) {

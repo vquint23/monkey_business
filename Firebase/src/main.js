@@ -4,6 +4,12 @@ class main extends Phaser.Scene {
     }
 
     preload() {
+        // Import audio
+        this.load.audio("World1Theme", "../audio/music/world1.ogg");
+        this.load.audio("monkeyJump", "../audio/monkey_jump.ogg");
+        this.load.audio("monkeyRunning", "../audio/monkey_running.ogg");
+        this.load.audio("enemyDamage", "../audio/enemy_damage.ogg");
+        
         // Load in spritesheets
         this.load.image("jungleTiles", "../assets/Images/JungleTileSet.png", {
             frameWidth: 64,

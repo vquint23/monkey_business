@@ -7,9 +7,6 @@ class World31 extends Phaser.Scene {
         // Import tile map
         this.load.image('sky', "../assets/Backgrounds/Sky Background.png");
         this.load.tilemapCSV('world31', "../assets/TileMaps/world31.csv");
-
-        // Import audio
-        this.load.audio("World3Theme", "../audio/music/world3.ogg");
     }
 
     create() {
@@ -38,6 +35,9 @@ class World31 extends Phaser.Scene {
         player = this.physics.add.sprite(this.game.config.width/2, 2000, "Monkey");
         player.body.setSize(45, 60);
         player.body.setOffset(12, 0);
+
+        // Set a timer for the running sound effect
+        this.runEffectTimer = 12;
 
         // Create Staff
         staff = this.add.sprite(player.x-64, player.y, "Staff");
@@ -98,7 +98,7 @@ class World31 extends Phaser.Scene {
 
         let musicConfig = {
             mute: false,
-            volume: 0.6,
+            volume: 0.4,
             loop: true,
             delay: 0
         };
@@ -172,6 +172,9 @@ class World31 extends Phaser.Scene {
     
     hitEnemy(hit, enemy) {
         enemy.destroy();
+
+        let destroy = this.sound.add("enemyDamage");
+        destroy.play({volume: 1.5});
     }
 
     takeDamage(){
@@ -207,12 +210,26 @@ class World31 extends Phaser.Scene {
             player.setVelocityX(-300);
             if (player.body.onFloor()) {
                 player.play("run_left", true);
+                this.runEffectTimer--;
+
+                if(this.runEffectTimer === 0) {
+                    let run = this.sound.add("monkeyRunning");
+                    run.play({volume: 3});
+                    this.runEffectTimer = 12;
+                }
             } 
         } else if (cursorKeys.right.isDown) {
             left = false;
             player.setVelocityX(300);
             if (player.body.onFloor()) {
                 player.play("run_right", true);
+                this.runEffectTimer--;
+
+                if(this.runEffectTimer === 0) {
+                    let run = this.sound.add("monkeyRunning");
+                    run.play({volume: 3});
+                    this.runEffectTimer = 12;
+                }
             }
         } else {
             if (left) {
@@ -223,6 +240,9 @@ class World31 extends Phaser.Scene {
         }
         if (cursorKeys.up.isDown && player.body.onFloor())
         {
+            let jump = this.sound.add("monkeyJump");
+            jump.play({volume: 1.5});
+            
             player.setVelocityY(-525);
         }
         if (!player.body.onFloor()) {
