@@ -15,11 +15,6 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         pauseBG.setOrigin(.5, .5);
         pauseBG.setScale(.45);
         pauseBG.setVisible(false);
-        // Map keyboard inputs for HUD interaction 
-        hudKeys = this.input.keyboard.createCursorKeys();
-        hudKeys = this.input.keyboard.addKeys ({
-            continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
-         });
         //Win Stuff                                                                                                     
         wintext = this.add.text(gameWidth/2, gameHeight/3, 'LEVEL COMPLETE!',
         {fontSize: '64px', fill: '#fff'});
@@ -60,7 +55,7 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
     winDisplay(){
         wintext.setVisible(true);
         continueText.setVisible(true);
-        if (hudKeys.continue.isDown){
+        if (cursorKeys.continue.isDown){
             window.location = "Level22.html";
         }
     }
@@ -329,7 +324,7 @@ class World21 extends Phaser.Scene {
 
     levelWin(){
         player.setVisible(false);
-        player.body.moves = false;
+        //player.body.moves = false;
         staff.setVisible(false);
         this.events.emit('levelWin'); 
     }
