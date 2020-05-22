@@ -63,7 +63,7 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         wintext.setVisible(true);
         continueText.setVisible(true);
         if (hudKeys.continue.isDown){
-            window.location = "Level31.html";
+            window.location = "Level22.html";
         }
     }
 

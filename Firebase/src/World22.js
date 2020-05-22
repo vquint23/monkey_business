@@ -185,13 +185,11 @@ class World22 extends Phaser.Scene {
         hit.body.setEnable(false);
 
         // Create Enemies
-        var scorpionA = this.physics.add.sprite(1728, 2176, "Scorpion");
-        var scorpionB = this.physics.add.sprite(2432, 2816, "Scorpion");
-        var scorpionC = this.physics.add.sprite(1241, 1764, "Scorpion");
-        var scorpionD = this.physics.add.sprite(2329, 1190, "Scorpion");
-        var scorpionE = this.physics.add.sprite(3186, 2737, "Scorpion");
-        var scorpionF = this.physics.add.sprite(3931, 2786, "Scorpion");
-        var scorpionG = this.physics.add.sprite(4632, 489, "Scorpion");
+        var scorpionA = this.physics.add.sprite(418, 3750, "Scorpion");
+        var scorpionB = this.physics.add.sprite(2276, 4114, "Scorpion");
+        var scorpionC = this.physics.add.sprite(2978, 1328, "Scorpion");
+        var scorpionD = this.physics.add.sprite(1190, 1261, "Scorpion");
+        var scorpionE = this.physics.add.sprite(92, 604, "Scorpion");
 
         scorpions = this.physics.add.group();
         scorpions.add(scorpionA);
@@ -199,11 +197,9 @@ class World22 extends Phaser.Scene {
         scorpions.add(scorpionC);
         scorpions.add(scorpionD);
         scorpions.add(scorpionE);
-        scorpions.add(scorpionF);
-        scorpions.add(scorpionG);
-
+    
         // Create Gate (Tiled Location * 64)
-        gate = this.physics.add.sprite(6300, 192, "Gate");
+        gate = this.physics.add.sprite(3102, 210, "Gate");
 
         // Set collision between player, enemies, and collidable layer
         layer.setCollisionByProperty({collides: true});
