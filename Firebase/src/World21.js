@@ -19,8 +19,6 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         hudKeys = this.input.keyboard.createCursorKeys();
         hudKeys = this.input.keyboard.addKeys ({
             continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
-            levelSelect: Phaser.Input.Keyboard.KeyCodes.L,
-            mainMenu: Phaser.Input.Keyboard.KeyCodes.X
          });
         //Win Stuff                                                                                                     
         wintext = this.add.text(gameWidth/2, gameHeight/3, 'LEVEL COMPLETE!',
@@ -112,16 +110,6 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         button.play();
         pauseBG.setVisible(true);       
         paused = true; 
-        if (hudKeys.levelSelect.isDown) {
-            let button = this.sound.add("buttonForward");
-            button.play();
-            window.location = "LevelSelect.html";
-        }
-        if (hudKeys.mainMenu.isDown) {
-            let button = this.sound.add("buttonForward");
-            button.play();
-            window.location = "MainMenu.html";
-        }
     }
     unpauseGame(){
         pauseBG.setVisible(false);            
@@ -232,7 +220,9 @@ class World21 extends Phaser.Scene {
             mainMenu: Phaser.Input.Keyboard.KeyCodes.X,
             unpause: Phaser.Input.Keyboard.KeyCodes.ESC,
             //debug/testing:
-            invincibility: Phaser.Input.Keyboard.KeyCodes.I
+            invincibility: Phaser.Input.Keyboard.KeyCodes.I,
+            levelSelect: Phaser.Input.Keyboard.KeyCodes.L,
+            mainMenu: Phaser.Input.Keyboard.KeyCodes.X
          });
        
         this.scene.launch('GameHUD');
@@ -484,6 +474,16 @@ class World21 extends Phaser.Scene {
             paused = false;
             player.body.moves = true;
             this.events.emit('unpause');
+        }
+        if (cursorKeys.levelSelect.isDown) {
+            let button = this.sound.add("buttonForward");
+            button.play();
+            window.location = "LevelSelect.html";
+        }
+        if (cursorKeys.mainMenu.isDown) {
+            let button = this.sound.add("buttonForward");
+            button.play();
+            window.location = "MainMenu.html";
         }
     }
 }
