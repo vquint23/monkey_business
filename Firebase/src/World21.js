@@ -78,7 +78,7 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
             let damage = this.sound.add("monkeyDamage");
             damage.play();
 
-            // Add in game over music
+            // Add in game over music (but only play it once)
             let deathMusic = this.sound.add("GameOverTheme");
 
             let musicConfig = {
@@ -97,6 +97,11 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
             restartText.setVisible(false);
             this.scene.stop("World2-1");
             this.scene.start("World2-1");
+
+            this.sound.stopAll();
+            let button = this.sound.add("buttonForward");
+            button.play();
+
             gameOver = false;
             health = 100;
         }
@@ -126,13 +131,22 @@ class PauseMenu extends Phaser.Scene {
     }
     update(){
         if (pauseKeys.pause.isDown) {
+            let exit = this.sound.add("buttonBackward");
+            exit.play();
+
             this.scene.sleep();
             this.scene.resume("World2-1");
         }
         if (pauseKeys.levelSelect.isDown) {
+            let button = this.sound.add("buttonForward");
+            button.play();
+
             window.location = "LevelSelect.html";
         }
         if (pauseKeys.mainMenu.isDown) {
+            let button = this.sound.add("buttonForward");
+            button.play();
+
             window.location = "MainMenu.html";
         }
     }
@@ -351,6 +365,7 @@ class World21 extends Phaser.Scene {
     update() {
         if(!this.musicPlayed) {
             // Add in music
+            // I had to move it here since it would play over itself when the stage restarted
             let music = this.sound.add("World2Theme");
 
             let musicConfig = {
@@ -472,6 +487,9 @@ class World21 extends Phaser.Scene {
 
     pauseManager(){
         if(cursorKeys.pause.isDown){
+            let button = this.sound.add("buttonForward");
+            button.play();
+
             this.scene.pause();
             this.scene.launch('PauseMenu');
         }
