@@ -6,7 +6,7 @@ class World32 extends Phaser.Scene {
     preload() {
         // Import tile map
         this.load.image('sky', "../assets/Backgrounds/Sky Background.png");
-        this.load.tilemapCSV('world31', "../assets/TileMaps/world32.csv");
+        this.load.tilemapCSV('world32', "../assets/TileMaps/world32.csv");
     }
 
     create() {
@@ -24,7 +24,7 @@ class World32 extends Phaser.Scene {
         let scaleY = this.cameras.main.height / bg.height
         let scale = Math.max(scaleX, scaleY)
         bg.setScale(scale).setScrollFactor(0)
-        map = this.make.tilemap({key: "world31", tileWidth: 64, tileHeight: 64});
+        map = this.make.tilemap({key: "world32", tileWidth: 64, tileHeight: 64});
         tileset = map.addTilesetImage("world3tiles");
         layer = map.createStaticLayer(0, tileset);
 
@@ -32,7 +32,7 @@ class World32 extends Phaser.Scene {
         map.setCollisionBetween(0, 10000, true);
 
         // Create Player
-        player = this.physics.add.sprite(this.game.config.width/2, this.game.config.width + 100, "Monkey");
+        player = this.physics.add.sprite(4096, 5930, "Monkey");
         player.body.setSize(45, 60);
         player.body.setOffset(12, 0);
 
@@ -68,7 +68,7 @@ class World32 extends Phaser.Scene {
         scorpions.add(scorpionG);
 
         // Create Gate (Tiled Location * 64)
-        gate = this.add.sprite(12672, 1088, "Gate");
+        gate = this.add.sprite(5504, 584, "Gate");
 
         // Set collision between player, enemies, and collidable layer
         layer.setCollisionByProperty({collides: true});

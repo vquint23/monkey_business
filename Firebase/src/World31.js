@@ -32,7 +32,7 @@ class World31 extends Phaser.Scene {
         map.setCollisionBetween(0, 10000, true);
 
         // Create Player
-        player = this.physics.add.sprite(this.game.config.width/2, 3000, "Monkey");
+        player = this.physics.add.sprite(this.game.config.width/2, 3050, "Monkey");
         player.body.setSize(45, 60);
         player.body.setOffset(12, 0);
 
@@ -68,7 +68,7 @@ class World31 extends Phaser.Scene {
         scorpions.add(scorpionG);
 
         // Create Gate (Tiled Location * 64)
-        gate = this.add.sprite(12672, 1088, "Gate");
+        gate = this.add.sprite(12672, 1096, "Gate");
 
         // Set collision between player, enemies, and collidable layer
         layer.setCollisionByProperty({collides: true});
