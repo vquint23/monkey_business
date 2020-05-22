@@ -1,4 +1,4 @@
-class GameHUD extends Phaser.Scene {
+class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to pause button
     constructor(){
         super("GameHUD");
     }
@@ -11,7 +11,7 @@ class GameHUD extends Phaser.Scene {
 
 }
 
-class PauseMenu extends Phaser.Scene {
+class PauseMenu extends Phaser.Scene {                  //todo: make pause menu actually show
     constructor() {
         super("PauseMenu");
     }
@@ -33,8 +33,8 @@ class PauseMenu extends Phaser.Scene {
     }
     update(){
         if (pauseKeys.pause.isDown) {
+            this.scene.sleep();
             this.scene.resume("World2-1");
-            this.scene.stop();
         }
         if (pauseKeys.levelSelect.isDown) {
             window.location = "LevelSelect.html";
@@ -54,14 +54,10 @@ class World21 extends Phaser.Scene {
         // Import tile map
         this.load.image('sky', "../assets/Backgrounds/Sky Background.png");
         this.load.tilemapCSV('city1', "../assets/TileMaps/city1.csv");
-
-        // Import audio
-        this.load.audio("World2Theme", "../audio/music/world2.ogg");
     }
 
     create() {
         gameOver = false;
-        paused = false;
         gotGate = false;
 
         // Various Text  
@@ -160,7 +156,7 @@ class World21 extends Phaser.Scene {
 
         let musicConfig = {
             mute: false,
-            volume: 1,
+            volume: .4,
             loop: true,
             delay: 0
         };
@@ -349,10 +345,11 @@ class World21 extends Phaser.Scene {
             this.scene.pause();
             this.scene.launch('PauseMenu');
         }
+
     }
 }
 
-var paused, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys,
+var paused, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys, paused,
 player, bg, map, tileset, layer, staff, left, hit, gameOver, healthText, gameOverText, restartText;
 var health = 100;
 

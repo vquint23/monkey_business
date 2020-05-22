@@ -4,6 +4,8 @@ class main2 extends Phaser.Scene {
     }
 
     preload() {
+        // Import audio
+        this.load.audio("World2Theme", "../audio/music/world2.ogg");
         // Load in spritesheets
         this.load.image("cityTiles", "../assets/Images/CityTileSet.png", {
             frameWidth: 64,
