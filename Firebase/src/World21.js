@@ -35,7 +35,7 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
         //Healthbar Stuff
         var healthbarX = gameWidth/1.22;        //this is specific cuz i tested it 40 times
         var healthbarY = gameWidth/21;
-         healthbar = this.add.image(healthbarX, healthbarY, "healthbar");
+        healthbar = this.add.image(healthbarX, healthbarY, "healthbar");
         healthbar.setOrigin(.5,.5);
         healthbar.setScale(.3);
        
@@ -53,10 +53,12 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
         }
     }
 
-    //@todo : rescaling not working properly
     redrawHealth(){
         // if taken 20 damage, healthbar is at 80% width, etc.
-        healthbar.displayWidth = health;
+        if (health <= 0){
+            healthbar.destroy();
+        }
+        healthbar.setScale((.3 *health/100), .3);
     }
 
     loseDisplay(){
@@ -66,6 +68,7 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
             gameOverText.setVisible(false);
             restartText.setVisible(false);
             this.scene.launch("World2-1");
+            music.stop();
             gameOver = false;
             health = 100;
         }
@@ -186,7 +189,7 @@ class World21 extends Phaser.Scene {
         this.physics.add.collider(scorpions, layer);
         this.physics.add.collider(gate, layer);
 
-        this.physics.add.overlap(scorpions, player, this.takeDamage, null, this);
+        this.physics.add.collider(scorpions, player, this.takeDamage, null, this);
         this.physics.add.overlap(hit, scorpions, this.hitEnemy, null, this);
         this.physics.add.overlap(player, gate, this.levelWin, null, this); 
         
@@ -210,7 +213,7 @@ class World21 extends Phaser.Scene {
          });
 
         // Add in music
-        let music = this.sound.add("World2Theme");
+        music = this.sound.add("World2Theme");
 
         let musicConfig = {
             mute: false,
@@ -457,7 +460,7 @@ var config = {
     autoRound: false
 }
 var game = new Phaser.Game(config);
-var paused, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys, hudKeys, paused,
+var paused, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys, hudKeys, paused, music,
 player, bg, map, tileset, layer, staff, left, hit, gameOver, healthbar, gameOverText, restartText,
 continueText, invincible;
 var health = 100;

@@ -127,6 +127,10 @@ class main2 extends Phaser.Scene {
             repeat: -1
         });
 
+        //hurt left
+        //die left
+        //die right
+
 
         // Create enemy animations
         this.anims.create({
@@ -147,5 +151,8 @@ class main2 extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
+        //die left
+        //die right
     }
 }
