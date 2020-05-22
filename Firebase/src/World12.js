@@ -6,7 +6,7 @@ class World11 extends Phaser.Scene {
     preload() {
         // Import tile map
         this.load.image('jungle_bg', "../assets/Backgrounds/temp jungle.png");
-        this.load.tilemapCSV('jungle', "../assets/TileMaps/jungle1.csv");
+        this.load.tilemapCSV('jungle', "../assets/TileMaps/jungle2.csv");
     }
 
     create() {
@@ -25,7 +25,7 @@ class World11 extends Phaser.Scene {
         this.map.setCollisionBetween(0,8);
 
         // Create Player
-        this.player = this.physics.add.sprite(this.game.config.width/5, 1700, "Monkey");
+        this.player = this.physics.add.sprite(128, 4224, "Monkey");
         this.player.setInteractive();
 
         // Set a timer for the running sound effect
@@ -42,19 +42,19 @@ class World11 extends Phaser.Scene {
         this.hit.body.setAllowGravity(false);
 
         // Create enemies
-        this.scorpion1 = this.physics.add.sprite(1500, 1500, "Scorpion");
-        this.scorpion1.setImmovable(true);
-        this.scorpion1.setInteractive();
-        this.scorpion2 = this.physics.add.sprite(2000, 1500, "Scorpion");
-        this.scorpion2.setImmovable(true);
-        this.scorpion2.setInteractive();
-        this.scorpion3 = this.physics.add.sprite(3500, 1500, "Scorpion");
-        this.scorpion3.setImmovable(true);
-        this.scorpion3.setInteractive();
+        // this.scorpion1 = this.physics.add.sprite(1500, 1500, "Scorpion");
+        // this.scorpion1.setImmovable(true);
+        // this.scorpion1.setInteractive();
+        // this.scorpion2 = this.physics.add.sprite(2000, 1500, "Scorpion");
+        // this.scorpion2.setImmovable(true);
+        // this.scorpion2.setInteractive();
+        // this.scorpion3 = this.physics.add.sprite(3500, 1500, "Scorpion");
+        // this.scorpion3.setImmovable(true);
+        // this.scorpion3.setInteractive();
         // this.scorpion4 = this.physics.add.sprite(4500, 1500, "Scorpion");
         // this.scorpion4.setImmovable(true);
         // this.scorpion4.setInteractive();
-        this.dragonfly1 = this.physics.add.sprite(500, 1500, "Dragonfly");
+        this.dragonfly1 = this.physics.add.sprite(768, 3904, "Dragonfly");
         this.dragonfly1.setImmovable(true);
         this.dragonfly1.body.setAllowGravity(false);
         this.dragonfly1.setInteractive();
@@ -62,27 +62,27 @@ class World11 extends Phaser.Scene {
 
         this.scorpions = this.physics.add.group();
         this.dragonflies = this.physics.add.group();
-        this.scorpions.add(this.scorpion1);
-        this.scorpions.add(this.scorpion2);
-        this.scorpions.add(this.scorpion3);
+        // this.scorpions.add(this.scorpion1);
+        // this.scorpions.add(this.scorpion2);
+        // this.scorpions.add(this.scorpion3);
         //this.scorpions.add(this.scorpion4);
         this.dragonflies.add(this.dragonfly1);
 
         // Add win gate
-        this.gate = this.physics.add.sprite(9472, 512, "Gate");
+        this.gate = this.physics.add.sprite(3072, 128, "Gate");
 
         // Set collision between player, enemies, and collidable layer
         this.physics.add.collider(this.player, this.layer);
         // this.physics.add.overlap(this.hit, this.map, function(player, layer) {
         //     console.log("Pogo");
         // });
-        this.physics.add.collider(this.scorpions, this.layer);
+        //this.physics.add.collider(this.scorpions, this.layer);
         this.physics.add.collider(this.dragonflies, this.layer);
-        this.physics.add.collider(this.scorpions, this.scorpions);
+        //this.physics.add.collider(this.scorpions, this.scorpions);
         this.physics.add.collider(this.dragonflies, this.dragonflies);
         this.physics.add.collider(this.gate, this.layer);
         this.physics.add.overlap(this.gate, this.player, function(gate, player) {
-            window.location = "Level12.html";
+            window.location = "Level21.html";
         });
 
         // Set collision between player and enemies
@@ -90,7 +90,7 @@ class World11 extends Phaser.Scene {
         //     if (this.player.)
         // });
 
-        this.physics.add.overlap(this.hit, this.scorpions, this.hitEnemy, null, this);
+        //this.physics.add.overlap(this.hit, this.scorpions, this.hitEnemy, null, this);
         this.physics.add.overlap(this.hit, this.dragonflies, this.hitEnemy, null, this);
 
         this.layer.setCollisionByProperty({collides: true});

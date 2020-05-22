@@ -10,6 +10,9 @@ function startGame(levelname){
     if (levelname === 'level1.1'){
         window.location = "Level11.html";
     }
+    else if (levelname === 'level1.2'){
+        window.location = "Level12.html";
+    }
     else if (levelname === 'level2.1'){
         window.location = "Level21.html";
     }

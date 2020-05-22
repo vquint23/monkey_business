@@ -40,7 +40,7 @@ class main extends Phaser.Scene {
             frameHeight: 20
         });
         this.load.image("Gate", "../assets/Images/gate.png", {
-            frameWidth: 128,
+            frameWidth: 42,
             frameHeight: 128
         });
         
@@ -154,6 +154,26 @@ class main extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+        this.anims.create({
+            key: "scorpion_dead_left",
+            frames: this.anims.generateFrameNumbers("Scorpion", {
+                start: 18,
+                end: 18
+            }),
+            frameRate: 10,
+            duration: 1000,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "scorpion_dead_right",
+            frames: this.anims.generateFrameNumbers("Scorpion", {
+                start: 19,
+                end: 19
+            }),
+            frameRate: 10,
+            duration: 1000,
+            repeat: -1
+        });
 
         // Create dragonfly animations
         this.anims.create({
@@ -172,6 +192,26 @@ class main extends Phaser.Scene {
                 end: 3
             }),
             frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "dragonfly_dead_left",
+            frames: this.anims.generateFrameNumbers("Dragonfly", {
+                start: 4,
+                end: 4
+            }),
+            frameRate: 10,
+            duration: 1000,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "dragonfly_dead_right",
+            frames: this.anims.generateFrameNumbers("Dragonfly", {
+                start: 5,
+                end: 5
+            }),
+            frameRate: 10,
+            duration: 1000,
             repeat: -1
         });
     }
