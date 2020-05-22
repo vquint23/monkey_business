@@ -188,7 +188,7 @@ class World22 extends Phaser.Scene {
         var scorpionA = this.physics.add.sprite(418, 3750, "Scorpion");
         var scorpionB = this.physics.add.sprite(2276, 4114, "Scorpion");
         var scorpionC = this.physics.add.sprite(2978, 1328, "Scorpion");
-        var scorpionD = this.physics.add.sprite(1190, 1261, "Scorpion");
+        var scorpionD = this.physics.add.sprite(1195, 1261, "Scorpion");
         var scorpionE = this.physics.add.sprite(92, 604, "Scorpion");
 
         scorpions = this.physics.add.group();
@@ -338,6 +338,10 @@ class World22 extends Phaser.Scene {
     }
 
     update() {
+        //Check for out of bounds ("fall damage")
+        if (player.y > 4775){
+            health = 0;
+        }
         if(!this.musicPlayed) {
             // Add in music
             // I had to move it here since it would play over itself when the stage restarted
@@ -389,6 +393,7 @@ class World22 extends Phaser.Scene {
     }
     movePlayerManager() {
         // Moves player according to buttons pressed and updates sprite states
+
         if (cursorKeys.left.isDown) {
             left = true;
             player.setVelocityX(-300);

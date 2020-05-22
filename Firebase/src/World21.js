@@ -342,6 +342,10 @@ class World21 extends Phaser.Scene {
     }
 
     update() {
+        //Check for out of bounds ("fall damage")
+        if (player.y > 4775){
+            health = 0;
+        }
         if(!this.musicPlayed) {
             // Add in music
             // I had to move it here since it would play over itself when the stage restarted
