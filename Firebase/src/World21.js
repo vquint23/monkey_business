@@ -156,7 +156,7 @@ class World21 extends Phaser.Scene {
 
         let musicConfig = {
             mute: false,
-            volume: .4,
+            volume: 0.6,
             loop: true,
             delay: 0
         };

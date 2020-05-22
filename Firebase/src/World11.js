@@ -34,6 +34,9 @@ class World11 extends Phaser.Scene {
         this.player = this.physics.add.sprite(this.game.config.width/5, 1700, "Monkey");
         this.player.setInteractive();
 
+        // Set a timer for the running sound effect
+        this.runEffectTimer = 12;
+
         // Create Staff
         this.staff = this.add.sprite(this.player.x - 64, this.player.y, "Staff");
         this.staff.setOrigin(0, 0);
@@ -180,7 +183,7 @@ class World11 extends Phaser.Scene {
 
         let musicConfig = {
             mute: false,
-            volume: 1,
+            volume: 0.6,
             loop: true,
             delay: 0
         };
@@ -210,18 +213,26 @@ class World11 extends Phaser.Scene {
             this.player.setVelocityX(-300);
             if (this.player.body.onFloor()) {
                 this.player.play("run_left", true);
+                this.runEffectTimer--;
 
-                let run = this.sound.add("monkeyRunning");
-                run.play();
+                if(this.runEffectTimer === 0) {
+                    let run = this.sound.add("monkeyRunning");
+                    run.play();
+                    this.runEffectTimer = 12;
+                }
             } 
         } else if (this.cursorKeys.right.isDown) {
             this.left = false;
             this.player.setVelocityX(300);
             if (this.player.body.onFloor()) {
                 this.player.play("run_right", true);
+                this.runEffectTimer--;
 
-                let run = this.sound.add("monkeyRunning");
-                run.play();
+                if(this.runEffectTimer === 0) {
+                    let run = this.sound.add("monkeyRunning");
+                    run.play();
+                    this.runEffectTimer = 12;
+                }
             }
         } else {
             if (this.left) {
@@ -267,7 +278,7 @@ class World11 extends Phaser.Scene {
         enemy.destroy();
 
         let destroy = this.sound.add("enemyDamage");
-        destroy.play();
+        destroy.play({volume: 1.5});
     }
 
 }
