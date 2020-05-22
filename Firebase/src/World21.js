@@ -133,20 +133,17 @@ class PauseMenu extends Phaser.Scene {
         if (pauseKeys.pause.isDown) {
             let exit = this.sound.add("buttonBackward");
             exit.play();
-
             this.scene.sleep();
             this.scene.resume("World2-1");
         }
         if (pauseKeys.levelSelect.isDown) {
             let button = this.sound.add("buttonForward");
             button.play();
-
             window.location = "LevelSelect.html";
         }
         if (pauseKeys.mainMenu.isDown) {
             let button = this.sound.add("buttonForward");
             button.play();
-
             window.location = "MainMenu.html";
         }
     }
@@ -165,6 +162,7 @@ class World21 extends Phaser.Scene {
     }
 
     create() {
+        this.sound.stopAll();
         gameOver = false;
         gotGate = false;
         invincible = false;
@@ -327,7 +325,6 @@ class World21 extends Phaser.Scene {
     
     hitEnemy(hit, enemy) {
         enemy.destroy();
-
         let destroy = this.sound.add("enemyDamage");
         destroy.play({volume: 1.5});
     }
@@ -337,10 +334,9 @@ class World21 extends Phaser.Scene {
         if(!invincible){
             health-=15;
             console.log("Current Health: " + health);
-
             let damage = this.sound.add("monkeyDamage");
             damage.play();
-            
+
             if(left){
                 player.setVelocityX(-100);
                 //player.play("hurt_left, true")
@@ -367,14 +363,12 @@ class World21 extends Phaser.Scene {
             // Add in music
             // I had to move it here since it would play over itself when the stage restarted
             let music = this.sound.add("World2Theme");
-
             let musicConfig = {
                 mute: false,
                 volume: 0.5,
                loop: true,
                delay: 0
             };
-
             music.play(musicConfig);
             this.musicPlayed = true;
         }
@@ -399,7 +393,6 @@ class World21 extends Phaser.Scene {
         this.extendStaff();
         // Controls Health
         this.healthManager();
-
         //testing
         this.invincibilityManager();
     }
@@ -470,6 +463,9 @@ class World21 extends Phaser.Scene {
     moveScorpionManager(){
         Phaser.Actions.Call(scorpions.getChildren(), child => {
             child.body.moves = true;
+            if (gameOver){
+                child.body.moves = false;
+            }
             if (player.x < child.x){
                 child.play("scorpion_idle_left", true);
                 child.setVelocityX(-100);
@@ -489,7 +485,6 @@ class World21 extends Phaser.Scene {
         if(cursorKeys.pause.isDown){
             let button = this.sound.add("buttonForward");
             button.play();
-
             this.scene.pause();
             this.scene.launch('PauseMenu');
         }
