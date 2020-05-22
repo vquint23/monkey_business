@@ -5,14 +5,22 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
     preload(){
         this.load.image("healthbar", "../assets/Images/health.png");
         this.load.image("healthbase", "../assets/Images/healthbase.png");
+        this.load.image("pausemenu", "../assets/Images/pausemenu.png");
     }
     create(){
         let gamePlaying = this.scene.get("World2-1");
 
+        //Pause Stuff
+        pauseBG = this.add.image(game.config.width/2, game.config.height/2, "pausemenu");
+        pauseBG.setOrigin(.5, .5);
+        pauseBG.setScale(.45);
+        pauseBG.setVisible(false);
         // Map keyboard inputs for HUD interaction 
         hudKeys = this.input.keyboard.createCursorKeys();
         hudKeys = this.input.keyboard.addKeys ({
             continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
+            levelSelect: Phaser.Input.Keyboard.KeyCodes.L,
+            mainMenu: Phaser.Input.Keyboard.KeyCodes.X
          });
         //Win Stuff                                                                                                     
         wintext = this.add.text(gameWidth/2, gameHeight/3, 'LEVEL COMPLETE!',
@@ -24,9 +32,7 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         {fontSize: '64px', fill: '#c70707'});
         gameOverText.setOrigin(.5, .5);
         gameOverText.setVisible(false);
-
         this.deathEventHappened = false;
-
         // Restart 
         restartText = this.add.text(gameHeight/2, gameWidth/2, 'PRESS ENTER TO RESTART', 
         {fontSize: '32px', fill: '#fff'});
@@ -35,7 +41,6 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         continueText = this.add.text(gameHeight/2, gameWidth/2, 'PRESS ENTER TO CONTINUE', 
         {fontSize: '32px', fill: '#fff'});
         continueText.setVisible(false);
-
         //Healthbar Stuff
         var healthbarX = gameWidth/1.22;        //this is specific cuz i tested it 40 times
         var healthbarY = gameWidth/21;
@@ -45,12 +50,13 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         healthbar = this.add.image(healthbarX, healthbarY, "healthbar");
         healthbar.setOrigin(.5,.5);
         healthbar.setScale(.3);
-
-       
         //Listeners for events (health change, win, lose)
         gamePlaying.events.on('levelWin', this.winDisplay, this);
         gamePlaying.events.on('takeDmg', this.redrawHealth, this);
         gamePlaying.events.on('gameOver', this.loseDisplay, this);
+        gamePlaying.events.on('pause', this.pauseMenu, this);
+        gamePlaying.events.on('unpause', this.unpauseGame, this);
+        
     }
 
     winDisplay(){
@@ -74,20 +80,16 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
             gameOverText.setVisible(true);
             restartText.setVisible(true);
             this.sound.stopAll();
-
             let damage = this.sound.add("monkeyDamage");
             damage.play();
-
             // Add in game over music (but only play it once)
             let deathMusic = this.sound.add("GameOverTheme");
-
             let musicConfig = {
                 mute: false,
                 volume: 0.5,
                 loop: false,
                 delay: 0
             };
-
             deathMusic.play(musicConfig);
             this.deathEventHappened = true;
         }
@@ -97,58 +99,36 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
             restartText.setVisible(false);
             this.scene.stop("World2-1");
             this.scene.start("World2-1");
-
             this.sound.stopAll();
             let button = this.sound.add("buttonForward");
             button.play();
-
             gameOver = false;
             health = 100;
         }
     }
 
-}
-
-class PauseMenu extends Phaser.Scene {                  
-    constructor() {
-        super("PauseMenu");
-    }
-    preload(){
-        //Pause image
-        this.load.image("pausemenu", "../assets/Images/pausemenu.png");
-    }
-    create(){
-        var pauseBG = this.add.image(game.config.width/2, game.config.height/2, "pausemenu");
-        pauseBG.setOrigin(.5, .5);
-        pauseBG.setScale(.45);
-         // Map keyboard inputs for menu 
-        pauseKeys = this.input.keyboard.createCursorKeys();
-        pauseKeys = this.input.keyboard.addKeys ({
-             pause: Phaser.Input.Keyboard.KeyCodes.ESC,
-             levelSelect: Phaser.Input.Keyboard.KeyCodes.L,
-             mainMenu: Phaser.Input.Keyboard.KeyCodes.X,
-          });
-    }
-    update(){
-        if (pauseKeys.pause.isDown) {
-            let exit = this.sound.add("buttonBackward");
-            exit.play();
-            this.scene.sleep();
-            this.scene.resume("World2-1");
-        }
-        if (pauseKeys.levelSelect.isDown) {
+    pauseMenu(){
+        let button = this.sound.add("buttonForward");
+        button.play();
+        pauseBG.setVisible(true);       
+        paused = true; 
+        if (hudKeys.levelSelect.isDown) {
             let button = this.sound.add("buttonForward");
             button.play();
             window.location = "LevelSelect.html";
         }
-        if (pauseKeys.mainMenu.isDown) {
+        if (hudKeys.mainMenu.isDown) {
             let button = this.sound.add("buttonForward");
             button.play();
             window.location = "MainMenu.html";
         }
     }
+    unpauseGame(){
+        pauseBG.setVisible(false);            
+        let button = this.sound.add("buttonForward");
+        button.play();
+    }
 }
-
 class World21 extends Phaser.Scene {
     constructor() {
         super("World2-1");
@@ -166,6 +146,7 @@ class World21 extends Phaser.Scene {
         gameOver = false;
         gotGate = false;
         invincible = false;
+        paused = false;
         
         // Used to determine which way player is facing
         left = false;
@@ -246,14 +227,14 @@ class World21 extends Phaser.Scene {
             left: Phaser.Input.Keyboard.KeyCodes.A,
             right: Phaser.Input.Keyboard.KeyCodes.D, 
             continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
-            pause: Phaser.Input.Keyboard.KeyCodes.ESC,
+            pause: Phaser.Input.Keyboard.KeyCodes.Q,
             levelSelect: Phaser.Input.Keyboard.KeyCodes.L,
             mainMenu: Phaser.Input.Keyboard.KeyCodes.X,
+            unpause: Phaser.Input.Keyboard.KeyCodes.ESC,
             //debug/testing:
             invincibility: Phaser.Input.Keyboard.KeyCodes.I
          });
-
-        
+       
         this.scene.launch('GameHUD');
     }
 
@@ -336,13 +317,14 @@ class World21 extends Phaser.Scene {
             console.log("Current Health: " + health);
             let damage = this.sound.add("monkeyDamage");
             damage.play();
-
             if(left){
                 player.setVelocityX(-100);
+                player.setVelocityY(-100);
                 //player.play("hurt_left, true")
             }
             else{
                 player.setVelocityX(100);
+                player.setVelocityY(-100);
                 player.play("hurt_right");
             }           
             this.events.emit('takeDmg');
@@ -372,7 +354,6 @@ class World21 extends Phaser.Scene {
             music.play(musicConfig);
             this.musicPlayed = true;
         }
-        
         if (gameOver){
             this.sound.remove(music);
             this.gameOver();
@@ -464,9 +445,10 @@ class World21 extends Phaser.Scene {
         Phaser.Actions.Call(scorpions.getChildren(), child => {
             child.body.moves = true;
             if (gameOver){
-                child.body.moves = false;
+                child.setVelocityX(0);
+                child.setVelocityY(0);
             }
-            if (player.x < child.x){
+            else if (player.x < child.x){
                 child.play("scorpion_idle_left", true);
                 child.setVelocityX(-100);
             }
@@ -483,12 +465,19 @@ class World21 extends Phaser.Scene {
 
     pauseManager(){
         if(cursorKeys.pause.isDown){
-            let button = this.sound.add("buttonForward");
-            button.play();
-            this.scene.pause();
-            this.scene.launch('PauseMenu');
+            this.events.emit('pause');
+            Phaser.Actions.Call(scorpions.getChildren(), child => {
+                child.body.moves= false;
+            });
+            player.body.moves = false;
         }
-
+        if(cursorKeys.unpause.isDown){
+            Phaser.Actions.Call(scorpions.getChildren(), child => {
+                child.body.moves= true;
+            });
+            player.body.moves = true;
+            this.events.emit('unpause');
+        }
     }
 }
 
@@ -498,7 +487,7 @@ var config = {
     width: 1200,
     height: 700,
     bgColor: 0x000000,
-    scene: [main2, World21, PauseMenu, GameHUD],
+    scene: [main2, World21, GameHUD],
     pixelArt: true,
     physics: {
         default: "arcade",
@@ -510,7 +499,7 @@ var config = {
     autoRound: false
 }
 var game = new Phaser.Game(config);
-var paused, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys, hudKeys, paused, music,
+var beenPaused, pauseBG, cursorKeys, scorpions, gate, gotGate, wintext, pauseKeys, hudKeys, paused, music,
 player, bg, map, tileset, layer, staff, left, hit, gameOver, healthbar, healthbase, gameOverText, restartText,
 continueText, invincible;
 var health = 100;
