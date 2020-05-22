@@ -3,7 +3,7 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         super({key: "GameHUD", active: true});
     }
     preload(){
-        this.load.image("healthbar", "../assets/Images/healthbar.png");
+        this.load.image("healthbar", "../assets/Images/health.png");
         this.load.image("healthbase", "../assets/Images/healthbase.png");
         this.load.image("pausemenu", "../assets/Images/pausemenu.png");
     }
@@ -63,7 +63,7 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         wintext.setVisible(true);
         continueText.setVisible(true);
         if (hudKeys.continue.isDown){
-            window.location = "Level31.html";
+            window.location = "Level12.html";
         }
     }
 
@@ -97,8 +97,8 @@ class GameHUD extends Phaser.Scene {            //todo: ESC to pause text? add t
         if (cursorKeys.continue.isDown){
             gameOverText.setVisible(false);
             restartText.setVisible(false);
-            this.scene.stop("World2-1");
-            this.scene.start("World2-1");
+            this.scene.stop("World1-1");
+            this.scene.start("World1-1");
             this.sound.stopAll();
             let button = this.sound.add("buttonForward");
             button.play();
