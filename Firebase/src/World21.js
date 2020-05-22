@@ -56,7 +56,7 @@ class GameHUD extends Phaser.Scene {            //todo: make health bar + ESC to
     //@todo : rescaling not working properly
     redrawHealth(){
         // if taken 20 damage, healthbar is at 80% width, etc.
-        healthbar.displayWidth = health/10;
+        healthbar.displayWidth = health;
     }
 
     loseDisplay(){
@@ -316,7 +316,6 @@ class World21 extends Phaser.Scene {
     }
 
     levelWin(){
-        player.body.enable = false;   
         this.events.emit('levelWin'); 
     }
 
@@ -358,6 +357,7 @@ class World21 extends Phaser.Scene {
     //for testing/ debugging
     invincibilityManager(){
         if(cursorKeys.invincibility.isDown){
+            console.log("Invincibility was activated.");
             invincible = true;
         }
     }
