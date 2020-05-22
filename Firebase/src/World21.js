@@ -488,8 +488,6 @@ class World21 extends Phaser.Scene {
     }
 }
 
-}
-
 var config = {
     parent: "game-container",
     type: Phaser.AUTO,
