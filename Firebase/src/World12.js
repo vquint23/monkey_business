@@ -105,7 +105,14 @@ class World11 extends Phaser.Scene {
             up: Phaser.Input.Keyboard.KeyCodes.SPACE,
             down: Phaser.Input.Keyboard.KeyCodes.S,
             left: Phaser.Input.Keyboard.KeyCodes.A,
-            right: Phaser.Input.Keyboard.KeyCodes.D
+            right: Phaser.Input.Keyboard.KeyCodes.D, 
+            continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
+            pause: Phaser.Input.Keyboard.KeyCodes.Q,
+            levelSelect: Phaser.Input.Keyboard.KeyCodes.L,
+            mainMenu: Phaser.Input.Keyboard.KeyCodes.X,
+            unpause: Phaser.Input.Keyboard.KeyCodes.ESC,
+            //debug/testing:
+            invincibility: Phaser.Input.Keyboard.KeyCodes.I
          });
         
         // Add in music
@@ -304,6 +311,61 @@ class World11 extends Phaser.Scene {
 
         let destroy = this.sound.add("enemyDamage");
         destroy.play({volume: 1.5});
+    }
+
+    takeDamage(player, enemy){
+        if(!invincible){
+            health-=15;
+            console.log("Current Health: " + health);
+            let damage = this.sound.add("monkeyDamage");
+            damage.play();
+            if(left){
+                player.setVelocityX(-100);
+                player.setVelocityY(-100);
+                //player.play("hurt_left, true")
+            }
+            else{
+                player.setVelocityX(100);
+                player.setVelocityY(-100);
+                player.play("hurt_right");
+            }           
+            this.events.emit('takeDmg');
+        }
+    }
+    levelWin(){
+        this.events.emit('levelWin'); 
+    }
+    gameOver(){
+        player.body.enable = false;
+        this.events.emit('gameOver');
+    }
+    healthManager(){
+        if (health <= 0){
+            gameOver = true;
+        }
+    }
+    //for testing/ debugging
+    invincibilityManager(){
+        if(cursorKeys.invincibility.isDown){
+            console.log("Invincibility was activated.");
+            invincible = true;
+        }
+    }
+    pauseManager(){
+        if(cursorKeys.pause.isDown){
+            this.events.emit('pause');
+            Phaser.Actions.Call(scorpions.getChildren(), child => {
+                child.body.moves= false;
+            });
+            player.body.moves = false;
+        }
+        if(cursorKeys.unpause.isDown){
+            Phaser.Actions.Call(scorpions.getChildren(), child => {
+                child.body.moves= true;
+            });
+            player.body.moves = true;
+            this.events.emit('unpause');
+        }
     }
 
 }

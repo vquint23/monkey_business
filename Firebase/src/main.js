@@ -43,6 +43,10 @@ class main extends Phaser.Scene {
             frameWidth: 42,
             frameHeight: 128
         });
+        this.load.image("Beam", "../assets/Images/beam.png", {
+            frameWidth: 16,
+            frameHeight: 16
+        });
         
     }
 

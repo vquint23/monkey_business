@@ -51,13 +51,13 @@ class World11 extends Phaser.Scene {
         this.scorpion3 = this.physics.add.sprite(3500, 1500, "Scorpion");
         this.scorpion3.setImmovable(true);
         this.scorpion3.setInteractive();
-        // this.scorpion4 = this.physics.add.sprite(4500, 1500, "Scorpion");
-        // this.scorpion4.setImmovable(true);
-        // this.scorpion4.setInteractive();
-        this.dragonfly1 = this.physics.add.sprite(500, 1500, "Dragonfly");
-        this.dragonfly1.setImmovable(true);
-        this.dragonfly1.body.setAllowGravity(false);
-        this.dragonfly1.setInteractive();
+        this.scorpion4 = this.physics.add.sprite(4160, 1664, "Scorpion");
+        this.scorpion4.setImmovable(true);
+        this.scorpion4.setInteractive();
+        // this.dragonfly1 = this.physics.add.sprite(500, 1500, "Dragonfly");
+        // this.dragonfly1.setImmovable(true);
+        // this.dragonfly1.body.setAllowGravity(false);
+        // this.dragonfly1.setInteractive();
 
 
         this.scorpions = this.physics.add.group();
@@ -65,17 +65,14 @@ class World11 extends Phaser.Scene {
         this.scorpions.add(this.scorpion1);
         this.scorpions.add(this.scorpion2);
         this.scorpions.add(this.scorpion3);
-        //this.scorpions.add(this.scorpion4);
-        this.dragonflies.add(this.dragonfly1);
+        this.scorpions.add(this.scorpion4);
+        //this.dragonflies.add(this.dragonfly1);
 
         // Add win gate
-        this.gate = this.physics.add.sprite(9472, 512, "Gate");
+        this.gate = this.physics.add.sprite(9558, 512, "Gate");
 
         // Set collision between player, enemies, and collidable layer
         this.physics.add.collider(this.player, this.layer);
-        // this.physics.add.overlap(this.hit, this.map, function(player, layer) {
-        //     console.log("Pogo");
-        // });
         this.physics.add.collider(this.scorpions, this.layer);
         this.physics.add.collider(this.dragonflies, this.layer);
         this.physics.add.collider(this.scorpions, this.scorpions);
@@ -86,9 +83,8 @@ class World11 extends Phaser.Scene {
         });
 
         // Set collision between player and enemies
-        // this.physics.add.collider(this.enemies, this.player, function(enemy, player) {
-        //     if (this.player.)
-        // });
+        this.physics.add.collider(this.scorpions, this.player, this.takeDamage, null, this);
+        this.physics.add.collider(this.dragonflies, this.player, this.takeDamage, null, this);
 
         this.physics.add.overlap(this.hit, this.scorpions, this.hitEnemy, null, this);
         this.physics.add.overlap(this.hit, this.dragonflies, this.hitEnemy, null, this);
@@ -105,8 +101,17 @@ class World11 extends Phaser.Scene {
             up: Phaser.Input.Keyboard.KeyCodes.SPACE,
             down: Phaser.Input.Keyboard.KeyCodes.S,
             left: Phaser.Input.Keyboard.KeyCodes.A,
-            right: Phaser.Input.Keyboard.KeyCodes.D
+            right: Phaser.Input.Keyboard.KeyCodes.D, 
+            continue: Phaser.Input.Keyboard.KeyCodes.ENTER,
+            pause: Phaser.Input.Keyboard.KeyCodes.Q,
+            levelSelect: Phaser.Input.Keyboard.KeyCodes.L,
+            mainMenu: Phaser.Input.Keyboard.KeyCodes.X,
+            unpause: Phaser.Input.Keyboard.KeyCodes.ESC,
+            //debug/testing:
+            invincibility: Phaser.Input.Keyboard.KeyCodes.I
          });
+
+         this.scene.launch('GameHUD');
         
         // Add in music
         let music = this.sound.add("World1Theme");
@@ -132,8 +137,13 @@ class World11 extends Phaser.Scene {
         // Controls movement of player sprite
         this.movePlayerManager();
 
+        this.pauseManager();
+        // Controls Staff Mechanic
         this.extendStaff();
-
+        // Controls Health
+        this.healthManager();
+        //testing
+        this.invincibilityManager();
         // Controls movement of scorpions
         this.moveScorpionManager();
         this.moveDragonflyManager();
@@ -306,6 +316,61 @@ class World11 extends Phaser.Scene {
         destroy.play({volume: 1.5});
     }
 
+    takeDamage(player, enemy){
+        if(!invincible){
+            health-=15;
+            console.log("Current Health: " + health);
+            let damage = this.sound.add("monkeyDamage");
+            damage.play();
+            if(left){
+                this.player.setVelocityX(-100);
+                this.player.setVelocityY(-100);
+                //player.play("hurt_left, true")
+            }
+            else{
+                this.player.setVelocityX(100);
+                this.player.setVelocityY(-100);
+                this.player.play("hurt_right");
+            }           
+            this.events.emit('takeDmg');
+        }
+    }
+    levelWin(){
+        this.events.emit('levelWin'); 
+    }
+    gameOver(){
+        this.player.body.enable = false;
+        this.events.emit('gameOver');
+    }
+    healthManager(){
+        if (health <= 0){
+            gameOver = true;
+        }
+    }
+    //for testing/ debugging
+    invincibilityManager(){
+        if(cursorKeys.invincibility.isDown){
+            console.log("Invincibility was activated.");
+            invincible = true;
+        }
+    }
+    pauseManager(){
+        if(cursorKeys.pause.isDown){
+            this.events.emit('pause');
+            Phaser.Actions.Call(this.scorpions.getChildren(), child => {
+                child.body.moves= false;
+            });
+            this.player.body.moves = false;
+        }
+        if(cursorKeys.unpause.isDown){
+            Phaser.Actions.Call(this.scorpions.getChildren(), child => {
+                child.body.moves= true;
+            });
+            this.player.body.moves = true;
+            this.events.emit('unpause');
+        }
+    }
+
 }
 var config = {
     parent: "game-container",
@@ -313,7 +378,7 @@ var config = {
     width: 1200,
     height: 700,
     bgColor: 0x000000,
-    scene: [main, World11],
+    scene: [main, World11, GameHUD],
     pixelArt: true,
     physics: {
         default: "arcade",
@@ -325,3 +390,6 @@ var config = {
     autoRound: false
 }
 var game = new Phaser.Game(config);
+
+var invincible, gameOver;
+var health = 100;
