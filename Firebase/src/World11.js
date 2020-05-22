@@ -78,14 +78,25 @@ class World11 extends Phaser.Scene {
         this.enemies.add(this.scorpion7);
         this.enemies.add(this.scorpion8);
 
+        // Add win gate
+        this.gate = this.physics.add.sprite(9472, 512, "Gate");
+
         // Set collision between player, enemies, and collidable layer
         this.physics.add.collider(this.player, this.layer);
-        this.physics.add.collider(this.hit, this.layer);
+        // this.physics.add.overlap(this.hit, this.map, function(player, layer) {
+        //     console.log("Pogo");
+        // });
         this.physics.add.collider(this.enemies, this.layer);
         this.physics.add.collider(this.enemies, this.enemies);
+        this.physics.add.collider(this.gate, this.layer);
+        this.physics.add.overlap(this.gate, this.player, function(gate, player) {
+            window.location = "Level21.html";
+        })
 
         // Set collision between player and enemies
-        this.physics.add.collider(this.enemies, this.player);
+        // this.physics.add.collider(this.enemies, this.player, function(enemy, player) {
+        //     if (this.player.)
+        // });
 
         this.physics.add.overlap(this.hit, this.enemies, this.hitEnemy, null, this);
 
@@ -139,6 +150,13 @@ class World11 extends Phaser.Scene {
                     duration: 30,
                     repeat: 0
                 })
+                // this.pogo = new Phaser.Geom.Rectangle(this.game.input.mousePointer.x + this.cameras.main.scrollX,
+                //     this.game.input.mousePointer.y + this.cameras.main.scrollY,
+                //     20, 20);
+                
+                // if (this.map.getTilesWithinShape(this.pogo, this.cameras.main).index == null) {
+                //     console.log(this.map.getTilesWithinShape(this.pogo, this.cameras.main).index);
+                // }
             } else {
                 this.tweens.add({
                     targets: this.staff,

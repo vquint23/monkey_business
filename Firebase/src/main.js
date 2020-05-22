@@ -29,6 +29,10 @@ class main extends Phaser.Scene {
             frameWidth: 20,
             frameHeight: 20
         });
+        this.load.image("Gate", "../assets/Images/gate.png", {
+            frameWidth: 128,
+            frameHeight: 128
+        });
         
     }
 
