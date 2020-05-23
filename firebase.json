@@ -10,7 +10,7 @@
     "rewrites":[
       {
         "source": "gdd",
-        "destination": "/GameDesignDocument.html"
+        "destination": "/gdd.html"
       }
     ]
   }
