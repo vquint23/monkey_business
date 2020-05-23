@@ -1,21 +1,17 @@
 {
   "hosting": {
-    "site": "monkeybusiness",
+    "site": "monkeybusinessv",
     "public": "Firebase",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [
+    "rewrites":[
       {
-        "source": "benchmark1",
-        "destination": "/benchmark1.html"
-      },
-      {
-        "source": "benchmark2",
-        "destination": "/benchmark2.html"
-      }   
+        "source": "gdd",
+        "destination": "/GameDesignDocument.html"
+      }
     ]
   }
 }
