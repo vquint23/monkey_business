@@ -7,11 +7,13 @@ var titleScene = new TitleScene();
 
 //* Game scene */
 var config = {
-    parent: "game",
+  parent: "game",
   type: Phaser.AUTO,
   width: 1200,
-  height: 700,
+  height: 800,
+  transparent: true,
   scale: {
+    mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH
 },
 autoRound: false

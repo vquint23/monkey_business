@@ -10,9 +10,10 @@ body {
 }
 
 #game{
-    display: inline-block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
   
 #logo {
