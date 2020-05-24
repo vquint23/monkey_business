@@ -41,4 +41,4 @@ game.scene.add('menuScene', menuScene);
 game.scene.add("game", gameScene);
 
 // start title
-game.scene.start('menuScene');
+game.scene.start('titleScene');
