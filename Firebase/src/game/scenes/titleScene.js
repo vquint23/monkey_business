@@ -24,21 +24,21 @@ class TitleScene extends Phaser.Scene {
             .setOrigin(0,0)
             .setDisplaySize(1200, 750);
 
+        var logo = this.add.sprite(gameWidth/2, gameHeight/3, 'logo')
+            .setOrigin(0.5,0.5)
+            .setScale(.4);
+
         var textConfig = {
             fontSize: '64px',
             fontStyle: 'bold',
             color: '#000',
         }
 
-        var logo = this.add.sprite(gameWidth/2, gameHeight/3, 'logo')
-            .setOrigin(0.5,0.5)
-            .setScale(.4);
-
         var startText = this.add.text(gameWidth/4, gameHeight/1.5, "Click to Start!", textConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => startText.setColor("#fff") )
             .on('pointerout', () => startText.setColor("#000") )
-            .on('pointerdown', () => this.menuSwitch(logo, startText) );
+            .on('pointerdown', () => this.scene.switch('menuScene') );
         
         var musicConfig = {
             mute: false,
@@ -49,12 +49,6 @@ class TitleScene extends Phaser.Scene {
 
         var music = this.sound.add("titleMusic")
             .play(musicConfig);
-    }
-
-    menuSwitch(logo, startText){
-        logo.setVisible(false);
-        startText.setVisible(false);
-        this.scene.switch('menuScene');
     }
 }
 
