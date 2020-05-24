@@ -6,6 +6,8 @@ class LevelsScene extends Phaser.Scene {
         this.load.image('border', '../src/assets/images/backgrounds/staff_border.png');
         this.load.image('background', '../src/assets/images/backgrounds/sky_bg.png');
         this.load.image('menuBG', '../src/assets/images/backgrounds/MenuBase.png');
+        this.load.image('backarrow2', '../src/assets/images/icons/back2.png');
+        this.load.image('backarrow', '../src/assets/images/icons/back.png');
         this.load.image('staff', '../src/assets/sprites/staff.png')
         this.load.image('logo', '../src/assets/logo.png');
     }
@@ -90,6 +92,16 @@ class LevelsScene extends Phaser.Scene {
         this.initStaff(world2Staff);
         var world3Staff = this.add.sprite((gameWidth/2 + 160), 515, "staff");
         this.initStaff(world3Staff);
+
+        var backArrow = this.add.sprite(gameWidth - 300, gameHeight-160, "backarrow")
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => backArrow2.setVisible(true) )
+            .on('pointerout', () => backArrow2.setVisible(false) )
+            .on('pointerdown', () => this.scene.switch('menuScene') );
+        this.initArrows(backArrow, true);
+
+        var backArrow2 = this.add.sprite(gameWidth - 300, gameHeight-160, "backarrow2");
+        this.initArrows(backArrow2, false);
     }
 
     hover(text, staff){
@@ -110,6 +122,12 @@ class LevelsScene extends Phaser.Scene {
         staff.setOrigin(0.5, 0.5)
         .setScale(.10)
         .setVisible(false);
+    }
+
+    initArrows(arrow, visible){
+        arrow.setOrigin(0.5, 0.5)
+        .setScale(.1)
+        .setVisible(visible);
     }
 
     unlockLevel(level){
