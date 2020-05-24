@@ -1,11 +1,13 @@
 import TitleScene from './scenes/titleScene.js';
 import MenuScene from './scenes/menuScene.js';
 import GameScene from './scenes/gameScene.js';
+import LevelsScene from './scenes/levelsScene.js';
 
 // Scenes
 var gameScene = new GameScene();
 var titleScene = new TitleScene();
 var menuScene = new MenuScene();
+var levelsScene = new LevelsScene();
 
 // Game Settings
 var config = {
@@ -32,7 +34,7 @@ var game = new Phaser.Game(config);
 // Load Scenes
 game.scene.add('titleScene', titleScene);
 game.scene.add('menuScene', menuScene);
-//level select scene
+game.scene.add('levelsScene', levelsScene);
 //about scene
 //controls scene
 //world 1
@@ -41,4 +43,4 @@ game.scene.add('menuScene', menuScene);
 game.scene.add("game", gameScene);
 
 // start title
-game.scene.start('titleScene');
+game.scene.start('levelsScene');
