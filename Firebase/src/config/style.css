@@ -1,0 +1,24 @@
+body {
+    background-color: rgb(137, 210, 235);
+    height: 100%;
+    width: 100%;
+  }
+
+#game-container{
+    align-content: center;
+    text-align: center;
+}
+
+#game{
+    display: inline-block;
+}
+  
+#logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 10%;
+    width: 15%;
+}
+
+

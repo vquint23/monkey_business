@@ -14,21 +14,16 @@
     <script defer src="/__/firebase/7.14.0/firebase-storage.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
-    <link rel="stylesheet" type="text/css" href="src/style.css">
-    <script src="src/index.js"></script>
-    <style type="text/css">
-        body {
-            margin: 0;
-        }
+    <link rel="stylesheet" type="text/css" href="src/config/style.css">
+    <script src="src/Phaser/phaser.js"></script>
     </style>
   </head>
   <body>
-    <div id = 'game-box'>
-      <div id = 'game'>
-        <img id = "bg-image" src = "./src/assets/Images/Images/Splash Screen.png">
-        <div id = "start-text" onclick = "mainMenu('./src/scenes/MainMenu.html')">Click Here to Start!</div>
+    <div id = "game-container">
+      <img src = "src/assets/logo.png" id = "logo">
+      <div id = "game">
+        <script src = "src/game/game.js" type="module"></script>
       </div>
     </div>
-    
- </body>
+  </body>
 </html>
