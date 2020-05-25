@@ -11,16 +11,16 @@ class AboutScene extends Phaser.Scene {
     }
 
     create(){
-        var gameHeight = this.game.config.height;
-        var gameWidth = this.game.config.width;
+        var gameHeight = 700;
+        var gameWidth = 1100;
         
         var bg = this.add.sprite(55, 45, 'background')
             .setOrigin(0, 0)
             .setDisplaySize(1075, 650);
 
-        var menuBG = this.add.sprite((gameWidth/2) - 30, (gameHeight/2) - 30,  'menuBG')
+        var menuBG = this.add.sprite(590, 375, 'menuBG')
             .setOrigin(0.5, 0.5)
-            .setScale(.45);
+            .setDisplaySize(1300, 820);
 
 		var border = this.add.sprite(0,0,'border')
             .setOrigin(0,0)
@@ -43,25 +43,25 @@ class AboutScene extends Phaser.Scene {
         }
         
         //Header Text
-        this.add.text((gameWidth/3) + 100, 100, "ABOUT", menuTextConfig);
+        this.add.text(510, 105, "ABOUT", menuTextConfig);
  
         var bgHeaderText = this.add.text(gameWidth/4, 220, "Backstory:", headerTextConfig);
-        this.add.text(gameWidth/4 + 50, 280, "Play as Sun Wukong, the Monkey King,", itemTextConfig);
-        this.add.text(gameWidth/4, 320, "on his quest to conquer the heavens, ", itemTextConfig);
-        this.add.text(gameWidth/4, 360, "prove his worth, and ascend to godhood!", itemTextConfig);
+        this.add.text(350, 280, "Play as Sun Wukong, the Monkey King,", itemTextConfig);
+        this.add.text(325, 320, "on his quest to conquer the heavens, ", itemTextConfig);
+        this.add.text(325, 360, "prove his worth, and ascend to godhood!", itemTextConfig);
         var aboutHeaderText = this.add.text(gameWidth/4, 420, "About:", headerTextConfig);
-        this.add.text(gameWidth/4 + 50, 480, "Monkey Business is a 2D Platformer game", itemTextConfig);
-        this.add.text(gameWidth/4, 520, "created using the Phaser game engine by", itemTextConfig);
-        this.add.text(gameWidth/4, 560, "Jacob Joseph, V Quintana, and JJ Salvador.", itemTextConfig);
+        this.add.text(350, 480, "Monkey Business is a 2D Platformer game", itemTextConfig);
+        this.add.text(325, 520, "created using the Phaser game engine by", itemTextConfig);
+        this.add.text(325, 560, "Jacob Joseph, V Quintana, and JJ Salvador.", itemTextConfig);
 
-        var backArrow = this.add.sprite(gameWidth - 300, gameHeight-160, "backarrow")
+        var backArrow = this.add.sprite(gameWidth - 200, gameHeight - 70, "backarrow")
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => backArrow2.setVisible(true) )
             .on('pointerout', () => backArrow2.setVisible(false) )
             .on('pointerdown', () => this.scene.switch('menuScene') );
         this.initArrows(backArrow, true);
 
-        var backArrow2 = this.add.sprite(gameWidth - 300, gameHeight-160, "backarrow2");
+        var backArrow2 = this.add.sprite(gameWidth - 200, gameHeight - 70, "backarrow2");
         this.initArrows(backArrow2, false);
     }
 

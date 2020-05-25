@@ -13,8 +13,8 @@ class TitleScene extends Phaser.Scene {
 	}
 
 	create() {
-        var gameHeight = this.game.config.height;
-        var gameWidth = this.game.config.width;
+        var gameHeight = 700;
+        var gameWidth = 1100;
         
         var bg = this.add.sprite(55, 45, 'background')
             .setOrigin(0, 0)
@@ -24,7 +24,7 @@ class TitleScene extends Phaser.Scene {
             .setOrigin(0,0)
             .setDisplaySize(1200, 750);
 
-        var logo = this.add.sprite(gameWidth/2, gameHeight/3, 'logo')
+        var logo = this.add.sprite(600, gameHeight/2, 'logo')
             .setOrigin(0.5,0.5)
             .setScale(.4);
 
@@ -34,7 +34,7 @@ class TitleScene extends Phaser.Scene {
             color: '#000',
         }
 
-        var startText = this.add.text(gameWidth/4, gameHeight/1.5, "Click to Start!", textConfig)
+        var startText = this.add.text(300, 600, "Click to Start!", textConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => startText.setColor("#fff") )
             .on('pointerout', () => startText.setColor("#000") )

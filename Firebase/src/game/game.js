@@ -9,6 +9,7 @@ import Level21 from './scenes/levels/level21.js';
 import Level22 from './scenes/levels/level22.js';
 import Level31 from './scenes/levels/level31.js';
 import Level32 from './scenes/levels/level32.js';
+import GameHUD from './scenes/gameHUD.js';
 
 
 // Menu Scenes
@@ -26,12 +27,15 @@ var level22 = new Level22();
 var level31 = new Level31();
 var level32 = new Level32();
 
+// Game HUD
+var gameHUD = new GameHUD();
+
 // Game Settings
 var config = {
     parent: "game",
     type: Phaser.AUTO,
     width: 1200,
-    height: 800,
+    height: 750,
     transparent: true,
     scale: {
         autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
@@ -67,5 +71,8 @@ game.scene.add('level2-2', level22);
 game.scene.add('level3-1', level31);
 game.scene.add('level3-2', level32);
 
+//gameHUD
+game.scene.add('gameHUD', gameHUD);
+
 // start title
-game.scene.start('titleScene');
+game.scene.start('level2-1');

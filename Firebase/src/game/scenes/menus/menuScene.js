@@ -10,16 +10,16 @@ class MenuScene extends Phaser.Scene {
     }
 
     create(){
-        var gameHeight = this.game.config.height;
-        var gameWidth = this.game.config.width;
+        var gameHeight = 700;
+        var gameWidth = 1100;
         
         var bg = this.add.sprite(55, 45, 'background')
             .setOrigin(0, 0)
             .setDisplaySize(1075, 650);
 
-        var menuBG = this.add.sprite((gameWidth/2) - 30, (gameHeight/2) - 30,  'menuBG')
+        var menuBG = this.add.sprite(590, 375, 'menuBG')
             .setOrigin(0.5, 0.5)
-            .setScale(.45);
+            .setDisplaySize(1300, 820);
 
 		var border = this.add.sprite(0,0,'border')
             .setOrigin(0,0)
@@ -35,37 +35,36 @@ class MenuScene extends Phaser.Scene {
             color: '#000'
         }
 
-        var menuText = this.add.text((gameWidth/2) - 80, 100, "MENU", menuTextConfig);
+        var menuText = this.add.text(525, 105, "MENU", menuTextConfig);
 
-        var startText = this.add.text(gameWidth/4, 250, "Start Game", itemTextConfig)
+        var startText = this.add.text(300, 250, "Start Game", itemTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(startText, startStaff) )
-            .on('pointerout', () => this.mouseout(startText, startStaff) );
-            //.on('pointerdown', () => this.scene.switch('World1-1') );
-        var levelsText = this.add.text(gameWidth/4, 350, "Level Select", itemTextConfig)
+            .on('pointerout', () => this.mouseout(startText, startStaff) )
+            .on('pointerdown', () => this.startGame('level2-1') );
+        var levelsText = this.add.text(300, 350, "Level Select", itemTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(levelsText, levelsStaff) )
             .on('pointerout', () => this.mouseout(levelsText, levelsStaff) )
             .on('pointerdown', () => this.scene.switch('levelsScene') );
-        var controlsText = this.add.text(gameWidth/4, 450, "Controls", itemTextConfig)
+        var controlsText = this.add.text(300, 450, "Controls", itemTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(controlsText, controlsStaff) )
             .on('pointerout', () => this.mouseout(controlsText, controlsStaff) )
             .on('pointerdown', () => this.scene.switch('controlsScene') );
-        var aboutText = this.add.text(gameWidth/4, 550, "About", itemTextConfig)
+        var aboutText = this.add.text(300, 550, "About", itemTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(aboutText, aboutStaff) )
             .on('pointerout', () => this.mouseout(aboutText, aboutStaff) )
             .on('pointerdown', () => this.scene.switch('aboutScene') );
 
-
-        var startStaff = this.add.sprite((gameWidth/2 + 160), 260, "staff");
+        var startStaff = this.add.sprite(760, 260, "staff");
         this.initStaff(startStaff);
-        var levelsStaff = this.add.sprite((gameWidth/2 + 160), 360, "staff");
+        var levelsStaff = this.add.sprite(760, 360, "staff");
         this.initStaff(levelsStaff);
-        var controlsStaff = this.add.sprite((gameWidth/2 + 160), 460, "staff");
+        var controlsStaff = this.add.sprite(760, 460, "staff");
         this.initStaff(controlsStaff);
-        var aboutStaff = this.add.sprite((gameWidth/2 + 160), 560, "staff");
+        var aboutStaff = this.add.sprite(760, 560, "staff");
         this.initStaff(aboutStaff);
     }
 
@@ -83,6 +82,11 @@ class MenuScene extends Phaser.Scene {
         staff.setOrigin(0.5, 0.5)
         .setScale(.10)
         .setVisible(false);
+    }
+
+    startGame(level){
+        this.sound.stopAll();
+        this.scene.switch(level);
     }
 }
 
