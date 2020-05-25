@@ -7,7 +7,6 @@ class MenuScene extends Phaser.Scene {
         this.load.image('background', '../src/assets/images/backgrounds/sky_bg.png');
         this.load.image('menuBG', '../src/assets/images/backgrounds/MenuBase.png');
         this.load.image('staff', '../src/assets/sprites/staff.png')
-        this.load.image('logo', '../src/assets/logo.png');
     }
 
     create(){
@@ -51,13 +50,13 @@ class MenuScene extends Phaser.Scene {
         var controlsText = this.add.text(gameWidth/4, 450, "Controls", itemTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(controlsText, controlsStaff) )
-            .on('pointerout', () => this.mouseout(controlsText, controlsStaff) );
-            //.on('pointerdown', () => this.scene.switch('controlsScene') );
+            .on('pointerout', () => this.mouseout(controlsText, controlsStaff) )
+            .on('pointerdown', () => this.scene.switch('controlsScene') );
         var aboutText = this.add.text(gameWidth/4, 550, "About", itemTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(aboutText, aboutStaff) )
-            .on('pointerout', () => this.mouseout(aboutText, aboutStaff) );
-            //.on('pointerdown', () => this.scene.switch('aboutScene') );
+            .on('pointerout', () => this.mouseout(aboutText, aboutStaff) )
+            .on('pointerdown', () => this.scene.switch('aboutScene') );
 
 
         var startStaff = this.add.sprite((gameWidth/2 + 160), 260, "staff");

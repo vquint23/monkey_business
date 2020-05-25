@@ -9,7 +9,6 @@ class LevelsScene extends Phaser.Scene {
         this.load.image('backarrow2', '../src/assets/images/icons/back2.png');
         this.load.image('backarrow', '../src/assets/images/icons/back.png');
         this.load.image('staff', '../src/assets/sprites/staff.png')
-        this.load.image('logo', '../src/assets/logo.png');
     }
 
     create(){

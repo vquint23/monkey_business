@@ -1,13 +1,16 @@
-import TitleScene from './scenes/titleScene.js';
-import MenuScene from './scenes/menuScene.js';
-import GameScene from './scenes/gameScene.js';
-import LevelsScene from './scenes/levelsScene.js';
+import TitleScene from './scenes/menus/titleScene.js';
+import MenuScene from './scenes/menus/menuScene.js';
+import LevelsScene from './scenes/menus/levelsScene.js';
+import ControlsScene from './scenes/menus/controlsScene.js';
+import AboutScene from './scenes/menus/aboutScene.js';
 
-// Scenes
-var gameScene = new GameScene();
+
+// Menu Scenes
 var titleScene = new TitleScene();
 var menuScene = new MenuScene();
 var levelsScene = new LevelsScene();
+var aboutScene = new AboutScene();
+var controlsScene = new ControlsScene();
 
 // Game Settings
 var config = {
@@ -32,15 +35,16 @@ var config = {
 var game = new Phaser.Game(config);
 
 // Load Scenes
+
+//Menu
 game.scene.add('titleScene', titleScene);
 game.scene.add('menuScene', menuScene);
 game.scene.add('levelsScene', levelsScene);
-//about scene
-//controls scene
+game.scene.add('aboutScene', aboutScene);
+game.scene.add('controlsScene', controlsScene);
 //world 1
 //world 2
 //world 3
-game.scene.add("game", gameScene);
 
 // start title
-game.scene.start('levelsScene');
+game.scene.start('controlsScene');
