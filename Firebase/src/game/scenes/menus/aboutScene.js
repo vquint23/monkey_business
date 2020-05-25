@@ -45,10 +45,10 @@ class AboutScene extends Phaser.Scene {
         //Header Text
         this.add.text((gameWidth/3) + 100, 100, "ABOUT", menuTextConfig);
  
-        var bgHeaderText = this.add.text(gameWidth/4, 240, "Backstory:", headerTextConfig);
-        this.add.text(gameWidth/4 + 50, 300, "Play as Sun Wukong, the Monkey King,", itemTextConfig);
-        this.add.text(gameWidth/4, 340, "on his quest to conquer the heavens, ", itemTextConfig);
-        this.add.text(gameWidth/4, 380, "prove his worth, and ascend to godhood!", itemTextConfig);
+        var bgHeaderText = this.add.text(gameWidth/4, 220, "Backstory:", headerTextConfig);
+        this.add.text(gameWidth/4 + 50, 280, "Play as Sun Wukong, the Monkey King,", itemTextConfig);
+        this.add.text(gameWidth/4, 320, "on his quest to conquer the heavens, ", itemTextConfig);
+        this.add.text(gameWidth/4, 360, "prove his worth, and ascend to godhood!", itemTextConfig);
         var aboutHeaderText = this.add.text(gameWidth/4, 420, "About:", headerTextConfig);
         this.add.text(gameWidth/4 + 50, 480, "Monkey Business is a 2D Platformer game", itemTextConfig);
         this.add.text(gameWidth/4, 520, "created using the Phaser game engine by", itemTextConfig);
