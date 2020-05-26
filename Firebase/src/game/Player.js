@@ -4,12 +4,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(config){
         super(config.scene, config.x, config.y, "Player");
         this.create(config);
+      
+
     }
 
     create(config){
         // Add Player 
         config.scene.add.existing(this);
         config.scene.physics.add.existing(this);
+        this.body.setSize(45, 60);
+        this.body.setOffset(12, 0);
 
         // Create animations
         config.scene.anims.create({
