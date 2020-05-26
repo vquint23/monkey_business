@@ -1,31 +1,35 @@
-var Background, TileMap, TileSet, Music;
-
 class Level extends Phaser.Scene {
+    Background;
+    TileMap;
+    TileSet;
+    Music;
+    Data;
+
     constructor(keyname, data){
         super({key: keyname});
-        //Level Background
-        Background = data.Background;
-        //Level Tilemap
-        TileMap = data.TileMap;
-        //Level Tileset
-        TileSet = data.TileSet;
-        //Level Music
-        Music = data.Music;
+        // Background
+        this.Background = data.Background;
+        // TileMap
+        this.TileMap = data.TileMap;
+        // TileSet
+        this.TileSet = data.TileSet;
+        // Music
+        this.Music = data.Music;
     }
 
     preload(){
         //Level Background
-        this.load.image('background', Background);
+        this.load.image('background', this.Background);
         
         //Map Stuff
-        this.load.tilemapCSV('tilemap', TileMap);
-        this.load.image("tiles", TileSet, {
+        this.load.tilemapCSV('tilemap', this.TileMap);
+        this.load.image("tiles", this.TileSet, {
             frameWidth: 64,
             frameHeight: 64
         });
 
         //Music
-        this.load.audio('music', Music);
+        this.load.audio('music', this.Music);
     }
 
     create(){
@@ -79,5 +83,5 @@ var cursorKeys,
     musicOn,
     paused;
 
-export default Level;
+    export default Level;
 
