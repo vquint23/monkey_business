@@ -56,34 +56,34 @@ class LevelsScene extends Phaser.Scene {
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(level11, world1Staff) )
             .on('pointerout', () => this.mouseout(level11, world1Staff) )
-            .on('pointerdown', () => this.startLevel('level2-1') );
+            .on('pointerdown', () => this.startLevel("level1-1") );
         var level12 = this.add.text(540, 300, "Level 2", lockedTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(null, world1Staff) )
-            .on('pointerout', () => this.mouseout(null, world1Staff) );
-            //.on('pointerdown', () => this.scene.switch('level12') );
+            .on('pointerout', () => this.mouseout(null, world1Staff) )
+            .on('pointerdown', () => this.startLevel("level1-2") );
         var world2Text = this.add.text(350, 380, "Mountain City", itemTextConfig);
         var level21 = this.add.text(380, 430, "Level 1", lockedTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(null, world2Staff) )
-            .on('pointerout', () => this.mouseout(null, world2Staff) );
-            //.on('pointerdown', () => this.scene.switch('level21') );
+            .on('pointerout', () => this.mouseout(null, world2Staff) )
+            .on('pointerdown', () => this.startLevel("level2-1") );
         var level22 = this.add.text(540, 430, "Level 2", lockedTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(null, world2Staff) )
-            .on('pointerout', () => this.mouseout(null, world2Staff) );
-            //.on('pointerdown', () => this.scene.switch('level22') );
+            .on('pointerout', () => this.mouseout(null, world2Staff) )
+            .on('pointerdown', () => this.startLevel("level2-2") );
         var world3Text = this.add.text(350, 510, "The Heavens", itemTextConfig);
         var level21 = this.add.text(380, 550, "Level 1", lockedTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(null, world3Staff) )
-            .on('pointerout', () => this.mouseout(null, world3Staff) );
-            //.on('pointerdown', () => this.scene.switch('level31') );
+            .on('pointerout', () => this.mouseout(null, world3Staff) )
+            .on('pointerdown', () => this.startLevel("level3-1") );
         var level22 = this.add.text(540, 550, "Level 2", lockedTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(null, world3Staff) )
-            .on('pointerout', () => this.mouseout(null, world3Staff) );
-            //.on('pointerdown', () => this.scene.switch('level32') );
+            .on('pointerout', () => this.mouseout(null, world3Staff) )
+            .on('pointerdown', () => this.startLevel("level3-2") );
     
         var world1Staff = this.add.sprite(800, 255, "staff");
         this.initStaff(world1Staff);

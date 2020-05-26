@@ -7,12 +7,13 @@ class MenuScene extends Phaser.Scene {
         this.load.image('background', '../src/assets/images/backgrounds/sky_bg.png');
         this.load.image('menuBG', '../src/assets/images/backgrounds/MenuBase.png');
         this.load.image('staff', '../src/assets/sprites/staff.png')
+               
     }
 
     create(){
         var gameHeight = 700;
         var gameWidth = 1100;
-        
+
         var bg = this.add.sprite(55, 45, 'background')
             .setOrigin(0, 0)
             .setDisplaySize(1075, 650);
@@ -41,7 +42,7 @@ class MenuScene extends Phaser.Scene {
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(startText, startStaff) )
             .on('pointerout', () => this.mouseout(startText, startStaff) )
-            .on('pointerdown', () => this.startGame('level2-1') );
+            .on('pointerdown', () => this.startGame("level1-1") );               
         var levelsText = this.add.text(300, 350, "Level Select", itemTextConfig)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.hover(levelsText, levelsStaff) )
@@ -84,7 +85,7 @@ class MenuScene extends Phaser.Scene {
         .setVisible(false);
     }
 
-    startGame(level){
+    startGame(level,){
         this.sound.stopAll();
         this.scene.switch(level);
     }
