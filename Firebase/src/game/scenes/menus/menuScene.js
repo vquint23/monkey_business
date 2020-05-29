@@ -2,12 +2,9 @@ class MenuScene extends Phaser.Scene {
     constructor(){
         super({key: 'menuScene'});
     }
-    preload(){}
+    preload(){ }
 
     create(){
-        var gameHeight = 700;
-        var gameWidth = 1100;
-
         var bg = this.add.sprite(55, 45, 'skyBG')
             .setOrigin(0, 0)
             .setDisplaySize(1075, 650);

@@ -130,8 +130,6 @@ game.scene.add('level3-2', level32, false, level32Config);
 // gameHUD
 game.scene.add('gameHUD', gameHUD);
 
-// start title
+// start loading
 game.scene.start('loading');
 
-// testing
-//game.scene.start('level2-1');

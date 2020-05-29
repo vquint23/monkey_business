@@ -8,21 +8,10 @@ class GameHUD extends Phaser.Scene {
 		this.level = data.level;
 	}
 
-	preload() {
-		this.load.image("healthbar", "../src/assets/Images/health.png");
-        this.load.image("healthbase", "../src/assets/Images/healthbase.png");
-        this.load.image("pausemenu", "../src/assets/Images/backgrounds/paused.png");
-		this.load.image('border', '../src/assets/images/backgrounds/staff_border.png');
-		
-		this.load.audio("buttonForward", "../src/assets/audio/sfx/button_forward.ogg");
-        this.load.audio("buttonBackward", "../src/assets/audio/sfx/button_backward.ogg");
-        this.load.audio("GameOverTheme", "../src/assets/audio/music/death.ogg");
-        
-		
-	}
+	preload() {}
 
 	create() {
-		//Paused 
+		//Paused? 
 		paused = false;
 		
 		//Sound Effects
@@ -38,11 +27,29 @@ class GameHUD extends Phaser.Scene {
 		healthbar.setScale(.3);
 		  
 		//Pause Menu
-		pauseBG = this.add.sprite(600, 375, "pausemenu")
+		var menuTextConfig = {
+            fontSize: '64px',
+            color: '#000',
+        }
+        var headerTextConfig = {
+            fontSize: '48px',
+            color: '#000',
+		}
+		
+		pauseBG = this.add.sprite(600, 375, "pausedBG")
 			.setOrigin(0.5, 0.5)
 			.setScale(.45)
 			.setVisible(false);
-
+		
+		pausedHeader = this.add.text(510, 105, "PAUSED", menuTextConfig)
+			.setVisible(false);
+		escText = this.add.text(500, 240, "Resume", headerTextConfig)
+			.setVisible(false);
+		xText = this.add.text(500, 370, "Main Menu", headerTextConfig)
+			.setVisible(false);
+		lText = this.add.text(500, 500, "Level Select", headerTextConfig)
+			.setVisible(false);
+		
 		// pause keys
         this.input.keyboard.on('keyup_Q', this.pauseGame, this);
         this.input.keyboard.on('keyup_ESC', this.unpauseGame, this);
@@ -51,7 +58,7 @@ class GameHUD extends Phaser.Scene {
 	
 		
 		// Staff Border
-		var border = this.add.sprite(0,0,'border')
+		var border = this.add.sprite(0,0,'staffBorder')
             .setOrigin(0,0)
 			.setDisplaySize(1200, 750);
 
@@ -65,17 +72,25 @@ class GameHUD extends Phaser.Scene {
 		if(!paused){
 			this.scene.pause(this.level);
 			buttin.play();
-			pauseBG.setVisible(true);       
+			pauseBG.setVisible(true);   
+			pausedHeader.setVisible(true);    
+			escText.setVisible(true);
+			xText.setVisible(true);
+			lText.setVisible(true);
 			paused = true;
 		}
 	}
 	
     unpauseGame(){
 		if(paused){
-			paused = false;
 			this.scene.resume(this.level);
 			buttout.play();
 			pauseBG.setVisible(false);
+			pausedHeader.setVisible(false);
+			escText.setVisible(false);
+			xText.setVisible(false);
+			lText.setVisible(false);
+			paused = false;
 		}
 	}
 
@@ -111,6 +126,6 @@ class GameHUD extends Phaser.Scene {
 
 }
 
-var currentLevel, buttin, buttout, pauseBG, paused;
+var buttin, buttout, pauseBG, paused, pausedHeader, escText, xText, lText;
 
 export default GameHUD;

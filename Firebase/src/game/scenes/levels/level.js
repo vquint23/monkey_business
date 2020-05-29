@@ -19,9 +19,8 @@ class Level extends Phaser.Scene {
     }
 
     preload(){}
-    create(){
-        console.log(this.Data);
 
+    create(){
         // activate loading scene
         this.scene.launch('gameHUD', {level: this } );
         
