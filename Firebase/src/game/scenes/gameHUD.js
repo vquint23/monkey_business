@@ -1,5 +1,5 @@
 class GameHUD extends Phaser.Scene {
-
+	level;
 	constructor() {
 		super({key : 'gameHUD'});
 	}
@@ -22,9 +22,6 @@ class GameHUD extends Phaser.Scene {
 	}
 
 	create() {
-		// Current Level
-		currentLevel = this.level;
-
 		//Paused 
 		paused = false;
 		
@@ -66,7 +63,7 @@ class GameHUD extends Phaser.Scene {
 
 	pauseGame(){
 		if(!paused){
-			this.scene.pause(currentLevel);
+			this.scene.pause(this.level);
 			buttin.play();
 			pauseBG.setVisible(true);       
 			paused = true;
@@ -76,7 +73,7 @@ class GameHUD extends Phaser.Scene {
     unpauseGame(){
 		if(paused){
 			paused = false;
-			this.scene.resume(currentLevel);
+			this.scene.resume(this.level);
 			buttout.play();
 			pauseBG.setVisible(false);
 		}
@@ -84,7 +81,8 @@ class GameHUD extends Phaser.Scene {
 
 	menuSwitch(){
 		if(paused){
-			this.scene.stop(currentLevel);
+			this.sound.stopAll();
+			this.level.sys.shutdown();
 			this.scene.switch('menuScene');
 			this.scene.stop();
 		}
@@ -92,7 +90,8 @@ class GameHUD extends Phaser.Scene {
 
 	levelSwitch(){
 		if(paused){
-			this.scene.stop(currentLevel);
+			this.sound.stopAll();
+			this.level.sys.shutdown();
 			this.scene.switch('levelsScene');
 			this.scene.stop();
 		}

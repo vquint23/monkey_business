@@ -18,63 +18,69 @@ var levelsScene = new LevelsScene();
 var aboutScene = new AboutScene();
 var controlsScene = new ControlsScene();
 
-// Level Configs
-var level11Config = {
-    Background: '../src/assets/images/backgrounds/tempjungle.png',
-    TileMap: '../src/assets/TileMaps/jungle1.csv',
-    TileSet: '../src/assets/tilesets/JungleTileSet.png',
-    Music: '../src/assets/audio/music/world1.ogg',
+// Level Scenes
+var level11 = new Level("level1-1");
+var level12 = new Level("level1-2");
+var level21 = new Level("level2-1");
+var level22 = new Level("level2-2");
+var level31 = new Level("level3-1");
+var level32 = new Level("level3-2");
+
+ // Level Configs
+ var level11Config = {
+    Background: 'world1BG',
+    TileMap: 'level11TM',
+    TileSet: 'world1tiles',
+    Music: 'World1Theme',
     PlayerX: 240,
     PlayerY: 1664,
+    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
 }
 var level12Config = {
-    Background: '../src/assets/images/backgrounds/tempjungle.png',
-    TileMap: '../src/assets/TileMaps/jungle2.csv',
-    TileSet: '../src/assets/tilesets/JungleTileSet.png',
-    Music: '../src/assets/audio/music/world1.ogg',
+    Background: 'world1BG',
+    TileMap: 'level12TM',
+    TileSet: 'world1tiles',
+    Music: 'World1Theme',
     PlayerX: 240,
     PlayerY: 4224,
+    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
 }
 var level21Config = {
-    Background: '../src/assets/images/backgrounds/sky_bg.png',
-    TileMap: '../src/assets/TileMaps/city1.csv',
-    TileSet: '../src/assets/tilesets/CityTileSet.png',
-    Music: '../src/assets/audio/music/world2.ogg',
+    Background: 'skyBG',
+    TileMap: 'level21TM',
+    TileSet: 'world2tiles',
+    Music: 'World2Theme',
     PlayerX: 600,
     PlayerY: 0,
+    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
 }
 var level22Config = {
-    Background: '../src/assets/images/backgrounds/sky_bg.png',
-    TileMap: '../src/assets/TileMaps/city2.csv',
-    TileSet: '../src/assets/tilesets/CityTileSet.png',
-    Music: '../src/assets/audio/music/world2.ogg',
+    Background: 'skyBG',
+    TileMap: 'level22TM',
+    TileSet: 'world2tiles',
+    Music: 'World2Theme',
     PlayerX: 164,
     PlayerY: 4702,
+    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
 }
 var level31Config = {
-    Background: '../src/assets/images/backgrounds/sky_bg.png',
-    TileMap: '../src/assets/TileMaps/world31.csv',
-    TileSet: '../src/assets/tilesets/CloudTileSet.png',
-    Music: '../src/assets/audio/music/world3.ogg',
+    Background: 'skyBG',
+    TileMap: 'level31TM',
+    TileSet: 'world3tiles',
+    Music: 'World3Theme',
     PlayerX: 600,
     PlayerY: 3050,
+    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
 }
 var level32Config = {
-    Background: '../src/assets/images/backgrounds/sky_bg.png',
-    TileMap: '../src/assets/TileMaps/world32.csv',
-    TileSet: '../src/assets/tilesets/CloudTileSet.png',
-    Music: '../src/assets/audio/music/world3.ogg',
+    Background: 'skyBG',
+    TileMap: 'level33TM',
+    TileSet: 'world3tiles',
+    Music: 'World3Theme',
     PlayerX: 4096,
     PlayerY: 5930,
+    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
 }
-
-// Level Scenes
-var level11 = new Level("level1-1", level11Config);
-var level12 = new Level("level1-2", level12Config);
-var level21 = new Level("level2-1", level21Config);
-var level22 = new Level("level2-2", level22Config);
-var level31 = new Level("level3-1", level31Config);
-var level32 = new Level("level3-2", level32Config);
 
 // Game HUD
 var gameHUD = new GameHUD();
@@ -114,18 +120,18 @@ game.scene.add('aboutScene', aboutScene);
 game.scene.add('controlsScene', controlsScene);
 
 // levels
-game.scene.add('level1-1', level11);
-game.scene.add('level1-2', level12);
-game.scene.add('level2-1', level21);
-game.scene.add('level2-2', level22);
-game.scene.add('level3-1', level31);
-game.scene.add('level3-2', level32);
+game.scene.add('level1-1', level11, false, level11Config);
+game.scene.add('level1-2', level12, false, level12Config);
+game.scene.add('level2-1', level21, false, level21Config);
+game.scene.add('level2-2', level22, false, level22Config);
+game.scene.add('level3-1', level31, false, level31Config);
+game.scene.add('level3-2', level32, false, level32Config);
 
 // gameHUD
 game.scene.add('gameHUD', gameHUD);
 
 // start title
-//game.scene.start('titleScene');
+game.scene.start('loading');
 
 // testing
-game.scene.start('level2-1');
+//game.scene.start('level2-1');

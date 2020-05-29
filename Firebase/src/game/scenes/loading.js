@@ -1,216 +1,132 @@
 class Loading extends Phaser.Scene {
     constructor() {
-        super("LoadGame");
+        super("loading");
     }
 
     preload() {
+        // Loading bar
+        this.graphics = this.add.graphics();
+		this.newGraphics = this.add.graphics();
+		var progressBar = new Phaser.Geom.Rectangle(400, 300, 400, 50);
+		var progressBarFill = new Phaser.Geom.Rectangle(405, 305, 290, 40);
+
+		this.graphics.fillStyle(0xffffff, 1);
+		this.graphics.fillRectShape(progressBar);
+
+		this.newGraphics.fillStyle(0x3587e2, 1);
+		this.newGraphics.fillRectShape(progressBarFill);
+
+		var loadingText = this.add.text(450,360,"Loading: ", { 
+            fontSize: '32px', fill: '#FFF' 
+        });
+
         // Import audio
-        this.load.audio("World1Theme", "../audio/music/world1.ogg");
-        this.load.audio("GameOverTheme", "../audio/music/death.ogg");
-        this.load.audio("monkeyJump", "../audio/monkey_jump.ogg");
-        this.load.audio("monkeyRunning", "../audio/monkey_running.ogg");
-        this.load.audio("monkeyDamage", "../audio/monkey_damage.ogg");
-        this.load.audio("enemyDamage", "../audio/enemy_damage.ogg");
-        this.load.audio("buttonForward", "../audio/button_forward.ogg");
-        this.load.audio("buttonBackward", "../audio/button_backward.ogg");
+        this.load.audio("TitleTheme", "../src/assets/audio/music/titlescreen.ogg");
+        this.load.audio("World1Theme", "../src/assets/audio/music/world1.ogg");
+        this.load.audio("World2Theme", "../src/assets/audio/music/world2.ogg");
+        this.load.audio("World3Theme", "../src/assets/audio/music/world3.ogg");
+        this.load.audio("GameOverTheme", "../src/assets/audio/music/death.ogg");
+        this.load.audio("StageClearTheme", "../src/assets/audio/music/stageclear.ogg");
+        this.load.audio("EndingTheme", "../src/assets/audio/music/ending.ogg");
+
+        this.load.audio("monkeyJump", "../src/assets/audio/sfx/monkey_jump.ogg");
+        this.load.audio("monkeyRunning", "../src/assets/audio/sfx/monkey_running.ogg");
+        this.load.audio("monkeyDamage", "../src/assets/audio/sfx/monkey_damage.ogg");
+        this.load.audio("enemyDamage", "../src/assets/audio/sfx/enemy_damage.ogg");
+        this.load.audio("buttonForward", "../src/assets/audio/sfx/button_forward.ogg");
+        this.load.audio("buttonBackward", "../src/assets/audio/sfx/button_backward.ogg");
         
+        // Load Logo
+        this.load.image('logo', '../src/assets/logo.png');
+
+        // Load Icons
+        this.load.image('backarrow2', '../src/assets/images/icons/back2.png');
+        this.load.image('backarrow', '../src/assets/images/icons/back.png');
+   
         // Load in spritesheets
-        this.load.spritesheet("Player", "../src/assets/Sprites/SunWukong.png", {
+        this.load.spritesheet("Player", "../src/assets/sprites/SunWukong.png", {
             frameWidth: 64,
             frameHeight: 64
         });
-        this.load.spritesheet("Scorpion", "../src/assets/Sprites/Scorpion.png", {
+        this.load.spritesheet("Scorpion", "../src/assets/sprites/Scorpion.png", {
             frameWidth: 64,
             frameHeight: 64
         });
-        this.load.spritesheet("Dragonfly", "../src/assets/Sprites/Dragonfly.png", {
+        this.load.spritesheet("Dragonfly", "../src/assets/sprites/Dragonfly.png", {
             frameWidth: 64,
             frameHeight: 32
         });
-        this.load.image("Staff", "../src/assets/Sprites/Staff.png", {
+        this.load.image("staff", "../src/assets/sprites/staff.png", {
             frameWidth: 32,
             frameHeight: 4
         });
-        this.load.image("Hit", "../src/assets/Images/hit.png", {
+        this.load.image("Hit", "../src/assets/images/hit.png", {
             frameWidth: 20,
             frameHeight: 20
         });
-        this.load.image("Gate", "../src/assets/Images/gate.png", {
+        this.load.image("Gate", "../src/assets/images/sprites/gate.png", {
             frameWidth: 42,
             frameHeight: 128
         });
-        this.load.image("Beam", "../src/assets/Images/beam.png", {
+        this.load.image("Beam", "../src/assets/images/beam.png", {
             frameWidth: 16,
             frameHeight: 16
         });
+
+        // Load backgrounds
+        this.load.image("controlsBG", "../src/assets/images/backgrounds/controls.png");
+        this.load.image("menuBG", "../src/assets/images/backgrounds/MenuBase.png");
+        this.load.image("pausedBG", "../src/assets/images/backgrounds/paused.png");
+        this.load.image("staffBorder", "../src/assets/images/backgrounds/staff_border.png");
         
+        this.load.image("world1BG", "../src/assets/images/backgrounds/tempjungle.png");
+        this.load.image("skyBG", "../src/assets/images/backgrounds/sky_bg.png");
+
+        // Load HUD images
+        this.load.image("healthbar", "../src/assets/images/health.png");
+        this.load.image("healthbase", "../src/assets/images/healthbase.png");
+
+        // Load TileMaps
+        this.load.tilemapCSV('level11TM', '../src/assets/TileMaps/jungle1.csv');
+        this.load.tilemapCSV('level12TM', '../src/assets/TileMaps/jungle2.csv');
+        this.load.tilemapCSV('level21TM', '../src/assets/TileMaps/city1.csv');
+        this.load.tilemapCSV('level22TM', '../src/assets/TileMaps/city2.csv');
+        this.load.tilemapCSV('level31TM', '../src/assets/TileMaps/world31.csv');
+        this.load.tilemapCSV('level33TM', '../src/assets/TileMaps/world32.csv');
+        
+        // Load TileSets
+        this.load.image("world1tiles", '../src/assets/tilesets/JungleTileSet.png', {
+            frameWidth: 64,
+            frameHeight: 64
+        });
+        this.load.image("world2tiles", '../src/assets/tilesets/CityTileSet.png', {
+            frameWidth: 64,
+            frameHeight: 64
+        });
+        this.load.image("world3tiles", '../src/assets/tilesets/CloudTileSet.png', {
+            frameWidth: 64,
+            frameHeight: 64
+        });
+        this.load.on('progress', this.updateBar, {newGraphics:this.newGraphics, loadingText: loadingText})
+        this.load.on('complete', this.complete, {scene:this.scene});
     }
 
     create() {
-        // Create animations
-        this.anims.create({
-            key: "idle_right",
-            frames: this.anims.generateFrameNumbers("Player", {
-                start: 0,
-                end: 7
-            }),
-            frameRate: 10,
-            repeat: -1 //Use -1 for infinite loops
-        });
-        this.anims.create({
-            key: "idle_left",
-            frames: this.anims.generateFrameNumbers("Player", {
-                start: 8,
-                end: 15
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "run_right",
-            frames: this.anims.generateFrameNumbers("Player", {
-                start: 16,
-                end: 19
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "run_left",
-            frames: this.anims.generateFrameNumbers("Player", {
-                start: 20,
-                end: 23
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "jump_right",
-            frames: this.anims.generateFrameNumbers("Player", {
-                start: 24,
-                end: 24
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "jump_left",
-            frames: this.anims.generateFrameNumbers("Player", {
-                start: 25,
-                end: 25
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "attack_right",
-            frames: this.anims.generateFrameNumbers("Player", {
-                start: 26,
-                end: 26
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "attack_left",
-            frames: this.anims.generateFrameNumbers("Player", {
-                start: 27,
-                end: 27
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "hurt_right",
-            frames: this.anims.generateFrameNumbers("Player", {
-                start: 28,
-                end: 28
-            }),
-            duration: 1000,
-            frameRate: 10,
-            repeat: -1
-        });
-
-        // Create scorpion animations
-        this.anims.create({
-            key: "scorpion_idle_left",
-            frames: this.anims.generateFrameNumbers("Scorpion", {
-                start: 0,
-                end: 3
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "scorpion_idle_right",
-            frames: this.anims.generateFrameNumbers("Scorpion", {
-                start: 4,
-                end: 7
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "scorpion_dead_left",
-            frames: this.anims.generateFrameNumbers("Scorpion", {
-                start: 18,
-                end: 18
-            }),
-            frameRate: 10,
-            duration: 1000,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "scorpion_dead_right",
-            frames: this.anims.generateFrameNumbers("Scorpion", {
-                start: 19,
-                end: 19
-            }),
-            frameRate: 10,
-            duration: 1000,
-            repeat: -1
-        });
-
-        // Create dragonfly animations
-        this.anims.create({
-            key: "dragonfly_left",
-            frames: this.anims.generateFrameNumbers("Dragonfly", {
-                start: 0,
-                end: 1
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "dragonfly_right",
-            frames: this.anims.generateFrameNumbers("Dragonfly", {
-                start: 2,
-                end: 3
-            }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "dragonfly_dead_left",
-            frames: this.anims.generateFrameNumbers("Dragonfly", {
-                start: 4,
-                end: 4
-            }),
-            frameRate: 10,
-            duration: 1000,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "dragonfly_dead_right",
-            frames: this.anims.generateFrameNumbers("Dragonfly", {
-                start: 5,
-                end: 5
-            }),
-            frameRate: 10,
-            duration: 1000,
-            repeat: -1
-        });
     }
+
+    updateBar(percentage) {
+        this.newGraphics.clear();
+        this.newGraphics.fillStyle(0x3587e2, 1);
+        this.newGraphics.fillRectShape(new Phaser.Geom.Rectangle(405, 305, percentage*390, 40));
+                
+        percentage = percentage * 100;
+        this.loadingText.setText("Loading: " + percentage.toFixed(2) + "%");
+    }
+
+	complete() {
+		console.log("COMPLETE!");
+		this.scene.start("titleScene");
+	}
 }
 
 export default Loading;

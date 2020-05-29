@@ -1,11 +1,9 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
-    Health;
+    Health = 100;
     
     constructor(config){
         super(config.scene, config.x, config.y, "Player");
         this.create(config);
-      
-
     }
 
     create(config){

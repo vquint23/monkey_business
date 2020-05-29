@@ -2,60 +2,26 @@ import Player from '../../Player.js';
 
 class Level extends Phaser.Scene {
     Background;
-    Enemies;
+    Data;
+    Scorpions;
     Music;
     PlayerX;
     PlayerY;
     TileMap;
     TileSet;
 
-
-    constructor(keyname, data){
+    constructor(keyname){
         super({key: keyname});
-        // Background
-        this.Background = data.Background;
-        // Enemies
-        // Music
-        this.Music = data.Music;
-        // Player
-        this.PlayerX = data.PlayerX;
-        this.PlayerY = data.PlayerY;
-        // TileMap
-        this.TileMap = data.TileMap;
-        // TileSet
-        this.TileSet = data.TileSet;
     }
 
-    preload(){
-        //Level Background
-        this.load.image('background', this.Background);
-        
-        //Map Stuff
-        this.load.tilemapCSV('tilemap', this.TileMap);
-        this.load.image("tiles", this.TileSet, {
-            frameWidth: 64,
-            frameHeight: 64
-        });
-
-        //Music
-        this.load.audio('music', this.Music);
-        this.load.audio("GameOverTheme", "../src/assets/audio/music/death.ogg");
-        
-        //Sound Effects
-        this.load.audio("monkeyJump", "../src/assets/audio/sfx/monkey_jump.ogg");
-        this.load.audio("monkeyRunning", "../src/assets/audio/sfx/monkey_running.ogg");
-        this.load.audio("monkeyDamage", "../src/assets/audio/sfx/monkey_damage.ogg");
-        this.load.audio("enemyDamage", "../src/assets/audio/sfx/enemy_damage.ogg");
-    
-        //Player
-        this.load.spritesheet("Player", "../src/assets/Sprites/SunWukong.png", {
-            frameWidth: 64,
-            frameHeight: 64
-        });
-    
+    init(data){
+        this.Data = data;
     }
 
+    preload(){}
     create(){
+        console.log(this.Data);
+
         // activate loading scene
         this.scene.launch('gameHUD', {level: this } );
         
@@ -66,13 +32,13 @@ class Level extends Phaser.Scene {
         left = false;   // player starts facing right
 
         //set background
-        var bg = this.add.tileSprite(0, 0, 1090, 650, 'background')
+        var bg = this.add.tileSprite(0, 0, 1090, 650, this.Data.Background)
             .setOrigin(0, 0)
             .setScrollFactor(0);
 
         // map setup
-        var map = this.make.tilemap({key: "tilemap", tileWidth: 64, tileHeight: 64});
-        var tileset = map.addTilesetImage("tiles");
+        var map = this.make.tilemap({key: this.Data.TileMap, tileWidth: 64, tileHeight: 64});
+        var tileset = map.addTilesetImage(this.Data.TileSet);
         var tilelayer = map.createStaticLayer(0, tileset);
 
         // Set tile blocks to be collidable
@@ -89,8 +55,11 @@ class Level extends Phaser.Scene {
                    .setBounds(0, 0, map.widthInPixels, map.heightInPixels);;
         
         // player setup
-        player = new Player({scene: this, x: this.PlayerX, y: this.PlayerY}); 
+        player = new Player({scene: this, x: this.Data.PlayerX, y: this.Data.PlayerY}); 
         camera.startFollow(player);
+
+        // enemies setup
+
 
         // collisions setup
         this.physics.add.collider(player, tilelayer);
@@ -110,7 +79,7 @@ class Level extends Phaser.Scene {
     update(){
         // Music
         if (!musicOn){
-            let music = this.sound.add('music');
+            let music = this.sound.add(this.Data.Music);
             var musicConfig = {
                 mute: false,
                 volume: 0.5,
