@@ -79,6 +79,7 @@ class MenuScene extends Phaser.Scene {
     startGame(level){
         this.sound.stopAll();
         this.scene.switch(level);
+        this.scene.launch('gameHUD', level);
     }
 }
 

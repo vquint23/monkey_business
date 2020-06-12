@@ -291,7 +291,6 @@ class World21 extends Phaser.Scene {
     
     hitEnemy(hit, enemy) {
         scorpions.remove(enemy);
-        let destroy = this.sound.add("enemyDamage");
         destroy.play({volume: 1.5});
         if (left){
             enemy.play("scorpion_dead_left");

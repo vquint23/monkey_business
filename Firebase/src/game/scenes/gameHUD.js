@@ -1,16 +1,31 @@
+import EventsDispatcher from '../EventsDispatcher.js';
+import Player from '../Player.js';
+
 class GameHUD extends Phaser.Scene {
-	level;
+	Level;
 	constructor() {
 		super({key : 'gameHUD'});
 	}
 
 	init(data){
-		this.level = data.level;
+		this.Level = data;
 	}
 
 	preload() {}
 
 	create() {
+		//Event Dispatcher
+		eventDispatcher = EventsDispatcher.getInstance();   
+
+		//Current Level
+		currentLevel = this.scene.get(this.Level);
+
+		//Deathed???
+		deathed = false;
+
+		//Winned???
+		winned = false;
+
 		//Paused? 
 		paused = false;
 		
@@ -19,12 +34,12 @@ class GameHUD extends Phaser.Scene {
 		buttout = this.sound.add("buttonBackward");
 
 		//Healthbar
-        var healthbase = this.add.image(900, 90, "healthbase");
-        healthbase.setOrigin(.5,.5);
-		healthbase.setScale(.3);
-		var healthbar = this.add.image(900, 90, "healthbar");
-        healthbar.setOrigin(.5,.5);
-		healthbar.setScale(.3);
+        healthbase = this.add.image(900, 90, "healthbase")
+        	.setOrigin(.5,.5)
+			.setScale(.3);
+		healthbar = this.add.image(900, 90, "healthbar")
+        	.setOrigin(.5,.5)
+			.setScale(.3);
 		  
 		//Pause Menu
 		var menuTextConfig = {
@@ -55,7 +70,26 @@ class GameHUD extends Phaser.Scene {
         this.input.keyboard.on('keyup_ESC', this.unpauseGame, this);
 		this.input.keyboard.on('keyup_X', this.menuSwitch, this);
 		this.input.keyboard.on('keyup_L', this.levelSwitch, this);
+		this.input.keyboard.on('keyup_ENTER', this.continue, this);
 	
+		//Win Stuff                                                                                                     
+        wintext = this.add.text(600, 200, 'LEVEL COMPLETE!',
+        {fontSize: '64px', fill: '#fff'})
+        	.setOrigin(.5, .5)
+        	.setVisible(false);
+        //Lose Stuff
+        gameOverText = this.add.text(600, 200, 'GAME OVER', 
+        {fontSize: '64px', fill: '#c70707'})
+        	.setOrigin(.5, .5)
+        	.setVisible(false);
+        // Restart 
+        restartText = this.add.text(400, 500, 'PRESS ENTER TO RESTART', 
+        {fontSize: '32px', fill: '#fff'})
+        	.setVisible(false);
+        //Continue 
+        continueText = this.add.text(400, 500, 'PRESS ENTER TO CONTINUE', 
+        {fontSize: '32px', fill: '#fff'})
+        	.setVisible(false);
 		
 		// Staff Border
 		var border = this.add.sprite(0,0,'staffBorder')
@@ -63,14 +97,15 @@ class GameHUD extends Phaser.Scene {
 			.setDisplaySize(1200, 750);
 
 		//Listeners for events (health change, win, lose)
-        //this.level.events.on('levelWin', this.winDisplay, this);
-        //this.level.events.on('takeDmg', this.redrawHealth, this);
-        //this.level.events.on('gameOver', this.loseDisplay, this)        
+		eventDispatcher.on('levelWin', this.winDisplay, this);
+		eventDispatcher.on('tookDmg', this.redrawHealth, this);
+		eventDispatcher.on('gameOver', this.loseDisplay, this);      
+		eventDispatcher.on('invincible', this.invincible, this);  
 	}
 
 	pauseGame(){
 		if(!paused){
-			this.scene.pause(this.level);
+			this.scene.pause(currentLevel);
 			buttin.play();
 			pauseBG.setVisible(true);   
 			pausedHeader.setVisible(true);    
@@ -83,7 +118,7 @@ class GameHUD extends Phaser.Scene {
 	
     unpauseGame(){
 		if(paused){
-			this.scene.resume(this.level);
+			this.scene.resume(currentLevel);
 			buttout.play();
 			pauseBG.setVisible(false);
 			pausedHeader.setVisible(false);
@@ -97,7 +132,7 @@ class GameHUD extends Phaser.Scene {
 	menuSwitch(){
 		if(paused){
 			this.sound.stopAll();
-			this.level.sys.shutdown();
+			currentLevel.sys.shutdown();
 			this.scene.switch('menuScene');
 			this.scene.stop();
 		}
@@ -106,26 +141,71 @@ class GameHUD extends Phaser.Scene {
 	levelSwitch(){
 		if(paused){
 			this.sound.stopAll();
-			this.level.sys.shutdown();
+			currentLevel.sys.shutdown();
 			this.scene.switch('levelsScene');
 			this.scene.stop();
 		}
 	}
+
+	continue(){
+		if(deathed){
+			buttin.play();
+			currentLevel.sound.stopAll();
+			this.scene.stop(currentLevel);
+			this.scene.start(currentLevel);
+			this.scene.restart();
+			deathed = false;
+		}
+		else{
+			buttin.play();
+			currentLevel.sound.stopAll();
+			// eventsDispatcher.emit('unlockNextsLevel');
+			this.scene.stop(currentLevel);
+			this.scene.switch('levelSelect');
+		}
+	}
 		
 	winDisplay(){
-       
+		wintext.setVisible(true);
+        continueText.setVisible(true);
+        winned = true;
     }
 
-    redrawHealth(){
-        
+    redrawHealth(health){
+        // if taken 20 damage, healthbar is at 80% width, etc.
+        if (health <= 0){
+            healthbar.destroy();
+        }
+        healthbar.setScale((.3 *health/100), .3);
     }
 
     loseDisplay(){
-       
-    }
+		if(!deathed) {
+            gameOverText.setVisible(true);
+            restartText.setVisible(true);
+            currentLevel.sound.stopAll();
+            let deathMusic = this.sound.add("GameOverTheme");
+            let musicConfig = {
+                mute: false,
+                volume: 0.5,
+                loop: false,
+                delay: 0
+            };
+            deathMusic.play(musicConfig);
+            deathed = true;
+        }
+	}
+	
+	invincible(){
+		var invincibleText = this.add.text(500, 50, 'Invincible!', 
+        {fontSize: '28px', fill: '#fff'})
+	}
 
 }
 
-var buttin, buttout, pauseBG, paused, pausedHeader, escText, xText, lText;
+var buttin, buttout, currentLevel, deathed, eventDispatcher, healthbase, healthbar,
+pauseBG, paused, pausedHeader, winned, 
+wintext, gameOverText, restartText, continueText,
+escText, xText, lText;
 
 export default GameHUD;

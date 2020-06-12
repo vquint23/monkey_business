@@ -64,7 +64,7 @@ class Loading extends Phaser.Scene {
             frameWidth: 20,
             frameHeight: 20
         });
-        this.load.image("Gate", "../src/assets/images/sprites/gate.png", {
+        this.load.image("Gate", "../src/assets/sprites/gate.png", {
             frameWidth: 42,
             frameHeight: 128
         });
@@ -119,12 +119,11 @@ class Loading extends Phaser.Scene {
         this.newGraphics.fillStyle(0x3587e2, 1);
         this.newGraphics.fillRectShape(new Phaser.Geom.Rectangle(405, 305, percentage*390, 40));
                 
-        percentage = percentage * 100;
+        percentage = percentage * 99.99;
         this.loadingText.setText("Loading: " + percentage.toFixed(2) + "%");
     }
 
 	complete() {
-		console.log("COMPLETE!");
 		this.scene.start("titleScene");
 	}
 }

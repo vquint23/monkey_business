@@ -8,9 +8,15 @@ class AboutScene extends Phaser.Scene {
         var gameHeight = 700;
         var gameWidth = 1100;
         
-        var bg = this.add.sprite(55, 45, 'skyBG');
-        var menuBG = this.add.sprite(590, 375, 'menuBG');
-		var border = this.add.sprite(0,0,'staffBorder');
+        var bg = this.add.sprite(55, 45, 'skyBG')
+            .setOrigin(0, 0)
+            .setDisplaySize(1075, 650);
+        var menuBG = this.add.sprite(590, 375, 'menuBG')
+            .setOrigin(0.5, 0.5)
+            .setDisplaySize(1300, 820);
+		var border = this.add.sprite(0,0,'staffBorder')
+            .setOrigin(0,0)
+            .setDisplaySize(1200, 750);
 
         var menuTextConfig = {
             fontSize: '64px',

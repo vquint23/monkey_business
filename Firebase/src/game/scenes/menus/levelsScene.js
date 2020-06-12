@@ -129,6 +129,7 @@ class LevelsScene extends Phaser.Scene {
     startLevel(level){
         this.sound.stopAll();
         this.scene.start(level);
+        this.scene.launch('gameHUD', level);    
         this.scene.stop();
     }
 

@@ -7,6 +7,9 @@ import GameHUD from './scenes/gameHUD.js';
 import Loading from './scenes/loading.js';
 import Level from './scenes/levels/level.js';
 import Player from './Player.js';
+import Scorpion from './enemies/scorpion.js';
+import EventsDispatcher from './EventsDispatcher.js';
+
 
 // Loading Scene
 var loading = new Loading();
@@ -29,57 +32,136 @@ var level32 = new Level("level3-2");
  // Level Configs
  var level11Config = {
     Background: 'world1BG',
+    Gate: {
+        x: 9520, 
+        y: 576
+    },
     TileMap: 'level11TM',
     TileSet: 'world1tiles',
     Music: 'World1Theme',
-    PlayerX: 240,
-    PlayerY: 1664,
-    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
+    Player:{
+        x: 240, 
+        y: 1664
+    },
+    Scorpions: {
+        x: [1472, 2240, 3200, 3648, 4288, 6016, 9920],
+        y: [1472, 1600, 1600, 1536, 1664, 1792, 1024]
+    },
+    Dragonflies: {
+        x: [],
+        y: []
+    }
 }
 var level12Config = {
     Background: 'world1BG',
+    Gate: {
+        x: 3120, 
+        y: 192
+    },
     TileMap: 'level12TM',
     TileSet: 'world1tiles',
     Music: 'World1Theme',
-    PlayerX: 240,
-    PlayerY: 4224,
-    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
+    Player:{
+        x: 128, 
+        y: 4224
+    },
+    Scorpions: {
+        x: [1472, 2240, 1536, 832, 1344, 2368, 960, 1024, 1344, 2368, 2368, 2368],
+        y: [1472, 1600, 3904, 3456, 3456, 2844, 448, 448, 448, 1152, 768, 384]
+    },
+    Dragonflies: {
+        x: [832, 2048, 896, 896, 2368, 2112, 1663],
+        y: [3904, 3648, 3328, 2048, 320, 2880, 1920]
+    }
+
 }
 var level21Config = {
     Background: 'skyBG',
+    Gate: {
+        x: 6300, 
+        y: 192
+    },
     TileMap: 'level21TM',
     TileSet: 'world2tiles',
     Music: 'World2Theme',
-    PlayerX: 600,
-    PlayerY: 0,
-    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
+    Player:{
+        x: 600, 
+        y: 0
+    },
+    Scorpions: {
+        x: [1728, 2432, 1241, 2329, 3186, 3931, 4632],
+        y: [2176, 2816, 1764, 1190, 2737, 2786, 489]
+    },
+    Dragonflies: {
+        x: [],
+        y: []
+    }
 }
 var level22Config = {
     Background: 'skyBG',
+    Gate: {
+        x: 3102, 
+        y: 196
+    },
     TileMap: 'level22TM',
     TileSet: 'world2tiles',
     Music: 'World2Theme',
-    PlayerX: 164,
-    PlayerY: 4702,
-    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
+    Player:{
+        x: 164, 
+        y: 4702
+    },
+    Scorpions: {
+        x: [418, 2276, 2978, 1195, 92],
+        y: [3750, 4114, 1328, 1261, 604]
+    },
+    Dragonflies: {
+        x: [],
+        y: []
+    }
 }
 var level31Config = {
     Background: 'skyBG',
+    Gate: {
+        x: 12672, 
+        y: 1096
+    },
     TileMap: 'level31TM',
     TileSet: 'world3tiles',
     Music: 'World3Theme',
-    PlayerX: 600,
-    PlayerY: 3050,
-    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
+    Player:{
+        x: 600, 
+        y: 3050
+    },
+    Scorpions:{
+        x: [1728, 2432, 1241, 2329, 3186, 3931, 4632],
+        y: [2176, 2816, 1764, 1190, 2737, 2786, 489]
+    },
+    Dragonflies: {
+        x: [],
+        y: []
+    }
 }
 var level32Config = {
     Background: 'skyBG',
+    Gate: {
+        x: 5504, 
+        y: 584
+    },
     TileMap: 'level33TM',
     TileSet: 'world3tiles',
     Music: 'World3Theme',
-    PlayerX: 4096,
-    PlayerY: 5930,
-    Scorpions: [[1728, 2176], [2432, 2816], [1241, 1764], [2329, 1190], [3186, 2737], [3931, 2786], [4632, 489]],
+    Player:{
+        x: 4096, 
+        y: 5930
+    },
+    Scorpions: {
+        x: [1728, 2432, 1241, 2329, 3186, 3931, 4632],
+        y: [2176, 2816, 1764, 1190, 2737, 2786, 489]
+    },
+    Dragonflies: {
+        x: [],
+        y: []
+    }
 }
 
 // Game HUD
@@ -100,7 +182,7 @@ var config = {
         default: "arcade",
         arcade:{
             gravity: { y: 700 },
-            debug: true
+            debug: false
         }
     },
     autoRound: false
