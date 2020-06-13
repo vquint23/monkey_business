@@ -8,10 +8,10 @@ Monkey Business is a 2D Platformer Game created using the Phaser engine. It was 
 ## Links
 ### Game Design Document
 
-https://monkeybusiness.firebaseapp.com/gdd
+https://monkeybusinessv.firebaseapp.com/gdd
 
 ### Game Link 
-https://monkeybusiness.firebaseapp.com/
+https://monkeybusinessv.firebaseapp.com/
 
 ### DEVELOPMENT ONLY - REMOVE WHEN DONE! Trello Link
 https://trello.com/b/uAY2cgA8/game-updates
