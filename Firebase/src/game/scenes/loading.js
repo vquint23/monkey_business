@@ -4,6 +4,11 @@ class Loading extends Phaser.Scene {
     }
 
     preload() {
+        // Loading Monky
+        this.add.sprite(600, 200, 'Player')
+            .play('run_right')
+            .setScale(2);
+
         // Loading bar
         this.graphics = this.add.graphics();
 		this.newGraphics = this.add.graphics();
@@ -36,18 +41,11 @@ class Loading extends Phaser.Scene {
         this.load.audio("buttonForward", "../src/assets/audio/sfx/button_forward.ogg");
         this.load.audio("buttonBackward", "../src/assets/audio/sfx/button_backward.ogg");
         
-        // Load Logo
-        this.load.image('logo', '../src/assets/logo.png');
-
         // Load Icons
         this.load.image('backarrow2', '../src/assets/images/icons/back2.png');
         this.load.image('backarrow', '../src/assets/images/icons/back.png');
    
         // Load in spritesheets
-        this.load.spritesheet("Player", "../src/assets/sprites/SunWukong.png", {
-            frameWidth: 64,
-            frameHeight: 64
-        });
         this.load.spritesheet("Scorpion", "../src/assets/sprites/Scorpion.png", {
             frameWidth: 64,
             frameHeight: 64

@@ -4,12 +4,15 @@ import LevelsScene from './scenes/menus/levelsScene.js';
 import ControlsScene from './scenes/menus/controlsScene.js';
 import AboutScene from './scenes/menus/aboutScene.js';
 import GameHUD from './scenes/gameHUD.js';
+import Preloading from './scenes/preloading.js';
 import Loading from './scenes/loading.js';
 import Level from './scenes/levels/level.js';
 import Player from './Player.js';
 import Scorpion from './enemies/scorpion.js';
 import EventsDispatcher from './EventsDispatcher.js';
 
+// Preloading Scene
+var preloading = new Preloading();
 
 // Loading Scene
 var loading = new Loading();
@@ -191,6 +194,9 @@ var game = new Phaser.Game(config);
 
 /* Load Scenes */
 
+// preloading scene
+game.scene.add('preloading', preloading);
+
 // loading scene
 game.scene.add('loading', loading);
 
@@ -213,5 +219,5 @@ game.scene.add('level3-2', level32, false, level32Config);
 game.scene.add('gameHUD', gameHUD);
 
 // start loading
-game.scene.start('loading');
+game.scene.start('preloading');
 
