@@ -4,6 +4,6 @@
   "description": "A Phaser 2D Game",
   "main": "src/index.js",
   "dependencies": {
-    "phaser": "^3.20.1"
+    "phaser": "^3.55.2"
   }
 }
